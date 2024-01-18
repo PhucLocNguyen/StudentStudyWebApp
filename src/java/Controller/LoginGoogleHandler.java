@@ -5,18 +5,27 @@
  */
 package Controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Form;
+import org.apache.http.client.fluent.Request;
+import utils.Constants;
+import utils.GoogleUtils;
 
 /**
  *
  * @author ACER
  */
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "LoginGoogleHandler", urlPatterns = {"/LoginGoogleHandler"})
+public class LoginGoogleHandler extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +44,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet LoginGoogleHandler</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LoginGoogleHandler at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +65,23 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        String code = request.getParameter("code");
+
+        try (PrintWriter out = response.getWriter()) {
+            String accessToken = GoogleUtils.getToken(code);
+            UserGoogleDto user = GoogleUtils.getUserInfo(accessToken);
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LoginGoogleHandler</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>User Data :"+user.getEmail()+"</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+        
     }
 
     /**
@@ -70,23 +95,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username, password, init_username, init_password;
-
-        username = request.getParameter("username").trim();
-        password = request.getParameter("password").trim();
-        init_username = getServletContext().getInitParameter("user");
-        init_password = getServletContext().getInitParameter("pass");
-        try {
-            if(username.equalsIgnoreCase(init_username) && password.equals(init_password)){
-                response.sendRedirect("dashboard.jsp");
-            request.setAttribute("ms", "Login Successful");
-            }else{
-            request.setAttribute("ms", "Wrong username or password123 !!!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            System.err.println(e);
-        }
         processRequest(request, response);
     }
 

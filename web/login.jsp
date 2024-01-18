@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : Jan 13, 2024, 6:22:35 PM
+    Document   : Login
+    Created on : Jan 16, 2024, 12:10:51 AM
     Author     : ACER
 --%>
 
@@ -9,30 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Page</title>
     </head>
     <body>
-        <div id="header">
-            <%@include file="./Components/Header.jsp" %>
-        </div>
-        <div id="content">
-            <h1>Login Form</h1>
-            <form method="POST" class="form" id="loginForm" action="login">
-                <div>
-                    <label for="username">Username</label>
-                    <input type="text" name="username" placeholder="Enter your username..."/>
-                </div>
-
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" placeholder="Enter your password..."/>
-                </div>
-                <input type="submit"/>
-            </form>
-           <%= request.getAttribute("ms")!=null?request.getAttribute("ms"):"" %> <p class="ms"></p>
-        </div>
-        <div id="footer">
-            <%@include file="./Components/Footer.jsp" %>
-        </div>
+        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/LoginGoogle/LoginGoogleHandler&response_type=code
+		&client_id=486731547262-h7svpjpbsn69f5h7elgd3q66het82vs9.apps.googleusercontent.com&approval_prompt=force">Login with google</a>
     </body>
 </html>
