@@ -8,3 +8,7 @@ Update boi loc moi nhat
 # Đây là phần test file md
 ## Test nhẹ cái gắn link
 [Hà Gia Khánh](https://www.facebook.com/hagia.khanh.13)
+- Hình Messi
+![](images/messi.jpg)
+- Hình con dê
+![](images/goat.jpg)
