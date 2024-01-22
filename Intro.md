@@ -10,5 +10,3 @@ Update boi loc moi nhat
 [Hà Gia Khánh](https://www.facebook.com/hagia.khanh.13)
 - Hình Messi
 ![](images/messi.jpg)
-- Hình con dê
-![](images/goat.jpg)
