@@ -11,9 +11,9 @@ package utils;
  */
 public class Constants {
 
-    public static String GOOGLE_CLIENT_ID = "486731547262-h7svpjpbsn69f5h7elgd3q66het82vs9.apps.googleusercontent.com";
+    public static String GOOGLE_CLIENT_ID = "984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com";
 
-    public static String GOOGLE_CLIENT_SECRET = "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";
+    public static String GOOGLE_CLIENT_SECRET = "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";
 
     public static String GOOGLE_REDIRECT_URI = "http://localhost:8080/LoginGoogle/LoginGoogleHandler";
 

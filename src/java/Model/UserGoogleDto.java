@@ -14,20 +14,28 @@ public class UserGoogleDto {
     private String id;
     private String name;
     private String email;
-    private String given_name;
+    private String password;
     private boolean verified_email;
     private String picture;
-
+    
     public UserGoogleDto() {
     }
 
-    public UserGoogleDto(String id, String name, String email, String given_name, boolean verified_email, String picture) {
+    public UserGoogleDto(String id, String name, String email, boolean verified_email, String picture) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.given_name = given_name;
         this.verified_email = verified_email;
         this.picture = picture;
+        this.password = "";
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {
@@ -52,14 +60,6 @@ public class UserGoogleDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getGiven_name() {
-        return given_name;
-    }
-
-    public void setGiven_name(String given_name) {
-        this.given_name = given_name;
     }
 
     public boolean isVerified_email() {

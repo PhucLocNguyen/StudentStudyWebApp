@@ -9,15 +9,21 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import utils.Constants;
+import utils.DBUtils;
 import utils.GoogleUtils;
 
 /**
@@ -47,6 +53,7 @@ public class LoginGoogleHandler extends HttpServlet {
             out.println("<title>Servlet LoginGoogleHandler</title>");
             out.println("</head>");
             out.println("<body>");
+
             out.println("<h1>Servlet LoginGoogleHandler at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
@@ -66,6 +73,12 @@ public class LoginGoogleHandler extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String code = request.getParameter("code");
+        Connection con = null;
+        UserGoogleDto userData = new UserGoogleDto();
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        String msg = "";
+        HttpSession session = request.getSession();
 
         try (PrintWriter out = response.getWriter()) {
             String accessToken = GoogleUtils.getToken(code);
@@ -77,11 +90,63 @@ public class LoginGoogleHandler extends HttpServlet {
             out.println("<title>Servlet LoginGoogleHandler</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>User Data :"+user.getEmail()+"</h1>");
+
+            try {
+                if (user != null) {
+                    con = DBUtils.getConnection();
+                    String sql = "SELECT * from STUDENTs ";
+                    sql += " WHERE email = ? ";
+                    preStm = con.prepareStatement(sql);
+                    preStm.setString(1, user.getEmail());
+                    userData.setEmail(user.getEmail());
+                    rs = preStm.executeQuery();
+                    System.out.println("Logic: " + rs);
+                    if (!rs.next()) {
+                        String name = user.getEmail().split("@fpt")[0];
+                        userData.setPicture(user.getPicture());
+                        userData.setName(name);
+                        userData.setPassword("");
+                        sql = "INSERT INTO STUDENTs (name, image, email, password) VALUES (?, ?, ?, ?)";
+                        preStm = con.prepareStatement(sql);
+                        preStm.setString(1, userData.getName());
+                        preStm.setString(2, userData.getPicture());
+                        preStm.setString(3, userData.getEmail());
+                        preStm.setString(4, userData.getPassword());
+                        preStm.executeUpdate();
+                        msg = "Create account successful !!!";
+                    } else {
+                        sql = "SELECT * FROM STUDENTs where email = ? ";
+                        preStm = con.prepareStatement(sql);
+                        preStm.setString(1, userData.getEmail());
+                        rs = preStm.executeQuery();
+                        System.out.println("Nhay vo else");
+                        if (rs != null) {
+                            rs.next();
+                            String username = rs.getString("name");
+                            String password = rs.getString("password");
+                            userData.setPassword(password);
+                            userData.setName(username);
+                            msg = "Welcome back " + username;
+
+                        }
+                    }
+
+                    request.setAttribute("msg", msg);
+//                    request.getRequestDispatcher("Home.jsp").forward(request, response);
+                    response.sendRedirect("Home.jsp");
+                }
+                rs.close();
+                preStm.close();
+                con.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                e.printStackTrace();
+            }
+
+            out.println("<h1>User Data :" + user.getEmail() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-        
     }
 
     /**
