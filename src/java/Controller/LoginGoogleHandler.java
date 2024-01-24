@@ -133,6 +133,8 @@ public class LoginGoogleHandler extends HttpServlet {
 
                     request.setAttribute("msg", msg);
 //                    request.getRequestDispatcher("Home.jsp").forward(request, response);
+                    session.setAttribute("user", userData);
+
                     response.sendRedirect("Home.jsp");
                 }
                 rs.close();

@@ -12,7 +12,15 @@
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
     </head>
     <body>
-        <% // UserGoogleDto user = (UserGoogleDto)session.getAttribute("user");%>
+        <%
+            String name = "";
+            if (session.getAttribute("user") != null) {
+                UserGoogleDto user = (UserGoogleDto) session.getAttribute("user");
+                name = user.getName();
+            } else {
+                response.sendRedirect("login.jsp");
+            }
+        %>
         <div class="container">
             <div class="row mt-2">
                 <div class="col-lg-5">
@@ -56,7 +64,9 @@
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                              aria-labelledby="offcanvasNavbarLabel">
                             <div class="offcanvas-header">
-                                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Name</h5>
+                                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+                                    <%=name%>
+                                </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                             </div>
