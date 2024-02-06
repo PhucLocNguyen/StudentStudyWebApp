@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import Model.UserGoogleDAO;
+import Model.UserGoogleDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -73,82 +75,25 @@ public class LoginGoogleHandler extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String code = request.getParameter("code");
-        Connection con = null;
-        UserGoogleDto userData = new UserGoogleDto();
-        PreparedStatement preStm = null;
-        ResultSet rs = null;
-        String msg = "";
+        String msg = "Login Failed please use @FPT gmail";
         HttpSession session = request.getSession();
 
-        try (PrintWriter out = response.getWriter()) {
-            String accessToken = GoogleUtils.getToken(code);
-            UserGoogleDto user = GoogleUtils.getUserInfo(accessToken);
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginGoogleHandler</title>");
-            out.println("</head>");
-            out.println("<body>");
-
-            try {
-                if (user != null) {
-                    con = DBUtils.getConnection();
-                    String sql = "SELECT * from STUDENTs ";
-                    sql += " WHERE email = ? ";
-                    preStm = con.prepareStatement(sql);
-                    preStm.setString(1, user.getEmail());
-                    userData.setEmail(user.getEmail());
-                    rs = preStm.executeQuery();
-                    System.out.println("Logic: " + rs);
-                    if (!rs.next()) {
-                        String name = user.getEmail().split("@fpt")[0];
-                        userData.setPicture(user.getPicture());
-                        userData.setName(name);
-                        userData.setPassword("");
-                        sql = "INSERT INTO STUDENTs (name, image, email, password) VALUES (?, ?, ?, ?)";
-                        preStm = con.prepareStatement(sql);
-                        preStm.setString(1, userData.getName());
-                        preStm.setString(2, userData.getPicture());
-                        preStm.setString(3, userData.getEmail());
-                        preStm.setString(4, userData.getPassword());
-                        preStm.executeUpdate();
-                        msg = "Create account successful !!!";
-                    } else {
-                        sql = "SELECT * FROM STUDENTs where email = ? ";
-                        preStm = con.prepareStatement(sql);
-                        preStm.setString(1, userData.getEmail());
-                        rs = preStm.executeQuery();
-                        System.out.println("Nhay vo else");
-                        if (rs != null) {
-                            rs.next();
-                            String username = rs.getString("name");
-                            String password = rs.getString("password");
-                            userData.setPassword(password);
-                            userData.setName(username);
-                            msg = "Welcome back " + username;
-
-                        }
-                    }
-
-                    request.setAttribute("msg", msg);
-//                    request.getRequestDispatcher("Home.jsp").forward(request, response);
-                    session.setAttribute("user", userData);
-
-                    response.sendRedirect("Home.jsp");
-                }
-                rs.close();
-                preStm.close();
-                con.close();
-            } catch (SQLException e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();
+        String accessToken = GoogleUtils.getToken(code);
+        UserGoogleDTO user = GoogleUtils.getUserInfo(accessToken);
+        if (user != null) {
+            UserGoogleDTO userLogin = UserGoogleDAO.login(user);
+            if (userLogin != null) {
+                msg = "Welcome back " + userLogin.getName();
+                session.setAttribute("user", userLogin);
+                session.setAttribute("role", "student");
+                request.setAttribute("msg", msg);
+                response.sendRedirect("home");
             }
-
-            out.println("<h1>User Data :" + user.getEmail() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        } else {
+            request.setAttribute("msg", msg);
+            response.sendRedirect("login.jsp");
         }
+
     }
 
     /**

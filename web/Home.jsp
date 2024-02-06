@@ -4,16 +4,19 @@
     Author     : ACER
 --%>
 
+<%@page import="Model.ClassesDTO"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Home Page</title>
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
+        <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
     </head>
+    <%@include file="./Components/Header.jsp" %>
     <body>
-        <%@include file="./Components/Header.jsp" %>
-
         <div class="bg-body-tertiary" style="height: 3000px;">
             <div id="carouselExampleInterval" class="carousel slide container mb-2 mt-2" data-bs-ride="carousel">
                 <div class="row">
@@ -59,39 +62,19 @@
                     <h3 class="fw-medium mb-1">Kham pha cac lop hoc</h3>
                 </div>
                 <div class="row mt-3 mb-4">
+                    <% List<ClassesDTO> list = (List<ClassesDTO>) request.getAttribute("class_list");
+                        for (ClassesDTO items : list) {
+                    %>
                     <div class="col-lg-4">
                         <div class="card rounded-4">
-                            <img src="./Assets/img/slide.jpg" class="card-img-top object-fit-cover rounded-top-4" alt="..."
-                                 style="max-height: 10rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in
-                                    to additional content. This content is a little bit longer.</p>
+                            <img src=<%="./Assets/img/" + items.getThumbnail()%> class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                                 <div class="card-body">
+                                <h5 class="card-title"><%=items.getName()%></h5>
+                                <p class="card-text"><%= items.getDescription()%></p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="card rounded-4">
-                            <img src="./Assets/img/slide.jpg" class="card-img-top object-fit-cover rounded-top-4" alt="..."
-                                 style="max-height: 10rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in
-                                    to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card rounded-4">
-                            <img src="./Assets/img/slide.jpg" class="card-img-top object-fit-cover rounded-top-4" alt="..."
-                                 style="max-height: 10rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in
-                                    to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <%}%>
                 </div>
                 <!-- Ket thuc kham pha hoc phan -->
 

@@ -5,7 +5,7 @@
  */
 package utils;
 
-import Controller.UserGoogleDto;
+import Model.UserGoogleDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -31,10 +31,10 @@ public class GoogleUtils {
         return accessToken;
     }
 
-    public static UserGoogleDto getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
+    public static UserGoogleDTO getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = Constants.GOOGLE_LINK_GET_USER_INFO + accessToken;
         String response = Request.Get(link).execute().returnContent().asString();
-        UserGoogleDto googlePojo = new Gson().fromJson(response, UserGoogleDto.class);
+        UserGoogleDTO googlePojo = new Gson().fromJson(response, UserGoogleDTO.class);
         System.out.println(response);
         return googlePojo;
     }

@@ -4,22 +4,34 @@
     Author     : ACER
 --%>
 
-<%@page import="Controller.UserGoogleDto"%>
+<%@page import="Model.LectureDTO"%>
+<%@page import="Model.UserGoogleDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/bootstrap.min.css"/>
     </head>
     <body>
         <%
+            String getRole = (String) session.getAttribute("role");
             String name = "";
-            if (session.getAttribute("user") != null) {
-                UserGoogleDto user = (UserGoogleDto) session.getAttribute("user");
+            if (session.getAttribute("role") == null) {
+                response.sendRedirect("login.jsp");
+            } else if (getRole.equals("lecturer")) {
+                LectureDTO user = (LectureDTO) session.getAttribute("user");
                 name = user.getName();
             } else {
-                response.sendRedirect("login.jsp");
+                UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
+                name = user.getName();
             }
+//            String name = "";
+//            if (session.getAttribute("user") != null) {
+//                UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
+//                name = user.getName();
+//            } else {
+//                response.sendRedirect("login.jsp");
+//                name = "Anonymous";
+//            }
         %>
         <div class="container">
             <div class="row mt-2">
@@ -33,10 +45,10 @@
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
-                        </button>
+                        </button>   
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center fw-bold fs-5">
-                                <li class="nav-item text-nowrap px-4"><a class="nav-link" href="Home.jsp">Home</a></li>
+                                <li class="nav-item text-nowrap px-4"><a class="nav-link" href="home">Home</a></li>
                                 <li class="nav-item text-nowrap px-4"><a class="nav-link " href="MyCourse.jsp">My Courses</a></li>
                                 <li class="nav-item text-nowrap px-4"><a class="nav-link" href="#">Dashboard</a></li>
                             </ul>

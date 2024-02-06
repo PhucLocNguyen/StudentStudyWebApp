@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Model;
 
 /**
  *
  * @author ACER
  */
-public class UserGoogleDto {
+public class UserGoogleDTO {
 
     private String id;
     private String name;
@@ -18,10 +18,10 @@ public class UserGoogleDto {
     private boolean verified_email;
     private String picture;
     
-    public UserGoogleDto() {
+    public UserGoogleDTO() {
     }
 
-    public UserGoogleDto(String id, String name, String email, boolean verified_email, String picture) {
+    public UserGoogleDTO(String id, String name, String email, boolean verified_email, String picture) {
         this.id = id;
         this.name = name;
         this.email = email;
