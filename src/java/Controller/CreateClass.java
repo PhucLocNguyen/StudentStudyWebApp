@@ -100,7 +100,7 @@ public class CreateClass extends HttpServlet {
         fileName = fileName.replaceAll("\\s", "_");
 //        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
 // Lấy đường dẫn đầy đủ đến thư mục "Assets/img/"
-        String uploadPath = getServletContext().getRealPath("") + "Assets" + File.separator + "img";
+        String uploadPath = "D:\\Download\\GithubInstaller\\LoginFormGoogle\\web\\Assets" + File.separator + "img";
         System.out.println("Path:" + uploadPath);
 // Tạo đường dẫn đầy đủ đến file trong thư mục "Assets/img/"
         String filePath = uploadPath + File.separator + fileName;

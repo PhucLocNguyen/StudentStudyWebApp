@@ -34,13 +34,12 @@ public class UserGoogleDAO {
                 preStm.setString(1, user.getEmail());
                 userData.setEmail(user.getEmail());
                 rs = preStm.executeQuery();
-                System.out.println("Logic: " + rs);
                 if (!rs.next()) {
                     String name = user.getEmail().split("@fpt")[0];
                     userData.setPicture(user.getPicture());
                     userData.setName(name);
                     userData.setPassword("");
-                    sql = "INSERT INTO STUDENTs (name, image, email, password) VALUES (?, ?, ?, ?)";
+                    sql = "INSERT INTO STUDENTs (name, thumbnail, email, password) VALUES (?, ?, ?, ?)";
                     preStm = con.prepareStatement(sql);
                     preStm.setString(1, userData.getName());
                     preStm.setString(2, userData.getPicture());
@@ -52,7 +51,6 @@ public class UserGoogleDAO {
                     preStm = con.prepareStatement(sql);
                     preStm.setString(1, userData.getEmail());
                     rs = preStm.executeQuery();
-                    System.out.println("Nhay vo else");
                     if (rs != null) {
                         rs.next();
                         String username = rs.getString("name");

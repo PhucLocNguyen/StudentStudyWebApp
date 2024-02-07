@@ -1,40 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.froala.editor.Image;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ArrayUtils;
+
 import com.google.gson.Gson;
-import java.util.HashMap;
-import javax.servlet.annotation.MultipartConfig;
 
 /**
- *
- * @author ACER
+ * Servlet implementation class UploadImage
  */
-@WebServlet(name = "ImageUploadFile", urlPatterns = {"/upload-image"})
+@WebServlet(name = "ImageUploadFile", urlPatterns = {
+    "/upload-image"
+})
+
 @MultipartConfig
 public class ImageUploadFile extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -44,83 +40,110 @@ public class ImageUploadFile extends HttpServlet {
         super();
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImageUploadFile</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ImageUploadFile at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // The route on which the file is saved.
+        File uploads = new File("D:\\Download\\GithubInstaller\\LoginFormGoogle\\web\\Assets\\img");
+        String multipartContentType = "multipart/form-data";
+        String fieldname = "file";
+        Part filePart = request.getPart(fieldname);
+        Map< Object, Object> responseData = null;
 
-        String fileRoute = "Assets/img/";
-        String data = "";
-        Map<Object, Object> responseData;
+        // Create path components to save the file.
+        final PrintWriter writer = response.getWriter();
+
+        String linkName = null;
+        String name = null;
+
         try {
-            System.out.println("Entering doPost method");
-//            responseData = Image.upload(request, fileRoute); // Use default
-data = request.getParameter("url");
-System.out.println("End doPost method" + data);
-            // image
-            // validation.
+            // Check content type.
+            if (request.getContentType() == null
+                    || request.getContentType().toLowerCase().indexOf(multipartContentType) == -1) {
+
+                throw new Exception("Invalid contentType. It must be " + multipartContentType);
+            }
+
+            // Get file Part based on field name and also image extension.
+            filePart = request.getPart(fieldname);
+            String type = filePart.getContentType();
+            type = type.substring(type.lastIndexOf("/") + 1);
+
+            // Generate random name.
+            String extension = type;
+            extension = (extension != null && extension != "") ? "." + extension : extension;
+            name = UUID.randomUUID().toString() + extension;
+
+            // Get absolute server path.
+            String absoluteServerPath = uploads + name;
+
+            // Create link.
+            String path = request.getHeader("referer");
+            linkName =  "http://localhost:8080/LoginGoogle/files/" + name;
+
+            // Validate image.
+            String mimeType = filePart.getContentType();
+            String[] allowedExts = new String[]{
+                "gif",
+                "jpeg",
+                "jpg",
+                "png",
+                "svg",
+                "blob"
+            };
+            String[] allowedMimeTypes = new String[]{
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/x-png",
+                "image/png",
+                "image/svg+xml"
+            };
+
+            if (!ArrayUtils.contains(allowedExts, FilenameUtils.getExtension(absoluteServerPath))
+                    || !ArrayUtils.contains(allowedMimeTypes, mimeType.toLowerCase())) {
+
+                // Delete the uploaded image if it dose not meet the validation.
+                File file = new File(uploads + name);
+                if (file.exists()) {
+                    file.delete();
+                }
+
+                throw new Exception("Image does not meet the validation.");
+            }
+
+            // Save the file on server.
+            File file = new File(uploads, name);
+
+            try (InputStream input = filePart.getInputStream()) {
+                Files.copy(input, file.toPath());
+            } catch (Exception e) {
+                writer.println("<br/> ERROR: " + e);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            responseData = new HashMap<Object, Object>();
+            writer.println("You either did not specify a file to upload or are "
+                    + "trying to upload a file to a protected or nonexistent "
+                    + "location.");
+            writer.println("<br/> ERROR: " + e.getMessage());
+            responseData = new HashMap< Object, Object>();
             responseData.put("error", e.toString());
-        }
-        // Wait for 10 secs for image upload
-        synchronized (data) {
-            try {
-                data.wait(10000);
-                String jsonResponseData = new Gson().toJson(data);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(jsonResponseData);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+
+        } finally {
+            // Build response data.
+            responseData = new HashMap< Object, Object>();
+            responseData.put("link", linkName);
+
+            // Send response data.
+            String jsonResponseData = new Gson().toJson(responseData);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(jsonResponseData);
         }
     }
 }
-
-/**
- * Returns a short description of the servlet.
- *
- * @return a String containing servlet description
- */

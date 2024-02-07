@@ -17,8 +17,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <%@include file="./Components/Header.jsp" %>
-
     <body>
+
+        <%  if (getRole != null && getRole.equals("lecturer")) {%>
         <div class="">
             <!-- Button HTML (to Trigger Modal) -->
             <a href="#myModal" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal">Tạo lớp học</a>
@@ -43,7 +44,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <p class="text-primary mb-1">Thumbnail</p>
-                                    <input type="file" class="form-control" id="inputGroupFile01" name="thumbnail">
+                                    <input type="file" class="form-control" id="inputGroupFile01" name="thumbnail" accept="image/*">
                                 </div>
                                 <div class="mb-3">
                                     <p class="text-primary mb-1">Password</p>
@@ -64,10 +65,11 @@
                                 <div class="mb-3">
                                     <p class="text-primary mb-1">Description</p>
                                     <textarea id="froala-editor" name="description">
-  <p>
-  Open the console to see the <em>html.get</em> method working.
-  </p>
+      <p>
+      Open the console to see the <em>html.get</em> method working.
+      </p>
                                     </textarea>
+                                
                                 </div>
 
                                 <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
@@ -81,10 +83,12 @@
                     </div>
                 </div>
             </div>
+            <%}%>   
             <%@include file="./Components/Footer.jsp" %>
         </div>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-        <% if (request.getAttribute("message") != null) { // đang bị lỗi này có giải pháp là bắt sự kiện submit form rồi gửi về bằng Ajax rồi trả dữ liệu json cho toastify %> 
+        <% if (request.getAttribute(
+                    "message") != null) { // đang bị lỗi này có giải pháp là bắt sự kiện submit form rồi gửi về bằng Ajax rồi trả dữ liệu json cho toastify %> 
         <script>
                                         Toastify({
                                             text: request.getAttribute("message"),
@@ -103,41 +107,63 @@
         </script>
         <%}%>
         <script>
-
-            let editor = new FroalaEditor('#froala-editor', {
+// Ý tưởng để thực hiện thao tác nộp file đó chính là sử dụng thẻ input hidden file với sự kiện upload hình ảnh hoặc file trong text area sẽ tạo ra một thẻ input tương ứng để submit
+// sau đó thì sẽ xử lý file ảnh và đồng thời xử lý chuỗi những đường link bị sai lưu dưới dạng HTML trước khi vào Database
+//            let editor = new FroalaEditor('#froala-editor', {
 //                imageUploadURL: '/LoginGoogle/upload-image', // Đặt URL của máy chủ để xử lý tải lên hình ảnh
 //                imageUploadParams: {
 //                    id: 'my_editor'
 //                },
 //                imageManagerDeleteMethod: "POST",
-                events: {
+//                events: {
 
-                    'image.inserted': function (response) {
-                        // Do something here.
-                        // this is the editor instance.
-                        console.log("bat su kien");
-                        console.log(response);
-                        $.post("upload-image",
-                                {
-                                    url: response[0].currentSrc,
-                                    city: "Duckburg"
-                                },
-                                function (data, status) {
-                                    alert("Data: " + data + "\nStatus: " + status);
-                                });
-                    }
-                    ,
-                    'contentChanged': function () {
-                        const editorContent = this.html.get();
-                        console.log(editorContent);
-                    }
+//                    'image.inserted': function (response) {
+//                    // Do something here.
+//                    // this is the editor instance.
+//                    console.log(response);
+//                            console.log("bat su kien");
+//                            $.post("upload-image",
+//                            {
+//                            url: response[0].currentSrc,
+//                                    city: "Duckburg"
+//                            },
+//                                    function (data, status) {
+//
+//                                    alert("Data: " + data + "\nStatus: " + status);
+//                                    });
+//                    }
+//                    ,
+//                            'contentChanged': function () {
+//                            const editorContent = this.html.get();
+//                                    console.log(editorContent);
+//                            }
+//                    'image.inserted': function ($img, response) {
+//                        // Do something here.
+//                        // this is the editor instance.
+//                        console.log($img);
+//                        console.log(this);
+//                        $.post("upload-image",
+//                                {
+//                                    url: $img,
+//                                },
+//                                function (data, status) {
+//
+//                                    alert("Data: " + data + "\nStatus: " + status);
+//                                });
+//                    }
 
+//                }
+//            }, function () {
+//                console.log(editor.html.get());
+//            });
+          let editor =  new FroalaEditor('#froala-editor', {
+                // Set the image upload URL.
+                imageUploadURL: 'upload-image',
 
+                imageUploadParams: {
+                    id: 'my_editor'
                 }
-            }, function () {
-                console.log(editor.html.get());
-            });
-
+            })
         </script>
     </body>
 </html> 

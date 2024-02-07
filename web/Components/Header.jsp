@@ -13,17 +13,23 @@
     </head>
     <body>
         <%
+            String name = ""; // Khai báo và khởi tạo biến name trước khi sử dụng
             String getRole = (String) session.getAttribute("role");
-            String name = "";
-            if (session.getAttribute("role") == null) {
+
+            if (session.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
-            } else if (getRole.equals("lecturer")) {
-                LectureDTO user = (LectureDTO) session.getAttribute("user");
-                name = user.getName();
             } else {
-                UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
-                name = user.getName();
+                if (getRole.equals("lecturer")) {
+                    LectureDTO user = (LectureDTO) session.getAttribute("user");
+                    name = user.getName();
+                    
+                } else {
+                    UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
+                    name = user.getName();
+                }
+                
             }
+
 //            String name = "";
 //            if (session.getAttribute("user") != null) {
 //                UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");

@@ -55,7 +55,7 @@ public class LoginGoogleHandler extends HttpServlet {
             out.println("<title>Servlet LoginGoogleHandler</title>");
             out.println("</head>");
             out.println("<body>");
-
+            
             out.println("<h1>Servlet LoginGoogleHandler at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
@@ -77,7 +77,7 @@ public class LoginGoogleHandler extends HttpServlet {
         String code = request.getParameter("code");
         String msg = "Login Failed please use @FPT gmail";
         HttpSession session = request.getSession();
-
+        
         String accessToken = GoogleUtils.getToken(code);
         UserGoogleDTO user = GoogleUtils.getUserInfo(accessToken);
         if (user != null) {
@@ -91,9 +91,9 @@ public class LoginGoogleHandler extends HttpServlet {
             }
         } else {
             request.setAttribute("msg", msg);
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
+        
     }
 
     /**

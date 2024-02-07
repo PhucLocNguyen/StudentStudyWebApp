@@ -40,10 +40,6 @@ public class Home extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             ClassesDAO classDAO = new ClassesDAO();
             List<ClassesDTO> class_list = classDAO.showClass();
-            System.out.println("Size: "+ class_list.size());
-            for(ClassesDTO item : class_list){
-                System.out.println("Checking name: " + item.getName());
-            }
             request.setAttribute("class_list", class_list);
             request.getRequestDispatcher("Home.jsp").forward(request, response);
         }

@@ -38,8 +38,7 @@ public class LectureDAO {
                     user.setEmail(rs.getString(4));
 
                     user.setPassword(rs.getString(5));
-                    System.out.println("User info: " + user.toString());
-                }
+                    }
             }
             rs.close();
             preStm.close();
