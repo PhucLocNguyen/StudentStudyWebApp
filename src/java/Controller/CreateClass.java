@@ -85,23 +85,22 @@ public class CreateClass extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name, image, password, description;
+        request.setCharacterEncoding("UTF-8");
+        String name, imageUrl, password, description;
         HttpSession session = request.getSession();
         LectureDTO user = (LectureDTO) session.getAttribute("user");
         int lecturer_id = user.getId();
-        System.out.println("Lecturer id : " + user.getId());
+
         name = request.getParameter("className");
-        image = request.getParameter("thumbnail");
+        System.out.println("Class name: " + name);
         Part filePart = request.getPart("thumbnail");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString().trim();
         password = request.getParameter("password");
         description = request.getParameter("description");
 
         fileName = fileName.replaceAll("\\s", "_");
-//        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
-// Lấy đường dẫn đầy đủ đến thư mục "Assets/img/"
+        imageUrl = "http://localhost:8080/LoginGoogle/files/" + fileName;
         String uploadPath = "D:\\Download\\GithubInstaller\\LoginFormGoogle\\web\\Assets" + File.separator + "img";
-        System.out.println("Path:" + uploadPath);
 // Tạo đường dẫn đầy đủ đến file trong thư mục "Assets/img/"
         String filePath = uploadPath + File.separator + fileName;
 
@@ -124,7 +123,7 @@ public class CreateClass extends HttpServlet {
             input.close();
         }
 
-        if (classDAO.addClass(name, fileName, password, description, lecturer_id)) {
+        if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
             request.setAttribute("message", "Create Successfully !!!");
         } else {
             request.setAttribute("message", "Failed !!!");

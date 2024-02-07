@@ -67,7 +67,7 @@
                     %>
                     <div class="col-lg-4">
                         <div class="card rounded-4">
-                            <img src=<%="./Assets/img/" + items.getThumbnail()%> class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                            <img src=<%=items.getThumbnail()%> class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
                                  <div class="card-body">
                                 <h5 class="card-title"><%=items.getName()%></h5>
                                 <p class="card-text"><%= items.getDescription()%></p>

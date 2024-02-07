@@ -1,10 +1,12 @@
 <%-- Document : MyCourse Created on : Jan 21, 2024, 2:59:01 PM Author : ACER
 --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>My Courses</title>
         <link rel="stylesheet" href="./Assets/css/style.css"/>
@@ -35,7 +37,7 @@
                         Server Version: <%= application.getServerInfo()%><br>
                         Servlet Version: <%= application.getMajorVersion()%>.<%= application.getMinorVersion()%>
                         JSP Version: <%= JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion()%> <br>
-                        <form action="create-class" method="POST" enctype="multipart/form-data">
+                        <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data">
 
                             <div class="modal-body">
                                 <div class="mb-3">
@@ -69,7 +71,7 @@
       Open the console to see the <em>html.get</em> method working.
       </p>
                                     </textarea>
-                                
+
                                 </div>
 
                                 <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
@@ -107,57 +109,9 @@
         </script>
         <%}%>
         <script>
-// Ý tưởng để thực hiện thao tác nộp file đó chính là sử dụng thẻ input hidden file với sự kiện upload hình ảnh hoặc file trong text area sẽ tạo ra một thẻ input tương ứng để submit
-// sau đó thì sẽ xử lý file ảnh và đồng thời xử lý chuỗi những đường link bị sai lưu dưới dạng HTML trước khi vào Database
-//            let editor = new FroalaEditor('#froala-editor', {
-//                imageUploadURL: '/LoginGoogle/upload-image', // Đặt URL của máy chủ để xử lý tải lên hình ảnh
-//                imageUploadParams: {
-//                    id: 'my_editor'
-//                },
-//                imageManagerDeleteMethod: "POST",
-//                events: {
-
-//                    'image.inserted': function (response) {
-//                    // Do something here.
-//                    // this is the editor instance.
-//                    console.log(response);
-//                            console.log("bat su kien");
-//                            $.post("upload-image",
-//                            {
-//                            url: response[0].currentSrc,
-//                                    city: "Duckburg"
-//                            },
-//                                    function (data, status) {
-//
-//                                    alert("Data: " + data + "\nStatus: " + status);
-//                                    });
-//                    }
-//                    ,
-//                            'contentChanged': function () {
-//                            const editorContent = this.html.get();
-//                                    console.log(editorContent);
-//                            }
-//                    'image.inserted': function ($img, response) {
-//                        // Do something here.
-//                        // this is the editor instance.
-//                        console.log($img);
-//                        console.log(this);
-//                        $.post("upload-image",
-//                                {
-//                                    url: $img,
-//                                },
-//                                function (data, status) {
-//
-//                                    alert("Data: " + data + "\nStatus: " + status);
-//                                });
-//                    }
-
-//                }
-//            }, function () {
-//                console.log(editor.html.get());
-//            });
-          let editor =  new FroalaEditor('#froala-editor', {
+            let editor = new FroalaEditor('#froala-editor', {
                 // Set the image upload URL.
+                entities: '',
                 imageUploadURL: 'upload-image',
 
                 imageUploadParams: {

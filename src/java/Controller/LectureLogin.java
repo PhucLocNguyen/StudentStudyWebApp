@@ -88,7 +88,7 @@ public class LectureLogin extends HttpServlet {
             response.sendRedirect("home");
         } else {
             request.setAttribute("error", "Email or Password is incorrect!");
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 

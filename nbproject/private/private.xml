@@ -3,18 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/Home.java</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/web/MyCourse.jsp</file>
-            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Model/ClassesDAO.java</file>
-            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Model/ClassesDTO.java</file>
+            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/ShowClasses.java</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/web/Components/Header.jsp</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/LectureLogin.java</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/CreateClass.java</file>
-            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/web/login.jsp</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/ImageUploadFile.java</file>
-            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Model/LectureDTO.java</file>
+            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/FileServlet.java</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/web/Home.jsp</file>
+            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/web/Assets/img/GoogleIcon.svg</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Model/LectureDAO.java</file>
+            <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/web/Assets/img/861ccc6a-60c3-4d75-aad8-1d62a7b31b72.jpeg</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Model/UserGoogleDAO.java</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Controller/LoginGoogleHandler.java</file>
             <file>file:/D:/Download/GithubInstaller/LoginFormGoogle/src/java/Model/UserGoogleDTO.java</file>
