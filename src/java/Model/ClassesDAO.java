@@ -51,15 +51,18 @@ public class ClassesDAO {
         ResultSet rs = null;
         Connection con = null;
         String sql = "";
+        LectureDTO lecture = null;
         List<ClassesDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
             sql = "SELECT * FROM Classes c LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id;";
             preStm = con.prepareStatement(sql);
             rs = preStm.executeQuery();
+            LectureDAO lecturer_DAO = new LectureDAO();
             if (rs != null) {
                 while (rs.next()) {
-                    list.add(new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6)));
+                    lecture = lecturer_DAO.searchLectureById(rs.getInt(1));
+                    list.add(new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), lecture));
                 }
             }
             con.close();

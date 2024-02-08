@@ -92,7 +92,6 @@ public class CreateClass extends HttpServlet {
         int lecturer_id = user.getId();
 
         name = request.getParameter("className");
-        System.out.println("Class name: " + name);
         Part filePart = request.getPart("thumbnail");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString().trim();
         password = request.getParameter("password");

@@ -34,6 +34,8 @@ public class GoogleUtils {
     public static UserGoogleDTO getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = Constants.GOOGLE_LINK_GET_USER_INFO + accessToken;
         String response = Request.Get(link).execute().returnContent().asString();
+        response = response.replaceFirst("id", "id_string");
+        response = response.replaceFirst("picture", "thumbnail");
         UserGoogleDTO googlePojo = new Gson().fromJson(response, UserGoogleDTO.class);
         System.out.println(response);
         return googlePojo;

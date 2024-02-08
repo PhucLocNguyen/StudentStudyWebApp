@@ -27,7 +27,7 @@ public class UserGoogleDAO {
             if (user != null) {
                 con = DBUtils.getConnection();
                 String sql;
-                sql = "SELECT * from STUDENTs ";
+                sql = "SELECT * from Students ";
                 sql += " WHERE email = ? ";
 
                 preStm = con.prepareStatement(sql);
@@ -36,13 +36,13 @@ public class UserGoogleDAO {
                 rs = preStm.executeQuery();
                 if (!rs.next()) {
                     String name = user.getEmail().split("@fpt")[0];
-                    userData.setPicture(user.getPicture());
+                    userData.setThumbnail(user.getThumbnail());
                     userData.setName(name);
                     userData.setPassword("");
                     sql = "INSERT INTO STUDENTs (name, thumbnail, email, password) VALUES (?, ?, ?, ?)";
                     preStm = con.prepareStatement(sql);
                     preStm.setString(1, userData.getName());
-                    preStm.setString(2, userData.getPicture());
+                    preStm.setString(2, userData.getThumbnail());
                     preStm.setString(3, userData.getEmail());
                     preStm.setString(4, userData.getPassword());
                     preStm.executeUpdate();

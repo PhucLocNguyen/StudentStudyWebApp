@@ -84,7 +84,6 @@ public class LoginGoogleHandler extends HttpServlet {
         if (user != null) {
             UserGoogleDTO userLogin = UserGoogleDAO.login(user);
             if (userLogin != null) {
-                msg = "Welcome back " + userLogin.getName();
                 session.setAttribute("user", userLogin);
                 session.setAttribute("role", "student");
                 request.setAttribute("msg", msg);

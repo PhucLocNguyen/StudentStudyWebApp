@@ -13,21 +13,22 @@
     </head>
     <body>
         <%
-            String name = ""; // Khai báo và khởi tạo biến name trước khi sử dụng
-            String getRole = (String) session.getAttribute("role");
 
+            String name = ""; // Khai báo và khởi tạo biến name trước khi sử dụng
+            String image = "";
+            String getRole = (String) session.getAttribute("role");
             if (session.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
             } else {
                 if (getRole.equals("lecturer")) {
                     LectureDTO user = (LectureDTO) session.getAttribute("user");
                     name = user.getName();
-                    
+                    image = user.getImage();
                 } else {
                     UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
                     name = user.getName();
                 }
-                
+
             }
 
 //            String name = "";
@@ -45,7 +46,7 @@
                     <nav class="navbar navbar-expand-lg bg-white justify-content-center">
                         <div style="background-color: red;"></div>
                         <a class="navbar-brand px-4" href="#">
-                            <img src="https://dummyimage.com/900x400/ced4da/6c757d.jgp" alt="..." width="30" height="24">
+                            <img src=<% user%> alt="..." width="30" height="24">
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

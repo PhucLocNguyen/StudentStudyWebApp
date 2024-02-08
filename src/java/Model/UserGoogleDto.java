@@ -11,22 +11,21 @@ package Model;
  */
 public class UserGoogleDTO {
 
-    private String id;
+    private int id;
     private String name;
     private String email;
     private String password;
     private boolean verified_email;
-    private String picture;
-    
+    private String thumbnail;
+
     public UserGoogleDTO() {
     }
 
-    public UserGoogleDTO(String id, String name, String email, boolean verified_email, String picture) {
+    public UserGoogleDTO(int id, String name, String email, String thumbnail) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.verified_email = verified_email;
-        this.picture = picture;
+        this.thumbnail = thumbnail;
         this.password = "";
     }
 
@@ -38,12 +37,11 @@ public class UserGoogleDTO {
         this.password = password;
     }
 
-    public String getId() {
-        return id;
+    public int getId() {
+        return this.id;
     }
 
     public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -70,12 +68,12 @@ public class UserGoogleDTO {
         this.verified_email = verified_email;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
 }

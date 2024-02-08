@@ -14,6 +14,7 @@
         <title>Home Page</title>
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
         <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </head>
     <%@include file="./Components/Header.jsp" %>
     <body>
@@ -71,6 +72,7 @@
                                  <div class="card-body">
                                 <h5 class="card-title"><%=items.getName()%></h5>
                                 <p class="card-text"><%= items.getDescription()%></p>
+                                <button onClick="showPopup(<%=items.getId()%>)">Show more</button>
                             </div>
                         </div>
                     </div>
@@ -126,6 +128,15 @@
             </div>
 
         </div>
+        <script>
+            function showPopup(courseId) {
+                $.post("popup-class", {
+                    id: courseId
+                }, function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+            }
+        </script>
         <%@include file="./Components/Footer.jsp" %>
     </body>
 </html>
