@@ -34,9 +34,7 @@
                             <h5 class="modal-title">Tạo lớp học</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        Server Version: <%= application.getServerInfo()%><br>
-                        Servlet Version: <%= application.getMajorVersion()%>.<%= application.getMinorVersion()%>
-                        JSP Version: <%= JspFactory.getDefaultFactory().getEngineInfo().getSpecificationVersion()%> <br>
+                       
                         <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data">
 
                             <div class="modal-body">
@@ -67,9 +65,6 @@
                                 <div class="mb-3">
                                     <p class="text-primary mb-1">Description</p>
                                     <textarea id="froala-editor" name="description">
-      <p>
-      Open the console to see the <em>html.get</em> method working.
-      </p>
                                     </textarea>
 
                                 </div>
@@ -93,7 +88,7 @@
                     "message") != null) { // đang bị lỗi này có giải pháp là bắt sự kiện submit form rồi gửi về bằng Ajax rồi trả dữ liệu json cho toastify %> 
         <script>
                                         Toastify({
-                                            text: request.getAttribute("message"),
+                                            text: "<%= request.getAttribute("message")%>",
                                             duration: 3000,
                                             destination: "https://github.com/apvarun/toastify-js",
                                             newWindow: true,

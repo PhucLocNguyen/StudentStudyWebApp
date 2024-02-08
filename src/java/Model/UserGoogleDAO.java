@@ -47,17 +47,14 @@ public class UserGoogleDAO {
                     preStm.setString(4, userData.getPassword());
                     preStm.executeUpdate();
                 } else {
-                    sql = "SELECT * FROM STUDENTs where email = ? ";
+                    sql = "SELECT student_id, name, email, thumbnail FROM STUDENTs where email = ? ";
                     preStm = con.prepareStatement(sql);
                     preStm.setString(1, userData.getEmail());
                     rs = preStm.executeQuery();
                     if (rs != null) {
-                        rs.next();
-                        String username = rs.getString("name");
-                        String password = rs.getString("password");
-                        userData.setPassword(password);
-                        userData.setName(username);
-
+                        if (rs.next()) {
+                            userData = new UserGoogleDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                        }
                     }
                 }
             }

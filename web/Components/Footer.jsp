@@ -7,8 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <body>
-         <footer class="container my-3 " style="height: 5rem;">
+    <body> 
+    <footer class="container my-3 " style="height: 5rem;">
         <div class="row">
             <div class="col-lg-12 fs-2 text-center">
                 <a class="text-decoration-none text-dark px-2" href=""><i class="ti-facebook"></i></a>

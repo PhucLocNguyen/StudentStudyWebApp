@@ -27,7 +27,7 @@ public class ClassesDAO {
         String sql;
         try {
             con = DBUtils.getConnection();
-            sql = "INSERT INTO Classes (name, image ,password, description, lecturer_id) VALUES (?,?,?,?,?)";
+            sql = "INSERT INTO Classes (name, thumbnail ,password, description, lecturer_id) VALUES (?,?,?,?,?)";
             preStm = con.prepareStatement(sql);
             preStm.setString(1, name);
             preStm.setString(2, image);
@@ -55,13 +55,13 @@ public class ClassesDAO {
         List<ClassesDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT * FROM Classes c LEFT JOIN Lecturers l ON c.lecturer_id = l.lecturer_id;";
+            sql = "SELECT c.class_id, c.name, c.thumbnail, c.password, c.description, c.lecturer_id FROM Classes c;";
             preStm = con.prepareStatement(sql);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
             if (rs != null) {
                 while (rs.next()) {
-                    lecture = lecturer_DAO.searchLectureById(rs.getInt(1));
+                    lecture = lecturer_DAO.searchLectureById(rs.getInt(6));
                     list.add(new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), lecture));
                 }
             }
