@@ -9,8 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.DataFormatException;
 import utils.DBUtils;
 
 /**
@@ -69,5 +72,33 @@ public class EnrollDAO {
             e.getStackTrace();
         }
         return list;
+    }
+
+    public List<Integer> idClassEnrolled(int student_id) {
+        List<Integer> arrayIdClass = new ArrayList<>();
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT class_id FROM Enroll WHERE student_id = ? ORDER BY enroll_date DESC ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, student_id);
+            rs = preStm.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    int idClass = rs.getInt(1);
+                    arrayIdClass.add(idClass);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR CLasses: " + e.getMessage());
+            e.getStackTrace();
+        }catch (NullPointerException e){
+            System.out.println("Array Of Id Class Null" + e.getMessage());
+            e.getStackTrace();
+        }
+        return arrayIdClass;
     }
 }

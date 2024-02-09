@@ -74,7 +74,7 @@
                             <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title"><%=items.getName()%></h5>
-                                <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail() %></p>
+                                <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
                                 <a href="<%="#myModal" + count%>" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal">Show more</a>
                             </div>
                         </div>
@@ -90,13 +90,13 @@
                                 <form accept-charset="UTF-8" action="enroll-class" method="POST">
 
                                     <div class="modal-body">
-                                        <p class="text-primary mb-1">Giảng viên <%= items.getLecturer().getName() %></p>
-                                        
+                                        <p class="text-primary mb-1">Giảng viên <%= items.getLecturer().getName()%></p>
+
                                         <p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>
-                                        <p class="text-secondary mb-1"><%=items.getDescription() %></p>
+                                        <p class="text-secondary mb-1"><%=items.getDescription()%></p>
                                         <p class="text-primary mb-1">Password</p>
                                         <input type="password" class="form-control" name="password" id="passwordInput"/>
-                                        <input type="hidden" name="class_id" value="<%= items.getId() %>">
+                                        <input type="hidden" name="class_id" value="<%= items.getId()%>">
                                         <input type="checkbox" onclick="myFunction(<%=count%>)"> Show Password
 
 
@@ -121,17 +121,27 @@
                     <h3 class="fw-medium mb-3">Lop hoc cua ban</h3>
                 </div>
                 <div class="row">
+                    <%
+                        List<ClassesDTO> listClassEnrolled = (List<ClassesDTO>) request.getAttribute("classListEnrolled");
+                        if (listClassEnrolled.size() > 0) {
+                            for (ClassesDTO item : listClassEnrolled) {
+
+
+                    %>
                     <div class="col-lg-3">
                         <div class="card">
+                            <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">Fpt, VietNam</p>
-                                <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
+                                <h5 class="card-title"><%= item.getName() %></h5>
+                                <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail() %></p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <% 
+                            }
+                        }
+                    %>
+<!--                    <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Ten lop hoc</h5>
@@ -162,7 +172,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
         </div>
         <script>
