@@ -17,7 +17,7 @@ public class ClassesDTO {
 
     public ClassesDTO() {
     }
-
+    
     public ClassesDTO(int id, String name, String thumbnail, String password, String description, LectureDTO lecturer) {
         this.id = id;
         this.name = name;

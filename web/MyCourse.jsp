@@ -84,25 +84,7 @@
             <%@include file="./Components/Footer.jsp" %>
         </div>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-        <% if (request.getAttribute(
-                    "message") != null) { // đang bị lỗi này có giải pháp là bắt sự kiện submit form rồi gửi về bằng Ajax rồi trả dữ liệu json cho toastify %> 
-        <script>
-                                        Toastify({
-                                            text: "<%= request.getAttribute("message")%>",
-                                            duration: 3000,
-                                            destination: "https://github.com/apvarun/toastify-js",
-                                            newWindow: true,
-                                            close: true,
-                                            gravity: "top", // `top` or `bottom`
-                                            position: "left", // `left`, `center` or `right`
-                                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                                            style: {
-                                                background: "linear-gradient(to right, #00b09b, #96c93d)",
-                                            },
-                                            onClick: function () {} // Callback after click
-                                        }).showToast();
-        </script>
-        <%}%>
+        
         <script>
             let editor = new FroalaEditor('#froala-editor', {
                 // Set the image upload URL.

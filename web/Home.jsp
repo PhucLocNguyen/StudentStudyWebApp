@@ -90,12 +90,13 @@
                                 <form accept-charset="UTF-8" action="enroll-class" method="POST">
 
                                     <div class="modal-body">
-                                        <p class="text-primary mb-1">Giảng viên </p>
+                                        <p class="text-primary mb-1">Giảng viên <%= items.getLecturer().getName() %></p>
                                         
                                         <p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>
                                         <p class="text-secondary mb-1"><%=items.getDescription() %></p>
                                         <p class="text-primary mb-1">Password</p>
                                         <input type="password" class="form-control" name="password" id="passwordInput"/>
+                                        <input type="hidden" name="class_id" value="<%= items.getId() %>">
                                         <input type="checkbox" onclick="myFunction(<%=count%>)"> Show Password
 
 

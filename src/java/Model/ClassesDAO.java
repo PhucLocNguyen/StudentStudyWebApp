@@ -46,6 +46,61 @@ public class ClassesDAO {
 
     }
 
+    public boolean checkingClassesPassword(String password, int class_id) {
+        boolean status = false;
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT * FROM Classes Where class_id = ? AND password = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, class_id);
+            preStm.setString(2, password);
+            rs = preStm.executeQuery();
+            LectureDAO lecturer_DAO = new LectureDAO();
+            if (rs != null) {
+                if (rs.next()) {
+                    status = true;
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR Show CLass By ID: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return status;
+    }
+
+    public ClassesDTO showClassById(int class_id) {
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        LectureDTO lecture = null;
+        ClassesDTO classes = null;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT class_id, name, thumbnail, password, description, lecturer_id FROM Classes Where class_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, class_id);
+            rs = preStm.executeQuery();
+            LectureDAO lecturer_DAO = new LectureDAO();
+            if (rs != null) {
+                if (rs.next()) {
+                    lecture = lecturer_DAO.searchLectureById(rs.getInt(6));
+                    classes = new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), lecture);
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR Show CLass By ID: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return classes;
+    }
+
     public List<ClassesDTO> showClass() {
         PreparedStatement preStm = null;
         ResultSet rs = null;

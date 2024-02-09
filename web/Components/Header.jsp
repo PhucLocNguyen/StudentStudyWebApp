@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="Model.LectureDTO"%>
-<%@page import="Model.UserGoogleDTO"%>
+<%@page import="Model.StudentDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,11 +25,10 @@
                     name = user.getName();
                     image = user.getThumbnail();
                 } else {
-                    UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
+                    StudentDTO user = (StudentDTO) session.getAttribute("user");
                     name = user.getName();
                     image = user.getThumbnail();
                 }
-                System.out.println("User image:" + image);
 
             }
 
