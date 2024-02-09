@@ -5,8 +5,8 @@
  */
 package Controller;
 
-import Model.UserGoogleDAO;
-import Model.UserGoogleDTO;
+import Model.StudentDAO;
+import Model.StudentDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -80,11 +80,11 @@ public class LoginGoogleHandler extends HttpServlet {
         HttpSession session = request.getSession();
 
         String accessToken = GoogleUtils.getToken(code);
-        UserGoogleDTO user = GoogleUtils.getUserInfo(accessToken);
+        StudentDTO user = GoogleUtils.getUserInfo(accessToken);
         if (user != null) {
-            UserGoogleDTO userLogin = UserGoogleDAO.login(user);
+            StudentDTO userLogin = StudentDAO.login(user);
             if (userLogin != null) {
-                msg = "Welcome back " + userLogin.getName();
+                System.out.println("Servlet image: "+userLogin.getThumbnail());
                 session.setAttribute("user", userLogin);
                 session.setAttribute("role", "student");
                 request.setAttribute("msg", msg);

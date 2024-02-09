@@ -8,7 +8,7 @@ package Model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import utils.DBUtils;
-import Model.UserGoogleDTO;
+import Model.StudentDTO;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -16,10 +16,10 @@ import java.sql.SQLException;
  *
  * @author ACER
  */
-public class UserGoogleDAO {
+public class StudentDAO {
 
-    public static UserGoogleDTO login(UserGoogleDTO user) {
-        UserGoogleDTO userData = new UserGoogleDTO();
+    public static StudentDTO login(StudentDTO user) {
+        StudentDTO userData = new StudentDTO();
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
@@ -27,7 +27,7 @@ public class UserGoogleDAO {
             if (user != null) {
                 con = DBUtils.getConnection();
                 String sql;
-                sql = "SELECT * from STUDENTs ";
+                sql = "SELECT * from Students ";
                 sql += " WHERE email = ? ";
 
                 preStm = con.prepareStatement(sql);
@@ -36,28 +36,25 @@ public class UserGoogleDAO {
                 rs = preStm.executeQuery();
                 if (!rs.next()) {
                     String name = user.getEmail().split("@fpt")[0];
-                    userData.setPicture(user.getPicture());
+                    userData.setThumbnail(user.getThumbnail());
                     userData.setName(name);
                     userData.setPassword("");
                     sql = "INSERT INTO STUDENTs (name, thumbnail, email, password) VALUES (?, ?, ?, ?)";
                     preStm = con.prepareStatement(sql);
                     preStm.setString(1, userData.getName());
-                    preStm.setString(2, userData.getPicture());
+                    preStm.setString(2, userData.getThumbnail());
                     preStm.setString(3, userData.getEmail());
                     preStm.setString(4, userData.getPassword());
                     preStm.executeUpdate();
                 } else {
-                    sql = "SELECT * FROM STUDENTs where email = ? ";
+                    sql = "SELECT student_id, name, email, thumbnail FROM STUDENTs where email = ? ";
                     preStm = con.prepareStatement(sql);
                     preStm.setString(1, userData.getEmail());
                     rs = preStm.executeQuery();
                     if (rs != null) {
-                        rs.next();
-                        String username = rs.getString("name");
-                        String password = rs.getString("password");
-                        userData.setPassword(password);
-                        userData.setName(username);
-
+                        if (rs.next()) {
+                            userData = new StudentDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                        }
                     }
                 }
             }
@@ -71,5 +68,30 @@ public class UserGoogleDAO {
 
         return userData;
 
+    }
+
+    public StudentDTO showStudentById(int student_id) {
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        StudentDTO student = null;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT class_id, name, email ,thumbnail FROM Students Where student_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, student_id);
+            rs = preStm.executeQuery();
+            if (rs != null) {
+                if (rs.next()) {
+                    student= new StudentDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR Show CLass By ID: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return student;
     }
 }

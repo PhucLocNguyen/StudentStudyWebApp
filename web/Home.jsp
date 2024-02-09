@@ -14,10 +14,11 @@
         <title>Home Page</title>
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
         <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </head>
     <%@include file="./Components/Header.jsp" %>
     <body>
-        <div class="bg-body-tertiary" style="height: 3000px;">
+        <div class="bg-body-tertiary" >
             <div id="carouselExampleInterval" class="carousel slide container mb-2 mt-2" data-bs-ride="carousel">
                 <div class="row">
                     <div class="col-lg-12">
@@ -57,28 +58,62 @@
 
 
             <div class="container mt-5">
-                <div class="row">
-                    <h3 class="fw-medium mb-1"><% 
-                       
-                        %></h3>
-                </div>
+
                 <div class="row">
                     <h3 class="fw-medium mb-1">Kham pha cac lop hoc</h3>
                 </div>
                 <div class="row mt-3 mb-4">
                     <% List<ClassesDTO> list = (List<ClassesDTO>) request.getAttribute("class_list");
-                        for (ClassesDTO items : list) {
+                        if (list != null) {
+                            int count = 0;
+                            for (ClassesDTO items : list) {
+                                count++;
                     %>
                     <div class="col-lg-4">
                         <div class="card rounded-4">
-                            <img src=<%=items.getThumbnail()%> class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
-                                 <div class="card-body">
+                            <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                            <div class="card-body">
                                 <h5 class="card-title"><%=items.getName()%></h5>
-                                <p class="card-text"><%= items.getDescription()%></p>
+                                <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail() %></p>
+                                <a href="<%="#myModal" + count%>" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal">Show more</a>
                             </div>
                         </div>
                     </div>
-                    <%}%>
+                    <div id="<%="myModal" + count%>" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><%=items.getName()%></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <form accept-charset="UTF-8" action="enroll-class" method="POST">
+
+                                    <div class="modal-body">
+                                        <p class="text-primary mb-1">Giảng viên <%= items.getLecturer().getName() %></p>
+                                        
+                                        <p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>
+                                        <p class="text-secondary mb-1"><%=items.getDescription() %></p>
+                                        <p class="text-primary mb-1">Password</p>
+                                        <input type="password" class="form-control" name="password" id="passwordInput"/>
+                                        <input type="hidden" name="class_id" value="<%= items.getId() %>">
+                                        <input type="checkbox" onclick="myFunction(<%=count%>)"> Show Password
+
+
+                                    </div>
+
+                                    <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary" >Enroll</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <%}
+                        }%>
                 </div>
                 <!-- Ket thuc kham pha hoc phan -->
 
@@ -130,6 +165,26 @@
             </div>
 
         </div>
+        <script>
+            var x = document.querySelectorAll("#passwordInput");
+            function myFunction(checkId) {
+                var targetElement = x[checkId - 1];
+                if (targetElement.type === "password") {
+                    targetElement.type = "text";
+                } else {
+                    targetElement.type = "password";
+                }
+            }
+        </script>
+        <script>
+            function showPopup(courseId) {
+                $.post("popup-class", {
+                    id: courseId
+                }, function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+            }
+        </script>
         <%@include file="./Components/Footer.jsp" %>
     </body>
 </html>

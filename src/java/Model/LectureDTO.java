@@ -12,7 +12,7 @@ package Model;
 public class LectureDTO {
 
     private int id;
-    private String name, image, email, password;
+    private String name, thumbnail, email, password;
 
     public LectureDTO() {
     }
@@ -20,7 +20,7 @@ public class LectureDTO {
     public LectureDTO(int id, String name, String image, String email, String password) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.thumbnail = thumbnail;
         this.email = email;
         this.password = password;
     }
@@ -41,12 +41,12 @@ public class LectureDTO {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getEmail() {
@@ -67,7 +67,7 @@ public class LectureDTO {
 
     @Override
     public String toString() {
-        return "LectureDTO{" + "id=" + id + ", name=" + name + ", image=" + image + ", email=" + email + ", password=" + password + '}';
+        return "LectureDTO{" + "id=" + id + ", name=" + name + ", thumbnail=" + thumbnail + ", email=" + email + ", password=" + password + '}';
     }
 
 }

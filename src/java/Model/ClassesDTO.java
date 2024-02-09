@@ -11,19 +11,20 @@ package Model;
  */
 public class ClassesDTO {
 
-    private int id, lecturer_id;
-    private String name, thumbnail, password, description, lecturer_name;
+    private int id;
+    private String name, thumbnail, password, description;
+    private LectureDTO lecturer;
 
     public ClassesDTO() {
     }
-
-    public ClassesDTO(int id, String name, String thumbnail, String password, String description, int lecturer_id) {
+    
+    public ClassesDTO(int id, String name, String thumbnail, String password, String description, LectureDTO lecturer) {
         this.id = id;
-        this.lecturer_id = lecturer_id;
         this.name = name;
         this.thumbnail = thumbnail;
         this.password = password;
         this.description = description;
+        this.lecturer = lecturer;
     }
 
     public int getId() {
@@ -34,13 +35,15 @@ public class ClassesDTO {
         this.id = id;
     }
 
-    public int getLecturer_id() {
-        return lecturer_id;
+    public LectureDTO getLecturer() {
+        return lecturer;
     }
 
-    public void setLecturer_id(int lecturer_id) {
-        this.lecturer_id = lecturer_id;
+    public void setLecturer(LectureDTO lecturer) {
+        this.lecturer = lecturer;
     }
+
+  
 
     public String getName() {
         return name;
@@ -74,12 +77,5 @@ public class ClassesDTO {
         this.description = description;
     }
 
-    public String getLecturer_name() {
-        return lecturer_name;
-    }
 
-    public void setLecturer_name(String lecturer_name) {
-        this.lecturer_name = lecturer_name;
-    }
-    
 }

@@ -92,7 +92,6 @@ public class CreateClass extends HttpServlet {
         int lecturer_id = user.getId();
 
         name = request.getParameter("className");
-        System.out.println("Class name: " + name);
         Part filePart = request.getPart("thumbnail");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString().trim();
         password = request.getParameter("password");
@@ -100,7 +99,7 @@ public class CreateClass extends HttpServlet {
 
         fileName = fileName.replaceAll("\\s", "_");
         imageUrl = "http://localhost:8080/LoginGoogle/files/" + fileName;
-        String uploadPath = "C:\\Users\\User\\Desktop\\Project prj301\\web\\Assets" + File.separator + "img";
+        String uploadPath = "C:\\Users\\User\\Desktop\\Project_prj301\\web\\Assets" + File.separator + "img";
 // Tạo đường dẫn đầy đủ đến file trong thư mục "Assets/img/"
         String filePath = uploadPath + File.separator + fileName;
 
@@ -129,7 +128,7 @@ public class CreateClass extends HttpServlet {
             request.setAttribute("message", "Failed !!!");
         }
 
-        response.sendRedirect("MyCourse.jsp");
+        request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
     }
 
     /**

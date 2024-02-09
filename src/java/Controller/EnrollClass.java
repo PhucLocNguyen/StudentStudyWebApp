@@ -6,23 +6,24 @@
 package Controller;
 
 import Model.ClassesDAO;
-import Model.ClassesDTO;
+import Model.EnrollDAO;
+import Model.LectureDTO;
+import Model.StudentDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "Home", urlPatterns = {"/home"})
-public class Home extends HttpServlet {
+@WebServlet(name = "EnrollClass", urlPatterns = {"/enroll-class"})
+public class EnrollClass extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,17 +39,15 @@ public class Home extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ClassesDAO classDAO = new ClassesDAO();
-            List<ClassesDTO> class_list = classDAO.showClass();
-            for(ClassesDTO items: class_list){
-                if(items.getLecturer()==null){
-                    System.out.println("Giang vien trong");
-                }else{
-                    System.out.println("Giang vien: "+items.getLecturer().toString());
-                }
-            }
-            request.setAttribute("class_list", class_list);
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet EnrollClass</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet EnrollClass at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -78,7 +77,21 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String password;
+        int class_id;
+        password = request.getParameter("password");
+        class_id = Integer.parseInt(request.getParameter("class_id"));
+        HttpSession session = request.getSession();
+        String getRole = (String) session.getAttribute("role");
+        if (getRole.equals("student")) {
+            StudentDTO student = (StudentDTO) session.getAttribute("user");
+            ClassesDAO classesDAO = new ClassesDAO();
+            EnrollDAO enrollDAO = new EnrollDAO();
+            if (classesDAO.checkingClassesPassword(password, class_id)) {
+                enrollDAO.enrollClass(student.getId(), class_id);
+            }
+        }
+
     }
 
     /**

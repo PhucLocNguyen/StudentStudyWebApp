@@ -10,5 +10,8 @@ package utils;
  * @author ACER
  */
 public class FileUtils {
-    
+
+    public void deleteImage() {
+
+    }
 }

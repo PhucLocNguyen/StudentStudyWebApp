@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="Model.LectureDTO"%>
-<%@page import="Model.UserGoogleDTO"%>
+<%@page import="Model.StudentDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,23 +13,23 @@
     </head>
     <body>
         <%
+
             String name = ""; // Khai báo và khởi tạo biến name trước khi sử dụng
+            String image = "";
             String getRole = (String) session.getAttribute("role");
-            int id = 0;
             if (session.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
             } else {
                 if (getRole.equals("lecturer")) {
                     LectureDTO user = (LectureDTO) session.getAttribute("user");
                     name = user.getName();
-                    id = user.getId();
-                    
+                    image = user.getThumbnail();
                 } else {
-                    UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
+                    StudentDTO user = (StudentDTO) session.getAttribute("user");
                     name = user.getName();
-//                    id = user.getId();
+                    image = user.getThumbnail();
                 }
-                
+
             }
 
 //            String name = "";
@@ -40,14 +40,14 @@
 //                response.sendRedirect("login.jsp");
 //                name = "Anonymous";
 //            }
-        %>
+%>
         <div class="container">
             <div class="row mt-2">
                 <div class="col-lg-5">
                     <nav class="navbar navbar-expand-lg bg-white justify-content-center">
                         <div style="background-color: red;"></div>
                         <a class="navbar-brand px-4" href="#">
-                            <img src="https://dummyimage.com/900x400/ced4da/6c757d.jgp" alt="..." width="30" height="24">
+                            <img src=<%= image%> alt="..." width="30" height="24">
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -75,7 +75,7 @@
                 <div class="col-lg-2 py-2">
                     <nav class="navbar " style="display: inline-block;">
                         <div class=" position-relative" style="display: inline-block;">
-                            <img style="width: 40px;" class="rounded-circle " src="./Assets/img/gumbal.jpg" alt="..."
+                            <img style="width: 40px;" class="rounded-circle " src=<%=image%> alt="..."
                                  data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
                                  aria-label="Toggle navigation">
                             <span

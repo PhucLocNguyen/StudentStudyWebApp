@@ -36,99 +36,69 @@
                     
                 <div class="row mt-3 mb-4">
                     <% 
+                        int count = 0;
                         for (ClassesDTO item: listSearching){
+                            count++;
                     %> 
                     <div class="col-lg-4">
                         <div class="card rounded-4">
-                            <img src=<%=item.getThumbnail()%> class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
-                                 <div class="card-body">
+                            <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                            <div class="card-body">
                                 <h5 class="card-title"><%=item.getName()%></h5>
-                                <p class="card-text"><%= item.getDescription() %></p>
+                                <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail() %></p>
+                                <a href="<%="#myModal" + count%>" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal">Show more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="<%="myModal" + count%>" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><%=item.getName()%></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <form accept-charset="UTF-8" action="enroll-class" method="POST">
+
+                                    <div class="modal-body">
+                                        <p class="text-primary mb-1">Giảng viên <%= item.getLecturer().getName() %></p>
+                                        
+                                        <p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>
+                                        <p class="text-secondary mb-1"><%=item.getDescription() %></p>
+                                        <p class="text-primary mb-1">Password</p>
+                                        <input type="password" class="form-control" name="password" id="passwordInput"/>
+                                        <input type="hidden" name="class_id" value="<%= item.getId() %>">
+                                        <input type="checkbox" onclick="myFunction(<%=count%>)"> Show Password
+
+
+                                    </div>
+
+                                    <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary" >Enroll</button>
+                                    </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
                      <% }%>       
-                    <div class="col-lg-4">
-                        <a href="#" class="card rounded-4 text-decoration-none" style="min-height: 13rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">PRJ301</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-3 me-3">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary my-3">10 thanh vien</span>
-                                <div class="my-2">
-                                    <img class="rounded-circle" style="width: 35px;" src="./img/gumbal.jpg" alt="">
-                                    <p class="card-text fs-5 fw-bolder d-inline-block">Ten nguoi tao</p>
-                                    <span class="badge rounded-pill text-bg-secondary ms-2">Giao vien</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <a href="#" class="card rounded-4 text-decoration-none" style="min-height: 13rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">PRJ301</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-3 me-3">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary my-3">10 thanh vien</span>
-                                <div class="my-2">
-                                    <img class="rounded-circle" style="width: 35px;" src="./img/gumbal.jpg" alt="">
-                                    <p class="card-text fs-5 fw-bolder d-inline-block">Ten nguoi tao</p>
-                                    <span class="badge rounded-pill text-bg-secondary ms-2">Giao vien</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Row thu hai -->
-                <div class="row mt-3 mb-4">
-                    <div class="col-lg-4">
-                        <a href="#" class="card rounded-4 text-decoration-none" style="min-height: 13rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">PRJ301</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-3 me-3">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary my-3">10 thanh vien</span>
-                                <div class="my-2">
-                                    <img class="rounded-circle" style="width: 35px;" src="./img/gumbal.jpg" alt="">
-                                    <p class="card-text fs-5 fw-bolder d-inline-block">Ten nguoi tao</p>
-                                    <span class="badge rounded-pill text-bg-secondary ms-2">Giao vien</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <a href="#" class="card rounded-4 text-decoration-none" style="min-height: 13rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">PRJ301</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-3 me-3">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary my-3">10 thanh vien</span>
-                                <div class="my-2">
-                                    <img class="rounded-circle" style="width: 35px;" src="./img/gumbal.jpg" alt="">
-                                    <p class="card-text fs-5 fw-bolder d-inline-block">Ten nguoi tao</p>
-                                    <span class="badge rounded-pill text-bg-secondary ms-2">Giao vien</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <a href="#" class="card rounded-4 text-decoration-none" style="min-height: 13rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">PRJ301</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-3 me-3">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary my-3">10 thanh vien</span>
-                                <div class="my-2">
-                                    <img class="rounded-circle" style="width: 35px;" src="./img/gumbal.jpg" alt="">
-                                    <p class="card-text fs-5 fw-bolder d-inline-block">Ten nguoi tao</p>
-                                    <span class="badge rounded-pill text-bg-secondary ms-2">Giao vien</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                    
                 <!-- Ket thuc row thu 2 -->
             </div>
         <%@include file="./Components/Footer.jsp" %>
+        <script>
+            var x = document.querySelectorAll("#passwordInput");
+            function myFunction(checkId) {
+                var targetElement = x[checkId - 1];
+                if (targetElement.type === "password") {
+                    targetElement.type = "text";
+                } else {
+                    targetElement.type = "password";
+                }
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
