@@ -24,11 +24,13 @@ name nvarchar(255) not null,
 thumbnail varchar(255),
 password varchar(255) not null,
 description ntext,
+created_date datetime default GETDATE(),
 lecturer_id int FOREIGN KEY REFERENCES Lecturers(lecturer_id)
 )
 CREATE TABLE "Enroll"(
 student_id int FOREIGN KEY REFERENCES Students(student_id),
 class_id int FOREIGN KEY REFERENCES Classes(class_id),
+enroll_date datetime default GETDATE(),
 PRIMARY KEY(student_id,class_id)
 )
 
