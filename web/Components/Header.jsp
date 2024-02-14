@@ -57,7 +57,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center fw-bold fs-5">
                                 <li class="nav-item text-nowrap px-4"><a class="nav-link" href="home">Home</a></li>
-                                <li class="nav-item text-nowrap px-4"><a class="nav-link " href="MyCourse.jsp">My Courses</a></li>
+                                <li class="nav-item text-nowrap px-4"><a class="nav-link " href="showdashboard">My Courses</a></li>
                                 <li class="nav-item text-nowrap px-4"><a class="nav-link" href="#">Dashboard</a></li>
                             </ul>
                         </div>
@@ -65,10 +65,11 @@
                 </div>
                 <div class="col-lg-5 py-2">
                     <div style="background-color: black;"></div>
-                    <form class="d-flex" action="">
+
+                    <form class="d-flex" action="searchingclass">
                         <div class="input-group">
                             <input type="text" class="form-control rounded-pill pill mt-2 bg-body-secondary"
-                                   placeholder="Tim kiem">
+                                   placeholder="Tim kiem" name="keyWord" value="<%= request.getParameter("keyWord")!=null?request.getParameter("keyWord"):"" %>">
                         </div>
                     </form>
                 </div>
