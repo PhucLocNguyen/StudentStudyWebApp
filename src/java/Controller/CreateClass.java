@@ -99,6 +99,7 @@ public class CreateClass extends HttpServlet {
 
         fileName = fileName.replaceAll("\\s", "_");
         imageUrl = "http://localhost:8080/LoginGoogle/files/" + fileName;
+
         String uploadPath = "D:\\Download\\GithubInstaller\\LoginFormGoogle\\web\\Assets" + File.separator + "img";
 // Tạo đường dẫn đầy đủ đến file trong thư mục "Assets/img/"
         String filePath = uploadPath + File.separator + fileName;

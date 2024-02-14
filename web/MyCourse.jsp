@@ -1,10 +1,14 @@
 <%-- Document : MyCourse Created on : Jan 21, 2024, 2:59:01 PM Author : ACER
---%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
+--%> <%@page import="java.util.List"%>
+<%@page import="Model.ClassesDTO"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 <!DOCTYPE html>
 
 <html lang="en">
     <head>
+
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +38,7 @@
                             <h5 class="modal-title">Tạo lớp học</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                       
+
                         <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data">
 
                             <div class="modal-body">
@@ -80,21 +84,47 @@
                     </div>
                 </div>
             </div>
-            <%}%>   
+            <div>
+            <%} else {
+               %>
+               <div class="row mt-3 mb-4">
+            <%   
+                List<ClassesDTO> listClass = (List<ClassesDTO>) request.getAttribute("listClass");
+                if (listClass.size() > 0) {
+                    for (ClassesDTO item : listClass) {
+
+
+            %>
+            <div class="col-lg-4">
+                <div class="card rounded-4">
+                    <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><%=item.getName()%></h5>
+                        <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+                    </div>
+                </div>
+            </div>
+            <%
+                        }
+                    }
+                }%> 
+                
             <%@include file="./Components/Footer.jsp" %>
         </div>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         
-        <script>
-            let editor = new FroalaEditor('#froala-editor', {
-                // Set the image upload URL.
-                entities: '',
-                imageUploadURL: 'upload-image',
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-                imageUploadParams: {
-                    id: 'my_editor'
-                }
-            })
+        <script>
+                                        let editor = new FroalaEditor('#froala-editor', {
+                                            // Set the image upload URL.
+                                            entities: '',
+                                            imageUploadURL: 'upload-image',
+
+                                            imageUploadParams: {
+                                                id: 'my_editor'
+                                            }
+                                        })
+
         </script>
     </body>
 </html> 
