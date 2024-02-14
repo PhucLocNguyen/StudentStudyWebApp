@@ -9,6 +9,7 @@ import Model.ClassesDAO;
 import Model.ClassesDTO;
 import Model.EnrollDAO;
 import Model.StudentDTO;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author ACER
@@ -61,12 +63,14 @@ public class Home extends HttpServlet {
             
             
             for(ClassesDTO items: classList){
+
                 if(items.getLecturer()==null){
                     System.out.println("Giang vien trong");
                 }else{
                     System.out.println("Giang vien: "+items.getLecturer().toString());
                 }
             }
+
             request.setAttribute("classListEnrolled", classLlistEnrolled);
             request.setAttribute("class_list", classList);
             request.getRequestDispatcher("Home.jsp").forward(request, response);
