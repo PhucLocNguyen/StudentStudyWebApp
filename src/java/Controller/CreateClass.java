@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import utils.Constants;
+import utils.FileUtils;
 
 /**
  *
@@ -93,35 +95,12 @@ public class CreateClass extends HttpServlet {
 
         name = request.getParameter("className");
         Part filePart = request.getPart("thumbnail");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString().trim();
         password = request.getParameter("password");
         description = request.getParameter("description");
-
-        fileName = fileName.replaceAll("\\s", "_");
-        imageUrl = "http://localhost:8080/LoginGoogle/files/" + fileName;
-        String uploadPath = "C:\\Users\\User\\Desktop\\Project_prj301\\web\\Assets" + File.separator + "img";
-
-// Tạo đường dẫn đầy đủ đến file trong thư mục "Assets/img/"
-        String filePath = uploadPath + File.separator + fileName;
+        FileUtils fileUtils = new FileUtils();
+        imageUrl = fileUtils.insertImage(filePart);
 
         ClassesDAO classDAO = new ClassesDAO();
-        InputStream input = filePart.getInputStream();
-
-        try {
-            // Tạo thư mục nếu nó chưa tồn tại
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            // Chuyển file vào thư mục "Assets/img/"
-            Files.copy(input, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            System.err.println("Error writing file to disk: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            input.close();
-        }
 
         if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
             request.setAttribute("message", "Create Successfully !!!");

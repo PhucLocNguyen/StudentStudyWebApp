@@ -6,6 +6,7 @@
 package Model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,9 +52,11 @@ public class EnrollDAO {
         String sql = "";
         StudentDTO student = null;
         ClassesDTO classes = null;
+        int class_id = -1;
+        Date enroll_date = null;
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT student_id ,class_id FROM Enroll WHERE student_id = ? ";
+            sql = "SELECT class_id, enroll_date FROM Enroll WHERE student_id = ? ";
             preStm = con.prepareStatement(sql);
             preStm.setInt(1, student_id);
             rs = preStm.executeQuery();
@@ -61,14 +64,16 @@ public class EnrollDAO {
             StudentDAO student_DAO = new StudentDAO();
             if (rs != null) {
                 while (rs.next()) {
-                    classes = class_DAO.showClassById(student_id);
+                    class_id = rs.getInt(1);
+                    enroll_date = rs.getDate(2);
+                    classes = class_DAO.showClassById(class_id);
                     student = student_DAO.showStudentById(student_id);
-                    list.add(new EnrollDTO(student, classes));
+                    list.add(new EnrollDTO(student, classes, enroll_date));
                 }
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("SQL ERROR CLasses: " + e.getMessage());
+            System.out.println("SQL ERROR enrolled list CLasses: " + e.getMessage());
             e.getStackTrace();
         }
         return list;
@@ -92,13 +97,66 @@ public class EnrollDAO {
                     arrayIdClass.add(idClass);
                 }
             }
+            con.close();
         } catch (SQLException e) {
             System.out.println("SQL ERROR CLasses: " + e.getMessage());
             e.getStackTrace();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Array Of Id Class Null" + e.getMessage());
             e.getStackTrace();
         }
         return arrayIdClass;
+    }
+
+    public boolean isEnrolledClass(int student_id, int class_id) {
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        boolean output = false;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT enroll_date FROM Enroll WHERE student_id = ? AND class_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, student_id);
+            preStm.setInt(2, class_id);
+            rs = preStm.executeQuery();
+            if (rs != null) {
+                if (rs.next()) {
+                    output = true;
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR in Checking Enrolled Class: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return output;
+    }
+
+    public Date getClassEnrollDate(int student_id, int class_id) {
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        Date output = null;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT enroll_date FROM Enroll WHERE student_id = ? AND class_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, student_id);
+            preStm.setInt(2, class_id);
+            rs = preStm.executeQuery();
+            if (rs != null) {
+                if (rs.next()) {
+                    output = rs.getDate(1);
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR in Checking Enrolled Class: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return output;
     }
 }

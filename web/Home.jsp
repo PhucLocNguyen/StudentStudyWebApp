@@ -4,6 +4,7 @@
     Author     : ACER
 --%>
 
+<%@page import="Model.EnrollDAO"%>
 <%@page import="Model.ClassesDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -66,12 +67,15 @@
                     <% List<ClassesDTO> list = (List<ClassesDTO>) request.getAttribute("class_list");
                         if (list != null) {
                             int count = 0;
+                            EnrollDAO enrollDAO = new EnrollDAO();
                             for (ClassesDTO items : list) {
-                                count++;
+                                if (getRole.equals("student") && !enrollDAO.isEnrolledClass(id, items.getId())) {
+                                    count++;
+
                     %>
                     <div class="col-lg-4">
                         <div class="card rounded-4">
-                            <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                            <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
                             <div class="card-body">
                                 <h5 class="card-title"><%=items.getName()%></h5>
                                 <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
@@ -96,7 +100,7 @@
                                         <p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>
                                         <p class="text-secondary mb-1"><%=items.getDescription()%></p>
                                         <p class="text-primary mb-1">Password</p>
-                                        <input type="password" class="form-control" name="password" id="passwordInput"/>
+                                        <input type="password" class="form-control passwordInput" name="password" />
                                         <input type="hidden" name="class_id" value="<%= items.getId()%>">
                                         <input type="checkbox" onclick="myFunction(<%=count%>)"> Show Password
 
@@ -113,7 +117,20 @@
                             </div>
                         </div>
                     </div>
+                    <%} else {%>
+                    <div class="col-lg-4">
+                        <div class="card rounded-4">
+                            <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title"><%=items.getName()%></h5>
+                                <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
+                                <a href="<%="#showclass=" + items.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <%}
+                            }
                         }%>
                 </div>
                 <!-- Ket thuc kham pha hoc phan -->
@@ -131,72 +148,72 @@
                     %>
                     <div class="col-lg-3">
                         <div class="card">
-                            <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                            <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
                             <div class="card-body">
-                                <h5 class="card-title"><%= item.getName() %></h5>
-                                <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail() %></p>
+                                <h5 class="card-title"><%= item.getName()%></h5>
+                                <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
                             </div>
                         </div>
                     </div>
-                    <% 
+                    <%
                             }
                         }
                     %>
-<!--                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">Fpt, VietNam</p>
-                                <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">Fpt, VietNam</p>
-                                <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Ten lop hoc</h5>
-                                <p class="card-text">Fpt, VietNam</p>
-                                <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                            </div>
-                        </div>
-                    </div>
+                    <!--                    <div class="col-lg-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Ten lop hoc</h5>
+                                                    <p class="card-text">Fpt, VietNam</p>
+                                                    <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
+                                                    <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Ten lop hoc</h5>
+                                                    <p class="card-text">Fpt, VietNam</p>
+                                                    <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
+                                                    <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Ten lop hoc</h5>
+                                                    <p class="card-text">Fpt, VietNam</p>
+                                                    <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
+                                                    <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                </div>-->
+
                 </div>
-
-            </div>-->
-
-        </div>
-        <script>
-            var x = document.querySelectorAll("#passwordInput");
-            function myFunction(checkId) {
-                var targetElement = x[checkId - 1];
-                if (targetElement.type === "password") {
-                    targetElement.type = "text";
-                } else {
-                    targetElement.type = "password";
-                }
-            }
-        </script>
-        <script>
-            function showPopup(courseId) {
-                $.post("popup-class", {
-                    id: courseId
-                }, function (data, status) {
-                    alert("Data: " + data + "\nStatus: " + status);
-                });
-            }
-        </script>
-        <%@include file="./Components/Footer.jsp" %>
-    </body>
-</html>
+                <script>
+                    var x = document.querySelectorAll(".passwordInput");
+                    function myFunction(checkId) {
+                        var targetElement = x[checkId - 1];
+                        if (targetElement.type === "password") {
+                            targetElement.type = "text";
+                        } else {
+                            targetElement.type = "password";
+                        }
+                    }
+                </script>
+                <script>
+                    function showPopup(courseId) {
+                        $.post("popup-class", {
+                            id: courseId
+                        }, function (data, status) {
+                            alert("Data: " + data + "\nStatus: " + status);
+                        });
+                    }
+                </script>
+                <%@include file="./Components/Footer.jsp" %>
+                </body>
+                </html>

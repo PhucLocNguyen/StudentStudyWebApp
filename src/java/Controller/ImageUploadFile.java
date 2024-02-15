@@ -1,3 +1,4 @@
+package Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.google.gson.Gson;
+import utils.Constants;
 
 /**
  * Servlet implementation class UploadImage
@@ -48,7 +50,7 @@ public class ImageUploadFile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // The route on which the file is saved.
-        File uploads = new File("C:\\Users\\User\\Desktop\\Project_prj301\\web\\Assets\\img");
+        File uploads = new File(Constants.IMAGE_FOLDER);
         String multipartContentType = "multipart/form-data";
         String fieldname = "file";
         Part filePart = request.getPart(fieldname);
@@ -72,7 +74,7 @@ public class ImageUploadFile extends HttpServlet {
             filePart = request.getPart(fieldname);
             String type = filePart.getContentType();
             type = type.substring(type.lastIndexOf("/") + 1);
-
+            
             // Generate random name.
             String extension = type;
             extension = (extension != null && extension != "") ? "." + extension : extension;
@@ -83,7 +85,7 @@ public class ImageUploadFile extends HttpServlet {
 
             // Create link.
             String path = request.getHeader("referer");
-            linkName =  "http://localhost:8080/LoginGoogle/files/" + name;
+            linkName =  Constants.IMAGE_PERMALINK + name;
 
             // Validate image.
             String mimeType = filePart.getContentType();

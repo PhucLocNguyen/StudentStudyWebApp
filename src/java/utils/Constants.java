@@ -5,6 +5,9 @@
  */
 package utils;
 
+import java.io.File;
+import javax.servlet.ServletContext;
+
 /**
  *
  * @author ACER
@@ -22,4 +25,8 @@ public class Constants {
     public static String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
 
     public static String GOOGLE_GRANT_TYPE = "authorization_code";
+
+    public static String IMAGE_FOLDER = "D:\\Download\\GithubInstaller\\TestingFolder\\web\\Assets\\img";
+
+    public static String IMAGE_PERMALINK = "http://localhost:8080/LoginGoogle/files/";
 }

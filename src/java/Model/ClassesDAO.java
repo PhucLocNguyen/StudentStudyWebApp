@@ -19,7 +19,7 @@ import Model.ClassesDTO;
  * @author ACER
  */
 public class ClassesDAO {
-
+    
     public boolean addClass(String name, String image, String password, String description, int lecturer_id) {
         Connection con = null;
         PreparedStatement preStm = null;
@@ -41,11 +41,11 @@ public class ClassesDAO {
             System.out.println("SQL ERROR Insert CLasses: " + e.getMessage());
             e.getStackTrace();
         }
-
+        
         return status;
-
+        
     }
-
+    
     public boolean checkingClassesPassword(String password, int class_id) {
         boolean status = false;
         PreparedStatement preStm = null;
@@ -72,7 +72,7 @@ public class ClassesDAO {
         }
         return status;
     }
-
+    
     public ClassesDTO showClassById(int class_id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -100,7 +100,7 @@ public class ClassesDAO {
         }
         return classes;
     }
-
+    
     public List<ClassesDTO> showClass() {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -128,6 +128,34 @@ public class ClassesDAO {
         return list;
     }
     
+    public List<ClassesDTO> showClassOwnedByLectureID(int lecutre_id) {
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        LectureDTO lecture = null;
+        List<ClassesDTO> list = new ArrayList<>();
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT class_id, name, thumbnail, password, description, lecturer_id FROM Classes WHERE lecturer_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, lecutre_id);
+            rs = preStm.executeQuery();
+            LectureDAO lecturer_DAO = new LectureDAO();
+            if (rs != null) {
+                while (rs.next()) {
+                    lecture = lecturer_DAO.searchLectureById(rs.getInt(6));
+                    list.add(new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), lecture));
+                }
+            }
+            con.close();
+        } catch (SQLException e) {  
+            System.err.println("SQL ERROR show CLasses owned by lecture ID: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return list;
+    }
+    
     public List<ClassesDTO> showClassWithKeyWord(String keyWord) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -139,7 +167,7 @@ public class ClassesDAO {
             con = DBUtils.getConnection();
             sql = "SELECT c.class_id,c.name,c.thumbnail,c.password,c.description,c.lecturer_id FROM Classes c JOIN Lecturers l ON c.lecturer_id = l.lecturer_id WHERE c.name like ? and c.class_id not in (SELECT class_id FROM Enroll)";
             preStm = con.prepareStatement(sql);
-            preStm.setString(1, "%"+keyWord+"%");
+            preStm.setString(1, "%" + keyWord + "%");
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
             if (rs != null) {

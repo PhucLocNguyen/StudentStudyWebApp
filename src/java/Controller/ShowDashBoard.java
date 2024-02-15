@@ -55,8 +55,9 @@ public class ShowDashBoard extends HttpServlet {
                 }
             }
         } else {
-            LectureDTO lecture = (LectureDTO)session.getAttribute("user");
+            LectureDTO lecture = (LectureDTO) session.getAttribute("user");
         }
+
         request.setAttribute("listClass", listClass);
         request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
     }

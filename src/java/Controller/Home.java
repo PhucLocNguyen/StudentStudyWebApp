@@ -9,16 +9,19 @@ import Model.ClassesDAO;
 import Model.ClassesDTO;
 import Model.EnrollDAO;
 import Model.StudentDTO;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author ACER
@@ -43,33 +46,27 @@ public class Home extends HttpServlet {
             ClassesDAO classDAO = new ClassesDAO();
             List<ClassesDTO> classList = classDAO.showClass();
             List<ClassesDTO> classLlistEnrolled = new ArrayList<>();
-            
+
             EnrollDAO enrollDAO = new EnrollDAO();
             List<Integer> arrayIdClass = new ArrayList<>();
             HttpSession session = request.getSession();
             String getRole = (String) session.getAttribute("role");
-            if(getRole.equals("student")){
+            if (getRole.equals("student")) {
                 StudentDTO student = (StudentDTO) session.getAttribute("user");
                 arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-                if(arrayIdClass != null){
-                for (Integer arrayIdClas : arrayIdClass) {
-                    ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                    classLlistEnrolled.add(classEnrolled);
-                }
-                }
-            }
-            
-            
-            for(ClassesDTO items: classList){
-                if(items.getLecturer()==null){
-                    System.out.println("Giang vien trong");
-                }else{
-                    System.out.println("Giang vien: "+items.getLecturer().toString());
+                if (arrayIdClass != null) {
+
+                    for (Integer arrayIdClas : arrayIdClass) {
+                        ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
+                        classLlistEnrolled.add(classEnrolled);
+                    }
                 }
             }
+
             request.setAttribute("classListEnrolled", classLlistEnrolled);
             request.setAttribute("class_list", classList);
             request.getRequestDispatcher("Home.jsp").forward(request, response);
+
         }
     }
 

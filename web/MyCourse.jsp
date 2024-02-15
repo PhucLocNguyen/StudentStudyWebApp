@@ -1,5 +1,7 @@
 <%-- Document : MyCourse Created on : Jan 21, 2024, 2:59:01 PM Author : ACER
---%> <%@page import="java.util.List"%>
+--%> <%@page import="java.util.ArrayList"%>
+<%@page import="Model.ClassesDAO"%>
+<%@page import="java.util.List"%>
 <%@page import="Model.ClassesDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -22,11 +24,38 @@
     </head>
     <%@include file="./Components/Header.jsp" %>
     <body>
-
+        <%! ClassesDAO classDAO = new ClassesDAO();%>
         <%  if (getRole != null && getRole.equals("lecturer")) {%>
-        <div class="">
+        <div class="container">
             <!-- Button HTML (to Trigger Modal) -->
-            <a href="#myModal" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal">Tạo lớp học</a>
+            <div class="row align-items-center">
+                <div class="col-9">
+                    <h4 class="mb-0">Lớp học đang quản lý</h4>
+                </div>
+                <div class="col-3"><a href="#myModal" role="button" class="btn btn-primary text-center" data-bs-toggle="modal">Tạo lớp học</a></div>
+
+            </div>
+            <div class="row mt-3 mb-4">
+                <%
+                    List<ClassesDTO> classOwned = classDAO.showClassOwnedByLectureID(id);
+                    for (ClassesDTO item : classOwned) {
+
+                %>
+
+                <div class="col-lg-4">
+                    <div class="card rounded-4">
+                        <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><%=item.getName()%></h5>
+                            <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+                            <a href="<%="#showclass=" + item.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
+                        </div>
+                    </div>
+                </div>
+                <%                }
+                %>
+            </div>
+
 
             <!-- Modal HTML -->
             <div id="myModal" class="modal fade" tabindex="-1">
@@ -81,11 +110,11 @@
                     </div>
                 </div>
             </div>
-            <div>
-            <%} else {
-               %>
-               <div class="row mt-3 mb-4">
-            <%   
+        </div>
+        <%} else {
+        %>
+        <div class="row mt-3 mb-4">
+            <%
                 List<ClassesDTO> listClass = (List<ClassesDTO>) request.getAttribute("listClass");
                 if (listClass.size() > 0) {
                     for (ClassesDTO item : listClass) {
@@ -105,10 +134,10 @@
                         }
                     }
                 }%> 
-                
+
             <%@include file="./Components/Footer.jsp" %>
         </div>
-        
+
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
         <script>

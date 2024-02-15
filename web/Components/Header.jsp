@@ -16,18 +16,22 @@
 
             String name = ""; // Khai báo và khởi tạo biến name trước khi sử dụng
             String image = "";
-            String getRole = (String) session.getAttribute("role");
+            String getRole = "";
+            int id = 0;
             if (session.getAttribute("user") == null) {
                 response.sendRedirect("login.jsp");
             } else {
+                getRole = (String) session.getAttribute("role");
                 if (getRole.equals("lecturer")) {
                     LectureDTO user = (LectureDTO) session.getAttribute("user");
                     name = user.getName();
                     image = user.getThumbnail();
+                    id = user.getId();
                 } else {
                     StudentDTO user = (StudentDTO) session.getAttribute("user");
                     name = user.getName();
                     image = user.getThumbnail();
+                    id = user.getId();
                 }
 
             }
@@ -40,7 +44,7 @@
 //                response.sendRedirect("login.jsp");
 //                name = "Anonymous";
 //            }
-%>
+        %>
         <div class="container">
             <div class="row mt-2">
                 <div class="col-lg-5">
@@ -69,7 +73,7 @@
                     <form class="d-flex" action="searchingclass">
                         <div class="input-group">
                             <input type="text" class="form-control rounded-pill pill mt-2 bg-body-secondary"
-                                   placeholder="Tim kiem" name="keyWord" value="<%= request.getParameter("keyWord")!=null?request.getParameter("keyWord"):"" %>">
+                                   placeholder="Tim kiem" name="keyWord" value="<%= request.getParameter("keyWord") != null ? request.getParameter("keyWord") : ""%>">
                         </div>
                     </form>
                 </div>
