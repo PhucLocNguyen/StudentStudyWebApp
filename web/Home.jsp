@@ -153,16 +153,19 @@
                         List<ClassesDTO> listClassEnrolled = (List<ClassesDTO>) request.getAttribute("classListEnrolled");
                         if (listClassEnrolled.size() > 0) {
                             for (ClassesDTO item : listClassEnrolled) {
-                                
+
                     %>
                     <div class="col-lg-3">
-                        <div class="card">
-                            <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= item.getName()%></h5>
-                                <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+                        <a href="<%="insideClass?class_id=" + item.getId()%>" style="text-decoration: none">
+                            <div class="card">
+                                <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= item.getName()%></h5>
+                                    <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+                                </div>
+
                             </div>
-                        </div>
+                        </a> 
                     </div>
                     <%
                             }

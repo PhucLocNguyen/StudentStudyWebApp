@@ -6,6 +6,7 @@
 package Controller;
 
 import Model.ClassesDAO;
+import Model.ClassesDTO;
 import Model.EnrollDAO;
 import Model.LectureDTO;
 import Model.StudentDTO;
@@ -89,9 +90,12 @@ public class EnrollClass extends HttpServlet {
             EnrollDAO enrollDAO = new EnrollDAO();
             if (classesDAO.checkingClassesPassword(password, class_id)) {
                 enrollDAO.enrollClass(student.getId(), class_id);
+                ClassesDTO classesDTO = classesDAO.showClassById(class_id);
+                System.out.println(classesDTO.getName());
+                request.setAttribute("class", classesDTO);
+                request.getRequestDispatcher("insideClass.jsp").forward(request, response);
             }
         }
-
     }
 
     /**
