@@ -62,6 +62,7 @@ public class Home extends HttpServlet {
                     }
                 }
             }
+
             request.setAttribute("classListEnrolled", classLlistEnrolled);
             request.setAttribute("class_list", classList);
             request.getRequestDispatcher("Home.jsp").forward(request, response);

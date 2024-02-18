@@ -163,6 +163,7 @@
                                     <h5 class="card-title"><%= item.getName()%></h5>
                                     <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
                                 </div>
+
                             </div>
                         </a> 
                     </div>
