@@ -20,6 +20,8 @@ import javax.servlet.http.Part;
  */
 public class FileUtils {
 
+    private String uploadPath = Constants.IMAGE_FOLDER;
+
     public void deleteImage() {
 
     }
@@ -32,7 +34,6 @@ public class FileUtils {
     }
 
     public String insertImage(Part filePart) throws IOException {
-        String uploadPath = Constants.IMAGE_FOLDER;
         String filePath = "";
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString().trim();
         fileName = fileName.replaceAll("\\s", "_");
@@ -57,5 +58,24 @@ public class FileUtils {
             input.close();
         }
         return filePath;
+    }
+
+    public boolean deleteImage(String fileName) {
+        boolean output = false;
+        try {
+            // Tạo thư mục nếu nó chưa tồn tại
+            File myImg = new File(uploadPath, fileName);
+            if (myImg.exists()) {
+                myImg.delete();
+                System.out.println("Delete successful file: " + myImg.getName());
+                output = true;
+            } else {
+                System.err.println("file does not exist to delete!!!");
+            }
+        } catch (Exception e) {
+            System.err.println("Error Deleting image file :" + e.getMessage());
+            e.printStackTrace();
+        }
+        return output;
     }
 }

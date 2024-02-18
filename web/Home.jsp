@@ -4,8 +4,10 @@
     Author     : ACER
 --%>
 
+<%@page import="Model.LectureDAO"%>
 <%@page import="Model.EnrollDAO"%>
 <%@page import="Model.ClassesDTO"%>
+<%@page import="Model.ClassesDAO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -124,7 +126,15 @@
                             <div class="card-body">
                                 <h5 class="card-title"><%=items.getName()%></h5>
                                 <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
-                                <a href="<%="#showclass=" + items.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
+                                <%
+                                    ClassesDAO classesDAO = new ClassesDAO();
+                                    if ((getRole.equals("lecturer") && classesDAO.isLectureInClass(id, items.getId())) || getRole.equals("student")) {
+                                %>
+                                <a href="<%="insideClass?class_id=" + items.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
+                                <%
+                                    }
+                                %>
+
                             </div>
                         </div>
                     </div>
@@ -143,8 +153,7 @@
                         List<ClassesDTO> listClassEnrolled = (List<ClassesDTO>) request.getAttribute("classListEnrolled");
                         if (listClassEnrolled.size() > 0) {
                             for (ClassesDTO item : listClassEnrolled) {
-
-
+                                
                     %>
                     <div class="col-lg-3">
                         <div class="card">
