@@ -8,6 +8,10 @@
         <servlet-name>ShowDashBoard</servlet-name>
         <servlet-class>Controller.ShowDashBoard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsideClass</servlet-name>
+        <servlet-class>Controller.InsideClass</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SearchingClass</servlet-name>
         <url-pattern>/searchingclass</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ShowDashBoard</servlet-name>
         <url-pattern>/showdashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsideClass</servlet-name>
+        <url-pattern>/insideClass</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

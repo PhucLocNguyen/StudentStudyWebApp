@@ -25,8 +25,9 @@
     <%@include file="./Components/Header.jsp" %>
     <body>
         <%! ClassesDAO classDAO = new ClassesDAO();%>
-        <%  if (getRole != null && getRole.equals("lecturer")) {%>
         <div class="container">
+
+            <%  if (getRole != null && getRole.equals("lecturer")) {%>
             <!-- Button HTML (to Trigger Modal) -->
             <div class="row align-items-center">
                 <div class="col-9">
@@ -48,7 +49,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><%=item.getName()%></h5>
                             <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
-                            <a href="<%="#showclass=" + item.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
+                            <a href="<%="insideClass?class_id=" + item.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
                         </div>
                     </div>
                 </div>
@@ -110,37 +111,37 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <%} else {
-        %>
-        <div class="row mt-3 mb-4">
-            <%
-                List<ClassesDTO> listClass = (List<ClassesDTO>) request.getAttribute("listClass");
-                if (listClass.size() > 0) {
-                    for (ClassesDTO item : listClass) {
-
-
+            <%} else {
             %>
-            <div class="col-lg-4">
-                <div class="card rounded-4">
-                    <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
-                    <div class="card-body">
-                        <h5 class="card-title"><%=item.getName()%></h5>
-                        <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+            <div class="row mt-3 mb-4">
+                <%
+                    List<ClassesDTO> listClass = (List<ClassesDTO>) request.getAttribute("listClass");
+                    if (listClass.size() > 0) {
+                        for (ClassesDTO item : listClass) {
+
+
+                %>
+                <div class="col-lg-4">
+                    <div class="card rounded-4">
+                        <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><%=item.getName()%></h5>
+                            <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <%
+                <%
+                            }
                         }
-                    }
-                }%> 
-
-            <%@include file="./Components/Footer.jsp" %>
+                    }%> 
+            </div>
         </div>
+        <%@include file="./Components/Footer.jsp" %>
+    </div>
 
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-        <script>
+    <script>
                                         let editor = new FroalaEditor('#froala-editor', {
                                             // Set the image upload URL.
                                             entities: '',
@@ -150,6 +151,6 @@
                                                 id: 'my_editor'
                                             }
                                         })
-        </script>
-    </body>
+    </script>
+</body>
 </html> 

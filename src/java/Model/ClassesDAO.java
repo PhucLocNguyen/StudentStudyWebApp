@@ -19,7 +19,7 @@ import Model.ClassesDTO;
  * @author ACER
  */
 public class ClassesDAO {
-    
+
     public boolean addClass(String name, String image, String password, String description, int lecturer_id) {
         Connection con = null;
         PreparedStatement preStm = null;
@@ -41,11 +41,11 @@ public class ClassesDAO {
             System.out.println("SQL ERROR Insert CLasses: " + e.getMessage());
             e.getStackTrace();
         }
-        
+
         return status;
-        
+
     }
-    
+
     public boolean checkingClassesPassword(String password, int class_id) {
         boolean status = false;
         PreparedStatement preStm = null;
@@ -72,7 +72,7 @@ public class ClassesDAO {
         }
         return status;
     }
-    
+
     public ClassesDTO showClassById(int class_id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -100,7 +100,7 @@ public class ClassesDAO {
         }
         return classes;
     }
-    
+
     public List<ClassesDTO> showClass() {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -127,7 +127,7 @@ public class ClassesDAO {
         }
         return list;
     }
-    
+
     public List<ClassesDTO> showClassOwnedByLectureID(int lecutre_id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -149,13 +149,13 @@ public class ClassesDAO {
                 }
             }
             con.close();
-        } catch (SQLException e) {  
+        } catch (SQLException e) {
             System.err.println("SQL ERROR show CLasses owned by lecture ID: " + e.getMessage());
             e.getStackTrace();
         }
         return list;
     }
-    
+
     public List<ClassesDTO> showClassWithKeyWord(String keyWord) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -182,5 +182,27 @@ public class ClassesDAO {
             e.getStackTrace();
         }
         return list;
+    }
+
+    public boolean isLectureInClass(int lecturer_id, int class_id) {
+        boolean output = false;
+        Connection con = null;
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Classes WHERE lecturer_id = ? AND class_id = ? ";
+        try {
+            con = DBUtils.getConnection();
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, lecturer_id);
+            preStm.setInt(2, class_id);
+            rs = preStm.executeQuery();
+            if (rs.next()) {
+                output = true;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL isLectureInClass Error: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return output;
     }
 }

@@ -34,4 +34,9 @@
 .carousel-inner .carousel-item-left{ 
   transform: translateX(0);
 }
-
+.whiteText#headerContainer{
+    z-index: 999;
+}
+.whiteText#headerContainer #navbarSupportedContent .nav-link{
+    color:#fff;
+}

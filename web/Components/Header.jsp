@@ -44,11 +44,11 @@
 //                response.sendRedirect("login.jsp");
 //                name = "Anonymous";
 //            }
-        %>
-        <div class="container">
+%>
+<div class="container position-relative" id="headerContainer">
             <div class="row mt-2">
                 <div class="col-lg-5">
-                    <nav class="navbar navbar-expand-lg bg-white justify-content-center">
+                    <nav class="navbar navbar-expand-lg justify-content-center">
                         <div style="background-color: red;"></div>
                         <a class="navbar-brand px-4" href="#">
                             <img src=<%= image%> alt="..." width="30" height="24">
