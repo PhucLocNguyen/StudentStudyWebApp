@@ -20,6 +20,7 @@
         <title>Inside Class Page</title>
     </head>
     <body>
+        <div class="container" id="headerContainer">
         <%@include file="./Components/Header.jsp" %>
         <%            ClassesDTO getClass = (ClassesDTO) request.getAttribute("class");
             if (getClass != null) {
@@ -79,12 +80,9 @@
             </div>
 
         </div>
-        <%} else {
-        %>
-         <%@include file="./errorPage404.jsp" %>
-        <%
-            }%>
+                            <%} %>
         <%@include file="./Components/Footer.jsp" %>
+        </div>
 
     </body>
 

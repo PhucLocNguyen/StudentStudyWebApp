@@ -75,6 +75,7 @@ public class EnrollClass extends HttpServlet {
         if (class_detail != null) {
             class_detail.setPassword("Đã bảo mật !!!");
             class_detail.getLecturer().setPassword("Đã bảo mật !!!");
+
             String classDetailJsonString = gson.toJson(class_detail);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -113,7 +114,6 @@ public class EnrollClass extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 String redirectUrl = gson.toJson("insideClass?class_id=" + class_id);
                 response.getWriter().print(redirectUrl);
-                System.out.println("checking true");
             } else {
                 response.setStatus(400);
             }
