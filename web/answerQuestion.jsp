@@ -45,7 +45,7 @@
                 <div class="card rounded-4 mt-4">
                     <div class="card-body">
                         <!-- Comment form-->
-                        <% if (!(boolean) request.getAttribute("check")) {%>
+                        <% if ((boolean) request.getAttribute("check")) {%>
                         <form class="mb-2" action="answerquestion">
                             <input type="hidden" name="action" value="${requestScope.action}">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">

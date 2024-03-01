@@ -87,7 +87,7 @@ public class ExerciseDAO {
                     int lectureID = rs.getInt("lecturer_id");
                     classes = classDao.showClassById(classID);
                     lecturer = lectureDao.searchLectureById(lectureID);
-                    exc = new ExerciseDTO(lectureID, title, media, description, status, created_date, classes, lecturer);
+                    exc = new ExerciseDTO(id, title, media, description, status, created_date, classes, lecturer);
                     list.add(exc);
                 }
             }

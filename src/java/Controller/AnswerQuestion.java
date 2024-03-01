@@ -44,6 +44,7 @@ public class AnswerQuestion extends HttpServlet {
         ExerciseDAO exerciseDAO = new ExerciseDAO();
         StudentDAO studentDAO = new StudentDAO();
         DoDAO doDAO = new DoDAO();
+
         List<DoDTO> listDo = new ArrayList<>();
 
         int exercise_id = 0;
@@ -62,8 +63,9 @@ public class AnswerQuestion extends HttpServlet {
             e.printStackTrace();
         }
         ExerciseDTO exercise = exerciseDAO.loadExcercise(exercise_id);
+
         request.setAttribute("exercise", exercise);
-        
+
         if (action.equals("")) {
             int class_id = 0;
             try {
@@ -75,7 +77,13 @@ public class AnswerQuestion extends HttpServlet {
             if (class_id != 0 && exercise_id != 0) {
                 listDo = doDAO.list(exercise_id);
                 request.setAttribute("listDo", listDo);
-                request.setAttribute("check", doDAO.checkAnswer(student_id));
+                DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
+                if (Do.getStudent() == null) {
+                    request.setAttribute("check", true);
+                } else {
+                    request.setAttribute("check", false);
+                }
+
                 request.setAttribute("action", "answer");
                 request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
             }
@@ -84,12 +92,16 @@ public class AnswerQuestion extends HttpServlet {
             String answer = request.getParameter("answer");
             doDAO.addAnswer(exercise_id, student_id, answer);
             listDo = doDAO.list(exercise_id);
+            DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
+            if (Do.getStudent() == null) {
+                request.setAttribute("check", true);
+            } else {
+                request.setAttribute("check", false);
+            }
             request.setAttribute("listDo", listDo);
-            request.setAttribute("check", doDAO.checkAnswer(student_id));
             request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
         } else if (action.equals("edit")) {
             DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
-            System.out.println("Solution: "+Do.getSolution());
             request.setAttribute("Do", Do);
             request.getRequestDispatcher("editAnswer.jsp").forward(request, response);
         }

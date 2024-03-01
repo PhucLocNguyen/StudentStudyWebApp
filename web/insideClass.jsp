@@ -90,16 +90,15 @@
                                 List<ExerciseDTO> list = (List<ExerciseDTO>)request.getAttribute("listExcercise");
                             
                             for (ExerciseDTO exc : list) { %>
-                                <a href="answerquestion?class_id=<%= getClass.getId() %>&exercise_id=<%= exc.getExcerciseID() %>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                                <a href="answerquestion?class_id=<%= getClass.getId() %>&exercise_id=<%= exc.getExcerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                     <div class="card-body">
                                         <h5 class="card-title fs-3"> <%= exc.getTitle() %> </h5>
                                         <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%=exc.getCreatedDate() %></span>
                                         <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
                                     </div>
                                 </a>
-                            <%   }  %>
-                        
-                        <% } %>
+                            <%   }  
+                         } %>
                         
                     </div>
                     <!-- Ket thuc cua cau hoi trong lop hoc -->

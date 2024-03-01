@@ -50,8 +50,9 @@ public class DoDAO {
         ExerciseDAO exerciseDAO = new ExerciseDAO();
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT * FROM Do ORDER BY created_date DESC";
+            sql = "SELECT * FROM Do WHERE excercise_id = ? ORDER BY created_date DESC";
             preStm = con.prepareCall(sql);
+            preStm.setInt(1, exerciseID);
             ResultSet rs = preStm.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
