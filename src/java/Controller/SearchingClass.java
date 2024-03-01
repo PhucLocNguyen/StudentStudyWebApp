@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,10 +35,11 @@ public class SearchingClass extends HttpServlet {
             throws ServletException, IOException {
         ClassesDAO classdao = new ClassesDAO();
         String keyWord = request.getParameter("keyWord");
-        List<ClassesDTO> listSearching = classdao.showClassWithKeyWord(keyWord);
+        HttpSession session = request.getSession();
+        List<ClassesDTO> listSearching = classdao.showClassWithKeyWord(keyWord,(String)session.getAttribute("role"));
         request.setAttribute("keyWord", keyWord);
         request.setAttribute("listSearching", listSearching);
-        request.getRequestDispatcher("Searching.jsp").forward(request, response);
+        request.getRequestDispatcher("searching.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
