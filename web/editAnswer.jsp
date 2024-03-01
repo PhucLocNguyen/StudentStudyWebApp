@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 card mt-2 rounded-2 d-none" id="arrowTransform">
-                    <form action="">
+                    <form action="answerquestion" method="POST">
                         <div class="row d-flex align-content-center justify-content-center">
                         
                             <div class="col-lg-9">
@@ -75,9 +75,11 @@
                     
                         <div class="card-body row mt-5 pt-0">
                             <div class="col-md-12 px-0">
-                                <textarea class="form-control" name="answer" id="" cols="30" rows="10">${requestScope.Do.solution}</textarea>
+                                <textarea class="form-control" name="updateSolution" id="" cols="30" rows="10">${requestScope.Do.solution}</textarea>
                             </div>
                         </div>     
+                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
                     </form>
                     
                 </div>
@@ -95,7 +97,7 @@
                 <h5 class="modal-title">Xác nhận</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data">
+            <form accept-charset="UTF-8" action="answerquestion" method="POST" >
 
                 <div class="modal-body">
                     <div class="mb-3">
@@ -108,6 +110,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-danger" >Xoá</button>
                 </div>
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}"> 
             </form>
 
         </div>

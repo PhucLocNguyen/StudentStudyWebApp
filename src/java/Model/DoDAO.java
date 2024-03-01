@@ -74,30 +74,6 @@ public class DoDAO {
         return listDo;
     }
 
-    public boolean checkAnswer(int studentId) {
-        Connection con = null;
-        PreparedStatement preStm = null;
-        String sql = "";
-        boolean check = false;
-        try {
-            con = DBUtils.getConnection();
-            sql = "SELECT student_id FROM Do WHERE student_id = ?";
-            preStm = con.prepareCall(sql);
-            preStm.setInt(1, studentId);
-            ResultSet rs = preStm.executeQuery();
-            if (rs.next()) {
-                check = true;
-            } else {
-                check = false;
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("checkAnswer SQL wrong: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return check;
-    }
-
     public DoDTO loadAnswer(int studentId, int exerciseId) {
         Connection con = null;
         PreparedStatement preStm = null;
@@ -108,12 +84,12 @@ public class DoDAO {
         try {
             con = DBUtils.getConnection();
             sql = "SELECT * FROM Do WHERE student_id = ? AND excercise_id = ? ";
-            preStm=con.prepareCall(sql);
+            preStm = con.prepareCall(sql);
             preStm.setInt(1, studentId);
             preStm.setInt(2, exerciseId);
             ResultSet rs = preStm.executeQuery();
-            if(rs!=null){
-                while (rs.next()) {                    
+            if (rs != null) {
+                while (rs.next()) {
                     Do.setExercise(exerciseDAO.loadExcercise(rs.getInt("excercise_id")));
                     Do.setStudent(studentDAO.showStudentById(rs.getInt("student_id")));
                     Do.setSolution(rs.getString("solution"));
@@ -128,5 +104,46 @@ public class DoDAO {
             e.printStackTrace();
         }
         return Do;
+    }
+
+    public boolean update(int exerciseId, int studentId, String updateSolution) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        try {
+            con = DBUtils.getConnection();
+            sql = "UPDATE Do SET solution = ? WHERE excercise_id = ? and student_id = ? ";
+            preStm = con.prepareCall(sql);
+            preStm.setString(1, updateSolution);
+            preStm.setInt(2, exerciseId);
+            preStm.setInt(3, studentId);
+            preStm.executeUpdate();
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Update SQL wrong: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean delete(int exerciseId, int studentId) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        try {
+            con = DBUtils.getConnection();
+            sql = "DELETE FROM Do WHERE excercise_id = ? and student_id = ? ";
+            preStm = con.prepareCall(sql);
+            preStm.setInt(1, exerciseId);
+            preStm.setInt(2, studentId);
+            preStm.executeUpdate();
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Update SQL wrong: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
     }
 }
