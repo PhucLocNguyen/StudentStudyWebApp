@@ -8,6 +8,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Error 404 Page</title>
+        <link rel="stylesheet" href="./Assets/css/style.css"/>
+        <link rel="stylesheet" href="./Assets/themify-icons/themify-icons.css">
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
     </head>
     <body>
         <style>
@@ -393,6 +399,8 @@
             }
 
         </style>
+        <div class="container position-relative" id="headerContainer">
+         <%@include file="./Components/Header.jsp" %>
         <div class="vh-100">
             <div class="moon"></div>
             <div class="moon__crater moon__crater1"></div>
@@ -440,6 +448,7 @@
                     <div class="astronaut__head-visor-flare2"></div>
                 </div>
             </div></div>
+        </div>
         <script>
             function drawVisor() {
                 const canvas = document.getElementById('visor');

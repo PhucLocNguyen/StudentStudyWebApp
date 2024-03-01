@@ -108,7 +108,7 @@ public class CreateClass extends HttpServlet {
             request.setAttribute("message", "Failed !!!");
         }
 
-        request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
+        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 
     /**

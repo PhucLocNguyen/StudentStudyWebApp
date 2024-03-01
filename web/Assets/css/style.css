@@ -1,13 +1,9 @@
 #fr-logo{
     display:none;
 }
-@media (max-width: 768px) {
-    .carousel-inner .carousel-item > div {
-        display: none;
-    }
-    .carousel-inner .carousel-item > div:first-child {
-        display: block;
-    }
+
+.fr-second-toolbar .fr-counter {
+    margin-left: 1rem;
 }
 
 .carousel-inner .carousel-item.active,
@@ -34,9 +30,99 @@
 .carousel-inner .carousel-item-left{ 
   transform: translateX(0);
 }
-.whiteText#headerContainer{
+.whiteText#headerContainer .row {
+    position: relative;
     z-index: 999;
 }
-.whiteText#headerContainer #navbarSupportedContent .nav-link{
+.whiteText#headerContainer #navbarSupportedContent .nav-link,.whiteText#headerContainer .btn{
     color:#fff;
+}
+
+.spinner{
+    /*   for centering div */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      
+    /*   spinner div css */
+      height : 50px;
+      width : 50px;
+      border-radius : 50%;
+    /*   background-color : red; */
+      border : 10px solid #ccc;
+      border-top-color : #007bff;
+      animation : spin 1s linear infinite;
+    }
+    
+    @keyframes spin{
+      0%{
+        transform : rotate(0deg);
+      }
+      100%{
+        transform : rotate(360deg);
+      }
+    }
+    .statusGradeMark{
+   object-fit: contain;
+width: 100%;
+height: 50px;
+}
+#arrowTransform::after{
+    content: "";
+    width: 65px;
+    height: 65px;
+    background-image: url("../img/arrowTransform.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: -7%;
+    top: 50%;
+    transform: translateY(-50%);
+z-index: 999;
+}
+@keyframes formFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.transitionEaseInOutFlex{
+    transition: flex 0.15s ease-in-out;
+}
+.formFadeIn{
+    animation: formFadeIn 0.3s forwards linear;
+}
+.formatBtn{
+    min-width: 80px;
+    height: fit-content;
+}
+@media (max-width: 768px) {
+    .carousel-inner .carousel-item > div {
+        display: none;
+    }
+    .carousel-inner .carousel-item > div:first-child {
+        display: block;
+    }
+    #arrowTransform::after{
+        content: "";
+        width: 80px;
+        height: 80px;
+        background-image: url("./Assets/img/arrowTransform.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        left: 50%;
+        top: -30px;
+        transform: translateX(-50%);
+    z-index: 999;
+    }
+     .carousel-inner .carousel-item > div {
+        display: none;
+    }
+    .carousel-inner .carousel-item > div:first-child {
+        display: block;
+    }
 }

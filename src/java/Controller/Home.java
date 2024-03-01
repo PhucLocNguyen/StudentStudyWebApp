@@ -8,6 +8,7 @@ package Controller;
 import Model.ClassesDAO;
 import Model.ClassesDTO;
 import Model.EnrollDAO;
+import Model.LectureDTO;
 import Model.StudentDTO;
 import java.io.File;
 import java.io.IOException;
@@ -61,16 +62,19 @@ public class Home extends HttpServlet {
                         classLlistEnrolled.add(classEnrolled);
                     }
                 }
+            }else{
+                LectureDTO lecture = (LectureDTO)session.getAttribute("user");
+                classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId());
             }
 
             request.setAttribute("classListEnrolled", classLlistEnrolled);
             request.setAttribute("class_list", classList);
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
 
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on  the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

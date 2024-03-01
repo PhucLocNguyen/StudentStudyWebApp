@@ -78,7 +78,7 @@ public class StudentDAO {
         StudentDTO student = null;
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT class_id, name, email ,thumbnail FROM Students Where student_id = ? ";
+            sql = "SELECT student_id, name, email ,thumbnail FROM Students Where student_id = ? ";
             preStm = con.prepareStatement(sql);
             preStm.setInt(1, student_id);
             rs = preStm.executeQuery();
