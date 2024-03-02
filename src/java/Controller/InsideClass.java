@@ -7,8 +7,12 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
+import Model.ExerciseDAO;
+import Model.ExerciseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,8 +65,13 @@ public class InsideClass extends HttpServlet {
         int class_id = Integer.parseInt(request.getParameter("class_id"));
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
+        ExerciseDAO dao = new ExerciseDAO();
+        List<ExerciseDTO> lisExc = dao.getAllExcercise(class_id);     
+        
+        
         if (classesDTO != null) {
             request.setAttribute("class", classesDTO);
+            request.setAttribute("listExcercise", lisExc);
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);
         } else {
             response.sendError(400, "Get class id Error");

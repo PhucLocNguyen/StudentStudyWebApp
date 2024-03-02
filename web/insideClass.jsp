@@ -4,20 +4,27 @@
     Author     : ACER
 --%>
 
+
+<%@page import="Model.ExerciseDTO"%>
+<%@page import="java.util.List"%>
 <%@page import="Model.ClassesDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Inside Class</title>
         <link rel="stylesheet" href="./Assets/css/style.css"/>
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/froala_editor/froala_editor.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
-        <script src="./js/froala_editor/froala_editor.pkgd.min.js"></script>
-        <script src="./js/froala_editor/plugins/image.min.js"></script>
-        <title>Inside Class Page</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <link rel="stylesheet" href="./Assets/themify-icons/themify-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <div class="container" id="headerContainer">
@@ -38,51 +45,88 @@
                     </div>
                 </div>
 
+                <%  if (getRole != null && getRole.equals("lecturer")) {%>
+                <div class="row mt-3">
+                <a href="createQuestion.jsp?class_id=<%=getClass.getId()%>" class="btn btn-primary rounded-4 fw-bold px-5">Tao cau hoi</a>
+                </div>
 
                 <div class="row my-3">
                     <!-- Cac cau hoi trong lop -->
                     <div class="col-lg-8">
-                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                            </div>
-                        </a>
 
-                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
+                        <% 
+                            if(request.getAttribute("listExcercise") != null) {
+                                List<ExerciseDTO> list = (List<ExerciseDTO>)request.getAttribute("listExcercise");
+                            
+                            for (ExerciseDTO exc : list) { %>
+                                <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title fs-3"> <%= exc.getTitle() %> </h5>
+                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
+                                        <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
+                                    </div>
+                                </a>
+                            <%   }  %>
+                        
+                        <% } %>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card mt-2 rounded-4">
+                            <div class="card-body" style="min-height: 20rem;"> 
+                                <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
+                                <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
+                                <button class="btn btn-primary d-block w-100 mb-2 mt-2">Xem tổng điểm của học sinh</button>
+                                <button class="btn btn-danger d-block w-100">Xoá lớp học</button>
                             </div>
-                        </a>
+                        </div>
+                    </div>
+                    
+                </div>
+                <% } else { %>
+                <div class="row my-3">
+                    <!-- Cac cau hoi trong lop -->
+                    <div class="col-lg-8">
+                       
 
-                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                            </div>
-                        </a>
+                        <% 
+                            if(request.getAttribute("listExcercise") != null) {
+                                List<ExerciseDTO> list = (List<ExerciseDTO>)request.getAttribute("listExcercise");
+                            
+                            for (ExerciseDTO exc : list) { %>
+                                <a href="answerquestion?class_id=<%= getClass.getId() %>&exercise_id=<%= exc.getExcerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title fs-3"> <%= exc.getTitle() %> </h5>
+                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%=exc.getCreatedDate() %></span>
+                                        <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
+                                    </div>
+                                </a>
+                            <%   }  
+                         } %>
+                        
                     </div>
                     <!-- Ket thuc cua cau hoi trong lop hoc -->
 
                     <div class="col-lg-4">
                         <div class="card mt-2 rounded-4">
                             <div class="card-body" style="min-height: 20rem;"> 
-                                <h5 class="card-title fs-3 fw-bolder">Thong tin lop hoc</h5>
-                                <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thanh vien lop hoc</a>
+
+                                <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
+                                <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
+                                <button class="btn btn-primary d-block w-100 mb-2 mt-2">Xem tổng điểm của tôi</button>
+                                <button class="btn btn-danger d-block w-100">Thoát lớp học</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <% } %>
+            </div>
         </div>
                             <%} %>
+                            
         <%@include file="./Components/Footer.jsp" %>
-        </div>
+        
 
     </body>
 

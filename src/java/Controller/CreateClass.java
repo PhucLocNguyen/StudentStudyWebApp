@@ -97,7 +97,6 @@ public class CreateClass extends HttpServlet {
         Part filePart = request.getPart("thumbnail");
         password = request.getParameter("password");
         description = request.getParameter("description");
-        System.out.println("File name: "+ filePart.getSubmittedFileName());
         FileUtils fileUtils = new FileUtils();
         imageUrl = fileUtils.insertImage(filePart);
 
@@ -109,7 +108,7 @@ public class CreateClass extends HttpServlet {
             request.setAttribute("message", "Failed !!!");
         }
 
-        request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
+        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 
     /**

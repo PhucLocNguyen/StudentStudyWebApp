@@ -28,7 +28,8 @@
     </head>
     
     <body>
-         <div class="container">
+         <div class="container" style="min-height: 650px">
+
              <%@include file="./Components/Header.jsp" %>
         <%! ClassesDAO classDAO = new ClassesDAO();%>
         <div class="container">
@@ -103,7 +104,6 @@
                                     <p class="text-primary mb-1">Description</p>
                                     <textarea id="froala-editor" name="description">
                                     </textarea>
-
                                 </div>
 
                                 <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
@@ -144,9 +144,11 @@
                     }%> 
             </div>
         </div>
+
         <%@include file="./Components/Footer.jsp" %>
          </div>
     </div>
+
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 

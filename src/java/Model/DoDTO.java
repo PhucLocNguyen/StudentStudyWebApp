@@ -9,35 +9,30 @@ import java.sql.Date;
 
 /**
  *
- * @author ACER
+
+ * @author User
  */
 public class DoDTO {
-
-    private ExcerciseDTO excercise;
     private StudentDTO student;
+    private ExerciseDTO exercise;
     private String solution;
     private float score;
-    private boolean is_grade;
-    private Date created_date;
+    private boolean isGrade;
+    private Date createDate;
+
 
     public DoDTO() {
     }
 
-    public DoDTO(ExcerciseDTO excercise, StudentDTO student, String solution, float score, boolean is_grade, Date created_date) {
-        this.excercise = excercise;
+
+    public DoDTO(StudentDTO student, ExerciseDTO exercise, String solution, float score, boolean isGrade, Date createDate) {
         this.student = student;
+        this.exercise = exercise;
         this.solution = solution;
         this.score = score;
-        this.is_grade = is_grade;
-        this.created_date = created_date;
-    }
+        this.isGrade = isGrade;
+        this.createDate = createDate;
 
-    public ExcerciseDTO getExcercise() {
-        return excercise;
-    }
-
-    public void setExcercise(ExcerciseDTO excercise) {
-        this.excercise = excercise;
     }
 
     public StudentDTO getStudent() {
@@ -48,7 +43,15 @@ public class DoDTO {
         this.student = student;
     }
 
-    public String getSolution() {
+    public ExerciseDTO getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(ExerciseDTO exercise) {
+        this.exercise = exercise;
+    }
+
+  public String getSolution() {
         return solution;
     }
 
@@ -64,20 +67,20 @@ public class DoDTO {
         this.score = score;
     }
 
-    public boolean isIs_grade() {
-        return is_grade;
+    public boolean isIsGrade() {
+        return isGrade;
     }
 
-    public void setIs_grade(boolean is_grade) {
-        this.is_grade = is_grade;
+    public void setIsGrade(boolean isGrade) {
+        this.isGrade = isGrade;
     }
 
-    public Date getCreated_date() {
-        return created_date;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreated_date(Date created_date) {
-        this.created_date = created_date;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
     
 }

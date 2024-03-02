@@ -33,17 +33,9 @@
                     image = user.getThumbnail();
                     id = user.getId();
                 }
-
             }
 
-//            String name = "";
-//            if (session.getAttribute("user") != null) {
-//                UserGoogleDTO user = (UserGoogleDTO) session.getAttribute("user");
-//                name = user.getName();
-//            } else {
-//                response.sendRedirect("login.jsp");
-//                name = "Anonymous";
-//            }
+
 %>
           <div class="row mt-2">
             <div class="col-sm-12 col-lg-5">
@@ -154,6 +146,5 @@
                 </nav>
             </div>
         </div>
-        
     </body>
 </html>

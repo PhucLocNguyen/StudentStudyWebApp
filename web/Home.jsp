@@ -42,6 +42,7 @@
                                         aria-label="Slide 2"></button>
                                 <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
                                         aria-label="Slide 3"></button>
+
                             </div>
                             <div class="carousel-inner " style="height: 270px;">
                                 <div class="carousel-item active rounded-4" data-bs-interval="10000">
@@ -122,6 +123,7 @@
                     </div>
                     <!-- Ket thuc kham pha hoc phan -->
 
+
                     <div class="row">
                         <h3 class="fw-medium mb-3">Lop hoc cua ban</h3>
                     </div>
@@ -148,39 +150,7 @@
                                 }
                             }
                         %>
-                        <!--                    <div class="col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Ten lop hoc</h5>
-                                                        <p class="card-text">Fpt, VietNam</p>
-                                                        <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                                        <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Ten lop hoc</h5>
-                                                        <p class="card-text">Fpt, VietNam</p>
-                                                        <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                                        <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Ten lop hoc</h5>
-                                                        <p class="card-text">Fpt, VietNam</p>
-                                                        <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                                        <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                        
-                                    </div>-->
+                      
                         <div id="myModal" class="modal fade" tabindex="-1">
                             <div class="modal-dialog">
 
@@ -193,6 +163,7 @@
         <script>
             function myFunction() {
                 var x = document.querySelector("#passwordInput");
+
                 if (x.type === "password") {
                     x.type = "text";
                 } else {

@@ -77,13 +77,14 @@ public class LoginGoogleHandler extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String code = request.getParameter("code");
         String msg = "Login Failed please use @FPT gmail";
-        HttpSession session = request.getSession();
+        
 
         String accessToken = GoogleUtils.getToken(code);
         StudentDTO user = GoogleUtils.getUserInfo(accessToken);
         if (user != null) {
             StudentDTO userLogin = StudentDAO.login(user);
             if (userLogin != null) {
+                HttpSession session = request.getSession(true);
                 System.out.println("Servlet image: "+userLogin.getThumbnail());
                 session.setAttribute("user", userLogin);
                 session.setAttribute("role", "student");
