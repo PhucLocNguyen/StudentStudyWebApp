@@ -12,7 +12,7 @@
     <head>
     </head>
     <body>
-        <%
+<!--        
             String name = ""; // Khai báo và khởi tạo biến name trước khi sử dụng
             String image = "";
             String getRole = "";
@@ -33,16 +33,14 @@
                     image = user.getThumbnail();
                     id = user.getId();
                 }
+            }-->
 
-            }
-
-
-        %>
+        
         <div class="row mt-2">
             <div class="col-sm-12 col-lg-5">
                 <nav class="navbar navbar-expand-lg bg-white justify-content-between">
                     <div class=" position-relative d-md-none" style="display: inline-block;">
-                        <img style="width: 40px;" class="rounded-circle " src="<%=image%>" alt="..."
+                        <img style="width: 40px;" class="rounded-circle " src="" alt="..."
                              data-bs-toggle="offcanvas" data-bs-target="#mobileCanvas" aria-controls="mobileCanvas"
                              aria-label="Toggle navigation">
                         <span
@@ -50,7 +48,7 @@
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileCanvas"
                              aria-labelledby="mobileCanvas">
                             <div class="offcanvas-header">
-                                <h5 class="offcanvas-title" id="mobileCanvas"><%=name%></h5>
+                                <h5 class="offcanvas-title" id="mobileCanvas"></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                             </div>
@@ -117,7 +115,7 @@
             <div class="col-sm-4 d-none d-md-block col-lg-2 py-2">
                 <nav class="navbar " style="display: inline-block;">
                     <div class=" position-relative" style="display: inline-block;">
-                        <img style="width: 40px;" class="rounded-circle " src="<%=image%>" alt="..."
+                        <img style="width: 40px;" class="rounded-circle " src="" alt="..."
                              data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
                              aria-label="Toggle navigation">
                         <span
@@ -126,7 +124,7 @@
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                          aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><%=name%></h5>
+                            <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                         </div>

@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Answer Question</title>
         <link rel="stylesheet" href="./Assets/css/style.css"/>
@@ -24,107 +24,113 @@
     </head>
     <body>
         <%@include file="Components/Header.jsp" %>
-        
+
         <div class="bg-body-tertiary pt-3">
-        <div class="container">
-            <div class="row">
-                <div class="py-4 bg-image-full rounded-4" style="background-image: url('./img/background.jpg')">
-                    <div class="text-center">
-                        <h1 class="text-white fs-3 fw-bolder">${requestScope.exercise.title}</h1>
-                        <h5 class="text-white fw-medium mb-0">${requestScope.exercise.description}</h5>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row my-3">
-                <!-- Cac cau hoi trong lop -->
-                <div class="col-sm-12 card mt-2 rounded-2 transitionEaseInOutFlex" id="originalAnswer">
-                    <div class="row d-flex align-content-center justify-content-center">
-                        <div class="col-lg-8">
-                            <h5 class="card-title fs-3 fw-bolder pt-3">Câu trả lời đã nộp</h5>
-                            <div class="d-flex px-2">
-                                <span class="badge rounded-pill bg-success text-bg-secondary my-1 me-3 fs-6">đã nộp vào lúc 5:30 19/09/2023</span>
-                            </div>
-                            
-                        </div>
-                        <div class="col-lg-4 d-flex align-content-center flex-wrap justify-content-center gap-2">
-                                    <button class="btn btn-outline-primary formatBtn" onclick="showInputForm()">Chỉnh sửa</button>
-                                    <a href="#myModal" role="button" class="btn btn-danger text-center formatBtn" data-bs-toggle="modal">Xoá</a>
-                        </div>
-                    </div>
-               
-                
-                    <div class="card-body row">
-                        <div class="col-lg-12">
-                            <p class="card-title text-black fs-5">${requestScope.Do.solution}</p>
+            <div class="container">
+                <div class="row">
+                    <div class="py-4 bg-image-full rounded-4" style="background-image: url('./img/background.jpg')">
+                        <div class="text-center">
+                            <h1 class="text-white fs-3 fw-bolder">${requestScope.exercise.title}</h1>
+                            <h5 class="text-white fw-medium mb-0">${requestScope.exercise.description}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 card mt-2 rounded-2 d-none" id="arrowTransform">
-                    <form action="">
+
+                <div class="row my-3">
+                    <!-- Cac cau hoi trong lop -->
+                    <div class="col-sm-12 card mt-2 rounded-2 transitionEaseInOutFlex" id="originalAnswer">
                         <div class="row d-flex align-content-center justify-content-center">
-                        
-                            <div class="col-lg-9">
-                                <h5 class="card-title fs-3 fw-bolder pt-3">Chỉnh sửa câu trả lời</h5>
+                            <div class="col-lg-8">
+                                <h5 class="card-title fs-3 fw-bolder pt-3">Câu trả lời đã nộp</h5>
+                                <div class="d-flex px-2">
+                                    <span class="badge rounded-pill bg-success text-bg-secondary my-1 me-3 fs-6">đã nộp vào lúc 5:30 19/09/2023</span>
+                                </div>
+
                             </div>
-                            <div class="col-lg-3 d-flex flex-column align-content-center justify-content-center flex-wrap mt-3">
-                                
-                               <button type="submit" value="Lưu" class="btn btn-primary formatBtn mt-2">Lưu</button>
+                            <div class="col-lg-4 d-flex align-content-center flex-wrap justify-content-center gap-2">
+                                <button class="btn btn-outline-primary formatBtn" onclick="showInputForm()">Chỉnh sửa</button>
+                                <a href="#myModal" role="button" class="btn btn-danger text-center formatBtn" data-bs-toggle="modal">Xoá</a>
                             </div>
                         </div>
-                    
-                        <div class="card-body row mt-5 pt-0">
-                            <div class="col-md-12 px-0">
-                                <textarea class="form-control" name="answer" id="" cols="30" rows="10">${requestScope.Do.solution}</textarea>
+
+
+                        <div class="card-body row">
+                            <div class="col-lg-12">
+                                <p class="card-title text-black fs-5">${requestScope.Do.solution}</p>
                             </div>
-                        </div>     
-                    </form>
-                    
+                        </div>
+                    </div>
+                    <div class="col-lg-6 card mt-2 rounded-2 d-none" id="arrowTransform">
+                        <form action="answerquestion" method="POST">
+                            <div class="row d-flex align-content-center justify-content-center">
+
+                                <div class="col-lg-9">
+                                    <h5 class="card-title fs-3 fw-bolder pt-3">Chỉnh sửa câu trả lời</h5>
+                                </div>
+                                <div class="col-lg-3 d-flex flex-column align-content-center justify-content-center flex-wrap mt-3">
+
+                                    <button type="submit" value="Lưu" class="btn btn-primary formatBtn mt-2">Lưu</button>
+                                </div>
+                            </div>
+
+                            <div class="card-body row mt-5 pt-0">
+                                <div class="col-md-12 px-0">
+                                    <textarea class="form-control" name="updateSolution" id="" cols="30" rows="10">${requestScope.Do.solution}</textarea>
+                                </div>
+                            </div>     
+                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
+                        </form>
+
+                    </div>
                 </div>
-            </div>
                 <!-- Ket thuc cua cau hoi trong lop hoc -->
 
-        </div>
-    </div>
-  
-  <!-- Modal -->
-  <div id="myModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Xác nhận</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data">
-
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <p class="mb-1 text-danger fs-5">Hành động này sẽ tiến hành xoá vĩnh viễn câu trả lời của bạn ở câu hỏi này</p>
-                    </div>
-
-                    <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger" >Xoá</button>
-                </div>
-            </form>
-
         </div>
-    </div>
-    <%@include file="Components/Footer.jsp" %>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xác nhận</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form accept-charset="UTF-8" action="answerquestion" method="POST" >
+
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <p class="mb-1 text-danger fs-5">Hành động này sẽ tiến hành xoá vĩnh viễn câu trả lời của bạn ở câu hỏi này</p>
+                            </div>
+
+                            <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger" >Xoá</button>
+                        </div>
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}"> 
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
         <script>
-            var getAnswer = document.querySelector("#originalAnswer");
-            var getEditForm = document.querySelector("#arrowTransform");
-            function showInputForm(){
-                getAnswer.classList.toggle("col-lg-6");
-                getEditForm.classList.toggle("formFadeIn");
-                getEditForm.classList.toggle("d-none");
+                                        var getAnswer = document.querySelector("#originalAnswer");
+                                        var getEditForm = document.querySelector("#arrowTransform");
+                                        function showInputForm() {
+                                            getAnswer.classList.toggle("col-lg-6");
+                                            getEditForm.classList.toggle("formFadeIn");
+                                            getEditForm.classList.toggle("d-none");
 
-            }
+                                        }
         </script>
+        <%@include file="Components/Footer.jsp" %>
     </body>
 </html>

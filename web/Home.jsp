@@ -148,39 +148,7 @@
                             }
                         }
                     %>
-                    <!--                    <div class="col-lg-3">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Ten lop hoc</h5>
-                                                    <p class="card-text">Fpt, VietNam</p>
-                                                    <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                                    <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Ten lop hoc</h5>
-                                                    <p class="card-text">Fpt, VietNam</p>
-                                                    <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                                    <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Ten lop hoc</h5>
-                                                    <p class="card-text">Fpt, VietNam</p>
-                                                    <span class="badge rounded-pill text-bg-secondary">19 cau hoi</span>
-                                                    <span class="badge rounded-pill text-bg-secondary">2 thanh vien</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                    
-                                </div>-->
+                 
                     <div id="myModal" class="modal fade" tabindex="-1">
                         <div class="modal-dialog">
 

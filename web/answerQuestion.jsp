@@ -27,7 +27,7 @@
     </head>
     <body>
         <%@include file="Components/Header.jsp" %>
-        <div class="bg-body-tertiary pt-3">
+        <div class="bg-body-tertiary pt-3" >
             <div class="container">
                 <h1 class="fw-bold">${requestScope.exercise.classes.name}</h1>
                 <h3 class="fw-medium">${requestScope.exercise.title}</h3>
@@ -45,7 +45,7 @@
                 <div class="card rounded-4 mt-4">
                     <div class="card-body">
                         <!-- Comment form-->
-                        <% if (!(boolean) request.getAttribute("check")) {%>
+                        <% if ((boolean) request.getAttribute("check")) {%>
                         <form class="mb-2" action="answerquestion">
                             <input type="hidden" name="action" value="${requestScope.action}">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </div>
-
+        </div>
             <%@include file="Components/Footer.jsp" %>
     </body>
 </html>

@@ -110,7 +110,7 @@ public class ClassesDAO {
         List<ClassesDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT c.class_id, c.name, c.thumbnail, c.password, c.description, c.lecturer_id FROM Classes c;";
+            sql = "SELECT c.class_id, c.name, c.thumbnail, c.password, c.description, c.lecturer_id FROM Classes c ORDER BY c.created_date DESC;";
             preStm = con.prepareStatement(sql);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
