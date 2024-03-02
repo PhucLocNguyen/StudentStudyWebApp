@@ -6,16 +6,19 @@
 package Model;
 
 import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import java.util.List;
 import utils.DBUtils;
 
 /**
  *
+
  * @author User
  */
 public class DoDAO {
@@ -100,6 +103,7 @@ public class DoDAO {
             }
             con.close();
         } catch (SQLException e) {
+
             System.out.println("checkAnswer SQL wrong: " + e.getMessage());
             e.printStackTrace();
         }

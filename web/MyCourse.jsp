@@ -29,6 +29,7 @@
     
     <body>
          <div class="container" style="min-height: 650px">
+
              <%@include file="./Components/Header.jsp" %>
         <%! ClassesDAO classDAO = new ClassesDAO();%>
         <div class="container">
@@ -143,9 +144,11 @@
                     }%> 
             </div>
         </div>
-      
+
+        <%@include file="./Components/Footer.jsp" %>
          </div>
-      <%@include file="./Components/Footer.jsp" %>
+    </div>
+
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 

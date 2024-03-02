@@ -28,6 +28,7 @@
     </head>
     <body>
         <div class="container">
+
             <%@include file="./Components/Header.jsp" %>
 
             <%                    List<ClassesDTO> listSearching = (List<ClassesDTO>) request.getAttribute("listSearching");

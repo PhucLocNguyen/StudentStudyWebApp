@@ -9,6 +9,7 @@ import java.sql.Date;
 
 /**
  *
+
  * @author User
  */
 public class DoDTO {
@@ -19,8 +20,10 @@ public class DoDTO {
     private boolean isGrade;
     private Date createDate;
 
+
     public DoDTO() {
     }
+
 
     public DoDTO(StudentDTO student, ExerciseDTO exercise, String solution, float score, boolean isGrade, Date createDate) {
         this.student = student;
@@ -29,6 +32,7 @@ public class DoDTO {
         this.score = score;
         this.isGrade = isGrade;
         this.createDate = createDate;
+
     }
 
     public StudentDTO getStudent() {
@@ -47,7 +51,7 @@ public class DoDTO {
         this.exercise = exercise;
     }
 
-    public String getSolution() {
+  public String getSolution() {
         return solution;
     }
 

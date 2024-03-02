@@ -12,7 +12,11 @@
         <servlet-name>InsideClass</servlet-name>
         <servlet-class>Controller.InsideClass</servlet-class>
     </servlet>
-    <servlet>
+   <servlet>
+        <servlet-name>showAnswerInTeacher</servlet-name>
+        <servlet-class>Controller.showAnswerInTeacher</servlet-class>
+   </servlet>
+   <servlet>
         <servlet-name>CreateQuestion</servlet-name>
         <servlet-class>Controller.CreateQuestion</servlet-class>
     </servlet>
@@ -37,7 +41,11 @@
         <url-pattern>/insideClass</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateQuestion</servlet-name>
+        <servlet-name>showAnswerInTeacher</servlet-name>
+        <url-pattern>/excerciseView</url-pattern>
+ </servlet-mapping>
+  <servlet-mapping>
+      <servlet-name>CreateQuestion</servlet-name>
         <url-pattern>/createQuestion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

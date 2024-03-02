@@ -110,6 +110,7 @@
                     <div class="col-lg-4">
                         <div class="card mt-2 rounded-4">
                             <div class="card-body" style="min-height: 20rem;"> 
+
                                 <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
                                 <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
                                 <button class="btn btn-primary d-block w-100 mb-2 mt-2">Xem tổng điểm của tôi</button>
@@ -118,6 +119,7 @@
                         </div>
                     </div>
                 </div>
+
                 <% } %>
             </div>
         </div>
