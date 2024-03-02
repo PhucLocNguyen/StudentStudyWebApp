@@ -7,27 +7,24 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
+import Model.DoDAO;
+import Model.DoDTO;
 import Model.EnrollDAO;
-import Model.StudentDTO;
-import java.io.File;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "Home", urlPatterns = {"/home"})
-public class Home extends HttpServlet {
+@WebServlet(name = "DoController", urlPatterns = {"/do"})
+public class DoController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,37 +40,27 @@ public class Home extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ClassesDAO classDAO = new ClassesDAO();
-            List<ClassesDTO> classList = classDAO.showClass();
-            List<ClassesDTO> classLlistEnrolled = new ArrayList<>();
+            int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
+            int student_id = Integer.parseInt(request.getParameter("student_id"));
+            DoDAO doDAO = new DoDAO();
+            DoDTO studentAnswer = null;
+            studentAnswer = doDAO.showStudentAnswerById(exercise_id, student_id);
+            Gson gson = new Gson();
+            if (studentAnswer != null) {
 
-            EnrollDAO enrollDAO = new EnrollDAO();
-            List<Integer> arrayIdClass = new ArrayList<>();
-            HttpSession session = request.getSession(false);
-            if(session.getAttribute("role")!=null){
-            String getRole = (String) session.getAttribute("role");
-            if (getRole.equals("student")) {
-                StudentDTO student = (StudentDTO) session.getAttribute("user");
-                arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-                if (arrayIdClass != null) {
-
-                    for (Integer arrayIdClas : arrayIdClass) {
-                        ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                        classLlistEnrolled.add(classEnrolled);
-                    }
-                }
+                String doDetailJsonString = gson.toJson(studentAnswer);
+                System.out.println(doDetailJsonString);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out.print(doDetailJsonString);
+                out.flush();
+            } else {
+                response.setStatus(400);
             }
-
-            request.setAttribute("classListEnrolled", classLlistEnrolled);
-            request.setAttribute("class_list", classList);
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
-
-        }else{
-            response.sendRedirect("login.jsp");}
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -99,7 +86,25 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String getAction = request.getParameter("action");
+        float score = 0;
+        int student_id = 0, excercise_id = 0, class_id = 0;
+        try {
+            score = Float.parseFloat(request.getParameter("score"));
+            student_id = Integer.parseInt(request.getParameter("student_id"));
+            excercise_id = Integer.parseInt(request.getParameter("excercise_id"));
+            class_id = Integer.parseInt(request.getParameter("class_id"));
+        } catch (NumberFormatException e) {
+            System.err.println("Error parse Number format in DoController POST");
+        }
+        DoDAO doDAO = new DoDAO();
+
+        if (getAction.equals("grade")) {
+            doDAO.addScoreToDo(score, excercise_id, student_id);
+        } else if (getAction.equals("edit_score")) {
+            doDAO.updateScoreToDo(score, excercise_id, student_id);
+        }
+        response.sendRedirect(request.getContextPath() + "/excerciseView?excercise_id=" + excercise_id + "&class_id=" + class_id + "#student" + student_id);
     }
 
     /**

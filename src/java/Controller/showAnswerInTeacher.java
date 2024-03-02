@@ -5,18 +5,15 @@
  */
 package Controller;
 
-import Model.ClassesDAO;
-import Model.ClassesDTO;
-import Model.EnrollDAO;
+import Model.DoDAO;
+import Model.DoDTO;
+import Model.ExcerciseDAO;
+import Model.ExcerciseDTO;
 import Model.StudentDTO;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,8 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author ACER
  */
-@WebServlet(name = "Home", urlPatterns = {"/home"})
-public class Home extends HttpServlet {
+public class showAnswerInTeacher extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,33 +39,15 @@ public class Home extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ClassesDAO classDAO = new ClassesDAO();
-            List<ClassesDTO> classList = classDAO.showClass();
-            List<ClassesDTO> classLlistEnrolled = new ArrayList<>();
-
-            EnrollDAO enrollDAO = new EnrollDAO();
-            List<Integer> arrayIdClass = new ArrayList<>();
-            HttpSession session = request.getSession(false);
-            if(session.getAttribute("role")!=null){
-            String getRole = (String) session.getAttribute("role");
-            if (getRole.equals("student")) {
-                StudentDTO student = (StudentDTO) session.getAttribute("user");
-                arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-                if (arrayIdClass != null) {
-
-                    for (Integer arrayIdClas : arrayIdClass) {
-                        ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                        classLlistEnrolled.add(classEnrolled);
-                    }
-                }
-            }
-
-            request.setAttribute("classListEnrolled", classLlistEnrolled);
-            request.setAttribute("class_list", classList);
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
-
-        }else{
-            response.sendRedirect("login.jsp");}
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet showAnswerInTeacher</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet showAnswerInTeacher at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -85,7 +63,22 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            int excercise_id = Integer.parseInt(request.getParameter("excercise_id"));
+            int class_id = Integer.parseInt(request.getParameter("class_id"));
+            ExcerciseDAO excerciseDAO = new ExcerciseDAO();
+            ExcerciseDTO excercise = excerciseDAO.showExcerciseByID(excercise_id);
+            DoDAO doDAO = new DoDAO();
+            ArrayList<DoDTO> listDo = doDAO.ShowStudentAnswerSubmitted(excercise_id, class_id);
+            ArrayList<StudentDTO> listStudent = doDAO.showStudentNotAnswer(excercise_id);
+            request.setAttribute("question", excercise);
+            request.setAttribute("listDidNotAnswer", listStudent);
+            request.setAttribute("listAnswered", listDo);
+            request.getRequestDispatcher("teacherViewQuestion.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("login.jsp");
+        }
     }
 
     /**

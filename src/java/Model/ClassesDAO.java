@@ -67,7 +67,7 @@ public class ClassesDAO {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("SQL ERROR Show CLass By ID: " + e.getMessage());
+            System.out.println("SQL ERROR Checking CLass Password By ID: " + e.getMessage());
             e.getStackTrace();
         }
         return status;
@@ -87,6 +87,7 @@ public class ClassesDAO {
             preStm.setInt(1, class_id);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
+
             if (rs != null) {
                 if (rs.next()) {
                     lecture = lecturer_DAO.searchLectureById(rs.getInt(6));
@@ -95,7 +96,7 @@ public class ClassesDAO {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("SQL ERROR Show CLass By ID: " + e.getMessage());
+            System.err.println("SQL ERROR Show CLass By ID: " + e.getMessage());
             e.getStackTrace();
         }
         return classes;

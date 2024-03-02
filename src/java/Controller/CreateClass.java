@@ -97,6 +97,7 @@ public class CreateClass extends HttpServlet {
         Part filePart = request.getPart("thumbnail");
         password = request.getParameter("password");
         description = request.getParameter("description");
+        System.out.println("File name: "+ filePart.getSubmittedFileName());
         FileUtils fileUtils = new FileUtils();
         imageUrl = fileUtils.insertImage(filePart);
 
