@@ -63,6 +63,9 @@ public class Home extends HttpServlet {
                             classLlistEnrolled.add(classEnrolled);
                         }
                     }
+                }else{
+                    LectureDTO lecture = (LectureDTO) session.getAttribute("user");
+                    classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId());
                 }
 
                 request.setAttribute("classListEnrolled", classLlistEnrolled);

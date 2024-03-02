@@ -39,6 +39,7 @@ public class AnswerQuestion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
         ExerciseDAO exerciseDAO = new ExerciseDAO();
@@ -74,7 +75,6 @@ public class AnswerQuestion extends HttpServlet {
                 if (Do.getStudent() == null) {
                     check = true;
                 }
-                request.setAttribute("action", "answer");
             }
             listDo = doDAO.list(exercise_id);
             request.setAttribute("check", check);

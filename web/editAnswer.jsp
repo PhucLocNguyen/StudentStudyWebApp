@@ -27,6 +27,15 @@
 
         <div class="bg-body-tertiary pt-3">
             <div class="container">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="home">Home</a></li>
+                            <li class="breadcrumb-item"><a href="insideClass?class_id=${requestScope.exercise.classes.id}">Classroom</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Day la cau hoi</li>
+                        </ol>
+                    </nav>
+                </div>
                 <div class="row">
                     <div class="py-4 bg-image-full rounded-4" style="background-image: url('./img/background.jpg')">
                         <div class="text-center">

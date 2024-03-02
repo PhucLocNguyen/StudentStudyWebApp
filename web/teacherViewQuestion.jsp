@@ -7,7 +7,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Model.DoDTO"%>
-<%@page import="Model.ExcerciseDTO"%>
+<%@page import="Model.ExerciseDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,7 @@
         <div class="container">
             <%@include file="./Components/Header.jsp" %>
             <%                 int sizeDone = 0, sizeNot = 0;
-                ExcerciseDTO excercise = (ExcerciseDTO) request.getAttribute("question");
+                ExerciseDTO excercise = (ExerciseDTO) request.getAttribute("question");
                 List<DoDTO> listDoAnswer = (List<DoDTO>) request.getAttribute("listAnswered");
                 sizeDone = listDoAnswer.size();
                 List<StudentDTO> listNotAnswer = (List<StudentDTO>) request.getAttribute("listDidNotAnswer");

@@ -185,7 +185,7 @@ public class DoDAO {
             preStm.setInt(2, class_id);
             rs = preStm.executeQuery();
             StudentDAO studentDAO = new StudentDAO();
-            ExcerciseDAO excerciseDAO = new ExcerciseDAO();
+            ExerciseDAO excerciseDAO = new ExerciseDAO();
             if (rs != null) {
                 while (rs.next()) {
                     student = studentDAO.showStudentById(rs.getInt(1));

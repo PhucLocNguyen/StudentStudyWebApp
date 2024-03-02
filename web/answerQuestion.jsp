@@ -56,7 +56,7 @@
                         <!-- Comment form-->
                         <% if ((boolean) request.getAttribute("check")) {%>
                         <form class="mb-2" action="answerquestion">
-                            <input type="hidden" name="action" value="${requestScope.action}">
+                            <input type="hidden" name="action" value="answer">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
                             <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer"></textarea>
                             <input type="submit" class="btn btn-primary my-3" value="SEND">
