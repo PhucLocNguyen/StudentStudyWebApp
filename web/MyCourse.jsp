@@ -21,9 +21,16 @@
         <script src="./js/froala_editor/froala_editor.pkgd.min.js"></script>
         <script src="./js/froala_editor/plugins/image.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <link rel="stylesheet" href="./Assets/themify-icons/themify-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
-    <%@include file="./Components/Header.jsp" %>
+    
     <body>
+         <div class="container" style="min-height: 650px">
+
+             <%@include file="./Components/Header.jsp" %>
         <%! ClassesDAO classDAO = new ClassesDAO();%>
         <div class="container">
 
@@ -97,7 +104,6 @@
                                     <p class="text-primary mb-1">Description</p>
                                     <textarea id="froala-editor" name="description">
                                     </textarea>
-
                                 </div>
 
                                 <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
@@ -138,8 +144,11 @@
                     }%> 
             </div>
         </div>
+
         <%@include file="./Components/Footer.jsp" %>
+         </div>
     </div>
+
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 

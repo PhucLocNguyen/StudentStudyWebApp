@@ -59,7 +59,7 @@ public class ShowDashBoard extends HttpServlet {
         }
 
         request.setAttribute("listClass", listClass);
-        request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
+        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
