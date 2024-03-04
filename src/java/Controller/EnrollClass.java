@@ -69,6 +69,15 @@ public class EnrollClass extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         int getClassId = Integer.parseInt(request.getParameter("class_id"));
         ClassesDAO classDAO = new ClassesDAO();
         ClassesDTO class_detail = classDAO.showClassById(getClassId);

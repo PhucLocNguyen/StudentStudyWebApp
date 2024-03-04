@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -62,6 +63,15 @@ public class InsideClass extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         int class_id = Integer.parseInt(request.getParameter("class_id"));
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);

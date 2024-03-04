@@ -65,6 +65,14 @@ public class showAnswerInTeacher extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         if (session != null) {
             int excercise_id = Integer.parseInt(request.getParameter("excercise_id"));
             int class_id = Integer.parseInt(request.getParameter("class_id"));

@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Document</title>
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
         <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
@@ -33,12 +33,12 @@
                         <p class="card-text text-danger"><%=request.getAttribute("error")%></p> <%}%>
                         <div class="d-grid gap-2 col-12 mx-auto">
                             <button type="submit" class="btn btn-primary" type="button">Sign in</button>
-                            <button type="submit" class="btn btn-light" type="button">
-                                <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/LoginGoogle/LoginGoogleHandler&response_type=code
-                                   &client_id=984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com&approval_prompt=force"> <img style="width: 30px;" src="./Assets/img/GoogleIcon.svg" alt="">Login with Google</a>
-                            </button>
                         </div>
                     </form>
+                    <div>
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/LoginGoogle/LoginGoogleHandler&response_type=code
+                           &client_id=984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com&approval_prompt=force" class="btn btn-light w-100"> <img style="width: 30px;" src="./Assets/img/GoogleIcon.svg" alt="">Login with Google</a> 
+                    </div>
                 </div>
             </div>
         </div>

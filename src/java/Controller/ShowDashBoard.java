@@ -41,7 +41,15 @@ public class ShowDashBoard extends HttpServlet {
         List<ClassesDTO> listClass = new ArrayList<>();
         ClassesDAO classDAO = new ClassesDAO();
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         String getRole = (String) session.getAttribute("role");
         if (getRole.equals("student")) {
             EnrollDAO enrollDAO = new EnrollDAO();

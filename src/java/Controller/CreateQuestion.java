@@ -88,9 +88,17 @@ public class CreateQuestion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-        HttpSession session = request.getSession();
         LectureDTO user = (LectureDTO) session.getAttribute("user");
         int lecturer_id = user.getId();
         String classID_raw = request.getParameter("classId");
