@@ -44,7 +44,7 @@ public class DoController extends HttpServlet {
             int student_id = Integer.parseInt(request.getParameter("student_id"));
             DoDAO doDAO = new DoDAO();
             DoDTO studentAnswer = null;
-            studentAnswer = doDAO.showStudentAnswerById(exercise_id, student_id);
+            studentAnswer = doDAO.loadAnswer(student_id, exercise_id );
             Gson gson = new Gson();
             if (studentAnswer != null) {
 

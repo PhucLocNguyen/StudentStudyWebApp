@@ -29,6 +29,15 @@
         <%@include file="Components/Header.jsp" %>
         <div class="bg-body-tertiary pt-3" >
             <div class="container">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="home">Home</a></li>
+                            <li class="breadcrumb-item"><a href="insideClass?class_id=${requestScope.exercise.classes.id}">Classroom</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">${requestScope.exercise.title}</li>
+                        </ol>
+                    </nav>
+                </div>
                 <h1 class="fw-bold">${requestScope.exercise.classes.name}</h1>
                 <h3 class="fw-medium">${requestScope.exercise.title}</h3>
                 <span class="badge rounded-pill text-bg-secondary my-1 me-3">${requestScope.exercise.createdDate}</span>
@@ -47,7 +56,7 @@
                         <!-- Comment form-->
                         <% if ((boolean) request.getAttribute("check")) {%>
                         <form class="mb-2" action="answerquestion">
-                            <input type="hidden" name="action" value="${requestScope.action}">
+                            <input type="hidden" name="action" value="answer">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
                             <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer"></textarea>
                             <input type="submit" class="btn btn-primary my-3" value="SEND">
@@ -83,6 +92,6 @@
                 </div>
             </div>
         </div>
-            <%@include file="Components/Footer.jsp" %>
+        <%@include file="Components/Footer.jsp" %>
     </body>
 </html>

@@ -70,7 +70,7 @@ public class InsideClass extends HttpServlet {
         
         
         if (classesDTO != null) {
-            request.setAttribute("class", classesDTO);
+            request.setAttribute("classes", classesDTO);
             request.setAttribute("listExcercise", lisExc);
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);
         } else {

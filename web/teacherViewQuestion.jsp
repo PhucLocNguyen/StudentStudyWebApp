@@ -4,9 +4,10 @@
     Author     : ACER
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Model.DoDTO"%>
-<%@page import="Model.ExcerciseDTO"%>
+<%@page import="Model.ExerciseDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -29,10 +30,10 @@
         <div class="container">
             <%@include file="./Components/Header.jsp" %>
             <%                 int sizeDone = 0, sizeNot = 0;
-                ExcerciseDTO excercise = (ExcerciseDTO) request.getAttribute("question");
-                ArrayList<DoDTO> listDoAnswer = (ArrayList<DoDTO>) request.getAttribute("listAnswered");
+                ExerciseDTO excercise = (ExerciseDTO) request.getAttribute("question");
+                List<DoDTO> listDoAnswer = (List<DoDTO>) request.getAttribute("listAnswered");
                 sizeDone = listDoAnswer.size();
-                ArrayList<StudentDTO> listNotAnswer = (ArrayList<StudentDTO>) request.getAttribute("listDidNotAnswer");
+                List<StudentDTO> listNotAnswer = (List<StudentDTO>) request.getAttribute("listDidNotAnswer");
                 sizeNot = listNotAnswer.size();
             %>
             <div class="bg-body-tertiary pt-3">
@@ -40,8 +41,8 @@
                     <div class="row">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Classroom</a></li>
+                                <li class="breadcrumb-item"><a href="home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="insideClass?class_id=<%=request.getParameter("class_id")%>">Classroom</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><%=excercise.getTitle()%></li>
                             </ol>
                         </nav>
@@ -61,14 +62,14 @@
                                 for (DoDTO elem : listDoAnswer) {
                                     if (elem != null) {
                             %>
-                            <a href="#myModal" class="card rounded-4 text-decoration-none my-2 answerSubmitted" id="student<%=elem.getStudent().getId()%>" style="min-height: 5rem;" data-bs-toggle="modal" exercise-id="<%=elem.getExcercise().getExcercise_id()%>" student-id="<%= elem.getStudent().getId()%>">
+                            <a href="#myModal" class="card rounded-4 text-decoration-none my-2 answerSubmitted" id="student<%=elem.getStudent().getId()%>" style="min-height: 5rem;" data-bs-toggle="modal" exercise-id="<%=elem.getExercise().getExcerciseID() %>" student-id="<%= elem.getStudent().getId()%>">
                                 <div class="card-body row align-content-center justify-content-center">
                                     <div class="col-lg-9">
                                         <h5 class="card-title fs-3"><%=elem.getStudent().getName()%></h5>
-                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3"><%=elem.getCreated_date()%></span>
+                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3"><%=elem.getCreateDate()%></span>
                                     </div>  
                                     <div class="col-lg-3 row flex-column align-content-center justify-content-center">
-                                        <% if (elem.isIs_grade()) {%>
+                                        <% if (elem.isIsGrade()) {%>
 
                                         <img src="./Assets/img/checked.png" alt="Grade successful" class="statusGradeMark">
                                         <p class="mb-0 badge rounded-pill text-bg-secondary my-2">Đã chấm <%=elem.getScore()%> /10 điểm</p>
@@ -203,12 +204,12 @@
                         $("#actionDo").val("grade");
                     }
                     $("#gradeStudent").text(data.student.name);
-                    $("#timeSubmit").text("Đã nộp vào lúc " + data.created_date);
+                    $("#timeSubmit").text("Đã nộp vào lúc " + data.createDate);
                     $("#point").text(data.score + " /10");
                     $("#solution").html(data.solution);
                     $("#imageGrade").html('<img src="' + data.student.thumbnail + '" alt="' + "logo của sinh viên " + data.student.name + '"  class="img-responsive shadow border border-danger rounded-circle w-60" id="imageGrade">');
                     $("#student_id_field").val(data.student.id);
-                    $("#excercise_id_field").val(data.excercise.excercise_id);
+                    $("#excercise_id_field").val(data.exercise.excerciseID);
                     $("#scoreInput").val(data.score);
                 }, error: function (xhr, status, error) {
                     console.log(error);

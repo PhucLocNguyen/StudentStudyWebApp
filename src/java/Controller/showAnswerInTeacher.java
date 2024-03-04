@@ -7,12 +7,13 @@ package Controller;
 
 import Model.DoDAO;
 import Model.DoDTO;
-import Model.ExcerciseDAO;
-import Model.ExcerciseDTO;
+import Model.ExerciseDAO;
+import Model.ExerciseDTO;
 import Model.StudentDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -67,11 +68,11 @@ public class showAnswerInTeacher extends HttpServlet {
         if (session != null) {
             int excercise_id = Integer.parseInt(request.getParameter("excercise_id"));
             int class_id = Integer.parseInt(request.getParameter("class_id"));
-            ExcerciseDAO excerciseDAO = new ExcerciseDAO();
-            ExcerciseDTO excercise = excerciseDAO.showExcerciseByID(excercise_id);
+            ExerciseDAO excerciseDAO = new ExerciseDAO();
+            ExerciseDTO excercise = excerciseDAO.loadExcercise(excercise_id);
             DoDAO doDAO = new DoDAO();
-            ArrayList<DoDTO> listDo = doDAO.ShowStudentAnswerSubmitted(excercise_id, class_id);
-            ArrayList<StudentDTO> listStudent = doDAO.showStudentNotAnswer(excercise_id);
+            List<DoDTO> listDo = doDAO.list(excercise_id);
+            List<StudentDTO> listStudent = doDAO.showStudentNotAnswer(excercise_id, class_id);
             request.setAttribute("question", excercise);
             request.setAttribute("listDidNotAnswer", listStudent);
             request.setAttribute("listAnswered", listDo);

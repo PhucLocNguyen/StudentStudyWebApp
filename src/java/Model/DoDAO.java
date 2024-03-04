@@ -18,7 +18,7 @@ import utils.DBUtils;
 
 /**
  *
-
+ *
  * @author User
  */
 public class DoDAO {
@@ -149,5 +149,74 @@ public class DoDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean addScoreToDo(float score, int excercise_id, int student_id) {
+        boolean output = false;
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "UPDATE Do SET score = ?, is_grade= 1 WHERE excercise_id = ? AND student_id = ?";
+        try {
+            con = DBUtils.getConnection();
+            preStm = con.prepareStatement(sql);
+            preStm.setFloat(1, score);
+            preStm.setInt(2, excercise_id);
+            preStm.setInt(3, student_id);
+            preStm.executeUpdate();
+            output = true;
+        } catch (SQLException e) {
+            System.err.println("Error in addScoreToDo: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return output;
+    }
+
+    public List<StudentDTO> showStudentNotAnswer(int excercise_id, int class_id) {
+        List<StudentDTO> listStudent = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        StudentDTO student = null;
+        String sql = "SELECT * From Enroll e WHERE e.student_id NOT IN(SELECT student_id FROM Do Where excercise_id = ?) AND e.class_id = ? ";
+        try {
+            con = DBUtils.getConnection();
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, excercise_id);
+            preStm.setInt(2, class_id);
+            rs = preStm.executeQuery();
+            StudentDAO studentDAO = new StudentDAO();
+            ExerciseDAO excerciseDAO = new ExerciseDAO();
+            if (rs != null) {
+                while (rs.next()) {
+                    student = studentDAO.showStudentById(rs.getInt(1));
+                    listStudent.add(student);
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR Show student not answer By ID Excercise: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return listStudent;
+    }
+
+    public boolean updateScoreToDo(float score, int excercise_id, int student_id) {
+        boolean output = false;
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "  UPDATE Do SET score = ? WHERE excercise_id = ? AND student_id = ? ";
+        try {
+            con = DBUtils.getConnection();
+            preStm = con.prepareStatement(sql);
+            preStm.setFloat(1, score);
+            preStm.setInt(2, excercise_id);
+            preStm.setInt(3, student_id);
+            preStm.executeUpdate();
+            output = true;
+        } catch (SQLException e) {
+            System.err.println("Error in updateScoreToDo: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return output;
     }
 }
