@@ -49,22 +49,7 @@
                 <div class="row my-3">
                     <!-- Cac cau hoi trong lop -->
                     <div class="col-lg-8">
-<!--                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                            </div>
-                        </a>
-
-                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                            </div>
-                        </a>
-
+            <!--        
                         <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                             <div class="card-body">
                                 <h5 class="card-title fs-3">Title cua cau hoi</h5>
@@ -80,8 +65,8 @@
                                 <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                     <div class="card-body">
                                         <h5 class="card-title fs-3"> <%= exc.getTitle() %> </h5>
-                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                        <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
+                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
+                                        <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
                                     </div>
                                 </a>
                             <%   }  %>
@@ -117,22 +102,6 @@
                     <!-- Cac cau hoi trong lop -->
                     <div class="col-lg-8">
 <!--                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                            </div>
-                        </a>
-
-                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                            <div class="card-body">
-                                <h5 class="card-title fs-3">Title cua cau hoi</h5>
-                                <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                            </div>
-                        </a>
-
-                        <a href="#" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                             <div class="card-body">
                                 <h5 class="card-title fs-3">Title cua cau hoi</h5>
                                 <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>

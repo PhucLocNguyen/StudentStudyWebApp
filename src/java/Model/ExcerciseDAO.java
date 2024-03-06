@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import utils.DBUtils;
@@ -19,7 +20,7 @@ import utils.DBUtils;
  * @author HA GIA KHANH
  */
 public class ExcerciseDAO {
-    public boolean addExcercise(String title, String description, String media, String status, int classID, int lecturerID) {
+    public boolean addExcercise(String title, String description, String media, String status, int classID, int lecturerID, Timestamp start_time, Timestamp end_time) {
         Connection con = null;
         PreparedStatement preStm = null;
         boolean check = false;
@@ -27,9 +28,9 @@ public class ExcerciseDAO {
         try {
             con = DBUtils.getConnection();
             sql = "INSERT INTO [dbo].[Excercises]\n"
-                    + "           ([title], [media], [description], [status], [class_id], [lecturer_id])\n"
+                    + "           ([title], [media], [description], [status], [class_id], [lecturer_id], start_date, end_date)\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?)";
+                    + "           (?,?,?,?,?,?,?,?)";
             preStm = con.prepareStatement(sql);
             preStm.setString(1, title);
             preStm.setString(2, media);
@@ -37,6 +38,8 @@ public class ExcerciseDAO {
             preStm.setString(4, status);
             preStm.setInt(5, classID);
             preStm.setInt(6, lecturerID);
+            preStm.setTimestamp(7, start_time);
+            preStm.setTimestamp(8, end_time);
             if (preStm.executeUpdate() > 0) {
                 check = true;
             }
@@ -61,7 +64,16 @@ public class ExcerciseDAO {
         LectureDTO lecturer = null;
         LectureDAO lectureDao = new LectureDAO();
         try {
-            sql = "SELECT [excercise_id]\n"
+//            sql = "SELECT [excercise_id]\n"
+//                    + "      ,[title]\n"
+//                    + "      ,[media]\n"
+//                    + "      ,[description]\n"
+//                    + "      ,[status]\n"
+//                    + "      ,[created_date]\n"
+//                    + "      ,[class_id]\n"
+//                    + "      ,[lecturer_id]\n"
+//                    + "  FROM [dbo].[Excercises] WHERE [class_id] = ? ";
+            sql = "SELECT TOP (1000) [excercise_id]\n"
                     + "      ,[title]\n"
                     + "      ,[media]\n"
                     + "      ,[description]\n"
@@ -69,7 +81,10 @@ public class ExcerciseDAO {
                     + "      ,[created_date]\n"
                     + "      ,[class_id]\n"
                     + "      ,[lecturer_id]\n"
-                    + "  FROM [dbo].[Excercises] WHERE [class_id] = ? ";
+                    + "      ,[end_date]\n"
+                    + "      ,[start_date]\n"
+                    + "  FROM [QuanLySinhVien].[dbo].[Excercises] WHERE [class_id] = ? ";
+            
             con = DBUtils.getConnection();
             preStm = con.prepareStatement(sql);
             preStm.setInt(1, classID);
@@ -86,7 +101,10 @@ public class ExcerciseDAO {
                     int lectureID = rs.getInt("lecturer_id");
                     classes = classDao.showClassById(classID);
                     lecturer = lectureDao.searchLectureById(lectureID);
-                    exc = new ExcerciseDTO(lectureID, title, media, description, status, created_date, classes, lecturer);
+                    Date start_date = rs.getDate("start_date");
+                    Date end_date = rs.getDate("end_date");
+                    
+                    exc = new ExcerciseDTO(id, title, media, description, status, created_date, classes, lecturer, start_date, end_date);
                     list.add(exc);
                 }
             }

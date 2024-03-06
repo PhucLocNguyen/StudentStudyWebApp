@@ -6,6 +6,7 @@
 package Model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -18,11 +19,13 @@ public class ExcerciseDTO {
     private Date createdDate;
     private ClassesDTO classes;
     private LectureDTO lecturer;
+    private Date startDate;
+    private Date endDate;
 
     public ExcerciseDTO() {
     }
 
-    public ExcerciseDTO(int excerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer) {
+    public ExcerciseDTO(int excerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer, Date startDate, Date endDate) {
         this.excerciseID = excerciseID;
         this.title = title;
         this.media = media;
@@ -31,6 +34,8 @@ public class ExcerciseDTO {
         this.createdDate = createdDate;
         this.classes = classes;
         this.lecturer = lecturer;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getExcerciseID() {
@@ -95,6 +100,22 @@ public class ExcerciseDTO {
 
     public void setLecturer(LectureDTO lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
     
     
