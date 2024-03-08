@@ -7,8 +7,8 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
-import Model.ExcerciseDAO;
-import Model.ExcerciseDTO;
+import Model.ExerciseDAO;
+import Model.ExerciseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -66,8 +66,8 @@ public class InsideClass extends HttpServlet {
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
         
-        ExcerciseDAO dao = new ExcerciseDAO();
-        List<ExcerciseDTO> lisExc = dao.getAllExcercise(class_id);     
+        ExerciseDAO dao = new ExerciseDAO();
+        List<ExerciseDTO> lisExc = dao.getAllExercise(class_id);     
         
         
         if (classesDTO != null) {

@@ -12,9 +12,9 @@ import java.sql.Timestamp;
  *
  * @author HA GIA KHANH
  */
-public class ExcerciseDTO {
+public class ExerciseDTO {
 
-    private int excerciseID;
+    private int exerciseID;
     private String title, media, description, status;
     private Date createdDate;
     private ClassesDTO classes;
@@ -22,11 +22,11 @@ public class ExcerciseDTO {
     private Date startDate;
     private Date endDate;
 
-    public ExcerciseDTO() {
+    public ExerciseDTO() {
     }
 
-    public ExcerciseDTO(int excerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer, Date startDate, Date endDate) {
-        this.excerciseID = excerciseID;
+    public ExerciseDTO(int exerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer, Date startDate, Date endDate) {
+        this.exerciseID = exerciseID;
         this.title = title;
         this.media = media;
         this.description = description;
@@ -39,11 +39,11 @@ public class ExcerciseDTO {
     }
 
     public int getExcerciseID() {
-        return excerciseID;
+        return exerciseID;
     }
 
     public void setExcerciseID(int excerciseID) {
-        this.excerciseID = excerciseID;
+        this.exerciseID = excerciseID;
     }
 
     public String getTitle() {

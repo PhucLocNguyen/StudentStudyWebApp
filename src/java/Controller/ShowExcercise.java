@@ -5,8 +5,8 @@
  */
 package Controller;
 
-import Model.ExcerciseDAO;
-import Model.ExcerciseDTO;
+import Model.ExerciseDAO;
+import Model.ExerciseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

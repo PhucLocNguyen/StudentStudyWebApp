@@ -5,8 +5,8 @@
  */
 package Controller;
 
-import Model.ExcerciseDAO;
-import Model.ExcerciseDTO;
+import Model.ExerciseDAO;
+import Model.ExerciseDTO;
 import Model.LectureDTO;
 import java.io.File;
 import java.io.InputStream;
@@ -131,7 +131,7 @@ public class CreateQuestion extends HttpServlet {
         FileUtils fileUtils = new FileUtils();
         String url = fileUtils.insertImage(filePart);
 
-        ExcerciseDAO dao = new ExcerciseDAO();
+        ExerciseDAO dao = new ExerciseDAO();
         
         try {
             int classID = Integer.parseInt(classID_raw);
@@ -146,7 +146,7 @@ public class CreateQuestion extends HttpServlet {
                 return;
             }
             
-            if(dao.addExcercise(title, description, url, status, classID, lecturer_id, start_timestamp, end_timestamp)) {
+            if(dao.addExercise(title, description, url, status, classID, lecturer_id, start_timestamp, end_timestamp)) {
                 response.sendRedirect("insideClass?class_id="+classID);
             } else {
                 request.setAttribute("error", "Fail roi");

@@ -19,8 +19,8 @@ import utils.DBUtils;
  *
  * @author HA GIA KHANH
  */
-public class ExcerciseDAO {
-    public boolean addExcercise(String title, String description, String media, String status, int classID, int lecturerID, Timestamp start_time, Timestamp end_time) {
+public class ExerciseDAO {
+    public boolean addExercise(String title, String description, String media, String status, int classID, int lecturerID, Timestamp start_time, Timestamp end_time) {
         Connection con = null;
         PreparedStatement preStm = null;
         boolean check = false;
@@ -53,12 +53,12 @@ public class ExcerciseDAO {
 
     }
     
-    public List<ExcerciseDTO> getAllExcercise(int classID) {
-        List<ExcerciseDTO> list = new ArrayList<>();
+    public List<ExerciseDTO> getAllExercise(int classID) {
+        List<ExerciseDTO> list = new ArrayList<>();
         Connection con = null;
         PreparedStatement preStm = null;
         String sql;
-        ExcerciseDTO exc = new ExcerciseDTO();
+        ExerciseDTO exc = new ExerciseDTO();
         ClassesDTO classes = null;
         ClassesDAO classDao = new ClassesDAO();
         LectureDTO lecturer = null;
@@ -104,7 +104,7 @@ public class ExcerciseDAO {
                     Date start_date = rs.getDate("start_date");
                     Date end_date = rs.getDate("end_date");
                     
-                    exc = new ExcerciseDTO(id, title, media, description, status, created_date, classes, lecturer, start_date, end_date);
+                    exc = new ExerciseDTO(id, title, media, description, status, created_date, classes, lecturer, start_date, end_date);
                     list.add(exc);
                 }
             }
