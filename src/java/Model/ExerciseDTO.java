@@ -13,7 +13,7 @@ import java.sql.Date;
  */
 public class ExerciseDTO {
 
-    private int excerciseID;
+    private int exerciseID;
     private String title, media, description, status;
     private Date createdDate;
     private ClassesDTO classes;
@@ -22,8 +22,8 @@ public class ExerciseDTO {
     public ExerciseDTO() {
     }
 
-    public ExerciseDTO(int excerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer) {
-        this.excerciseID = excerciseID;
+    public ExerciseDTO(int exerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer) {
+        this.exerciseID = exerciseID;
         this.title = title;
         this.media = media;
         this.description = description;
@@ -33,12 +33,12 @@ public class ExerciseDTO {
         this.lecturer = lecturer;
     }
 
-    public int getExcerciseID() {
-        return excerciseID;
+    public int getExerciseID() {
+        return exerciseID;
     }
 
-    public void setExcerciseID(int excerciseID) {
-        this.excerciseID = excerciseID;
+    public void setExerciseID(int exerciseID) {
+        this.exerciseID = exerciseID;
     }
 
     public String getTitle() {

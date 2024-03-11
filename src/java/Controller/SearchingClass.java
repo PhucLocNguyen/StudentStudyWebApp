@@ -35,7 +35,15 @@ public class SearchingClass extends HttpServlet {
             throws ServletException, IOException {
         ClassesDAO classdao = new ClassesDAO();
         String keyWord = request.getParameter("keyWord");
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         List<ClassesDTO> listSearching = classdao.showClassWithKeyWord(keyWord,(String)session.getAttribute("role"));
         request.setAttribute("keyWord", keyWord);
         request.setAttribute("listSearching", listSearching);

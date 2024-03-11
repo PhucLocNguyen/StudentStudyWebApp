@@ -42,55 +42,59 @@ public class Home extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        ClassesDAO classDAO = new ClassesDAO();
-        List<ClassesDTO> classList = classDAO.showClass();
-        List<ClassesDTO> classLlistEnrolled = new ArrayList<>();
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            ClassesDAO classDAO = new ClassesDAO();
+            List<ClassesDTO> classList = classDAO.showClass();
+            List<ClassesDTO> classLlistEnrolled = new ArrayList<>();
 
-        EnrollDAO enrollDAO = new EnrollDAO();
-        List<Integer> arrayIdClass = new ArrayList<>();
-        
-        HttpSession session = request.getSession(false);
-        
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
-        }
-        String getRole = (String) session.getAttribute("role");
-        if (getRole.equals("student")) {
-            StudentDTO student = (StudentDTO) session.getAttribute("user");
-            arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-            if (arrayIdClass != null) {
-
-                for (Integer arrayIdClas : arrayIdClass) {
-                    ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                    classLlistEnrolled.add(classEnrolled);
-                }
+            EnrollDAO enrollDAO = new EnrollDAO();
+            List<Integer> arrayIdClass = new ArrayList<>();
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return;
             }
-        } else {
-            LectureDTO lecture = (LectureDTO) session.getAttribute("user");
-            classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId());
+            
+            if (session.getAttribute("user")!=null) {
+                String getRole = (String) session.getAttribute("role");
+                if (getRole.equals("student")) {
+                    StudentDTO student = (StudentDTO) session.getAttribute("user");
+                    arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
+                    if (arrayIdClass != null) {
 
-            request.setAttribute("classListEnrolled", classLlistEnrolled);
-            request.setAttribute("class_list", classList);
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+                        for (Integer arrayIdClas : arrayIdClass) {
+                            ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
+                            classLlistEnrolled.add(classEnrolled);
+                        }
+                    }
+                }else{
+                    LectureDTO lecture = (LectureDTO) session.getAttribute("user");
+                    classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId());
+                }
+
+                request.setAttribute("classListEnrolled", classLlistEnrolled);
+                request.setAttribute("class_list", classList);
+                request.getRequestDispatcher("home.jsp").forward(request, response);
+
+            } else {
+                request.getRequestDispatcher("logout").forward(request, response);
+            }
         }
-
         /* TODO output your page here. You may use following sample code. */
     }
 
-
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on  the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -104,7 +108,7 @@ public class Home extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -115,7 +119,7 @@ public class Home extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

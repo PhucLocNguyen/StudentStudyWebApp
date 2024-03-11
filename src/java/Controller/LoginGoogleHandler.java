@@ -81,7 +81,9 @@ public class LoginGoogleHandler extends HttpServlet {
 
         String accessToken = GoogleUtils.getToken(code);
         StudentDTO user = GoogleUtils.getUserInfo(accessToken);
-        if (user != null) {
+        System.out.println(user.getEmail());
+        if(user.getEmail().contains("@fpt.edu.vn")){
+            if (user != null) {
             StudentDTO userLogin = StudentDAO.login(user);
             if (userLogin != null) {
                 HttpSession session = request.getSession(true);
@@ -91,8 +93,10 @@ public class LoginGoogleHandler extends HttpServlet {
                 request.setAttribute("msg", msg);
                 response.sendRedirect("home");
             }
-        } else {
-            request.setAttribute("msg", msg);
+        }
+        }
+        else {
+            request.setAttribute("error", msg);
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 

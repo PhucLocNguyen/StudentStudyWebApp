@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,12 +40,22 @@ public class DoController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return;
+            }
+            if (session.getAttribute("user") == null) {
+                request.getRequestDispatcher("logout").forward(request, response);
+                return;
+            }
+
             /* TODO output your page here. You may use following sample code. */
             int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
             int student_id = Integer.parseInt(request.getParameter("student_id"));
             DoDAO doDAO = new DoDAO();
             DoDTO studentAnswer = null;
-            studentAnswer = doDAO.showStudentAnswerById(exercise_id, student_id);
+            studentAnswer = doDAO.loadAnswer(student_id, exercise_id);
             Gson gson = new Gson();
             if (studentAnswer != null) {
 
@@ -88,11 +99,11 @@ public class DoController extends HttpServlet {
             throws ServletException, IOException {
         String getAction = request.getParameter("action");
         float score = 0;
-        int student_id = 0, excercise_id = 0, class_id = 0;
+        int student_id = 0, exercise_id = 0, class_id = 0;
         try {
             score = Float.parseFloat(request.getParameter("score"));
             student_id = Integer.parseInt(request.getParameter("student_id"));
-            excercise_id = Integer.parseInt(request.getParameter("excercise_id"));
+            exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
             class_id = Integer.parseInt(request.getParameter("class_id"));
         } catch (NumberFormatException e) {
             System.err.println("Error parse Number format in DoController POST");
@@ -100,11 +111,11 @@ public class DoController extends HttpServlet {
         DoDAO doDAO = new DoDAO();
 
         if (getAction.equals("grade")) {
-            doDAO.addScoreToDo(score, excercise_id, student_id);
+            doDAO.addScoreToDo(score, exercise_id, student_id);
         } else if (getAction.equals("edit_score")) {
-            doDAO.updateScoreToDo(score, excercise_id, student_id);
+            doDAO.updateScoreToDo(score, exercise_id, student_id);
         }
-        response.sendRedirect(request.getContextPath() + "/excerciseView?excercise_id=" + excercise_id + "&class_id=" + class_id + "#student" + student_id);
+        response.sendRedirect(request.getContextPath() + "/exerciseView?exercise_id=" + exercise_id + "&class_id=" + class_id + "#student" + student_id);
     }
 
     /**

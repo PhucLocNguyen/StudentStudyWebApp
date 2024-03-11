@@ -16,7 +16,7 @@ public class Constants {
 
     public static String GOOGLE_CLIENT_ID = "984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com";
 
-    public static String GOOGLE_CLIENT_SECRET = "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";
+    public static String GOOGLE_CLIENT_SECRET = "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";
 
     public static String GOOGLE_REDIRECT_URI = "http://localhost:8080/LoginGoogle/LoginGoogleHandler";
 
@@ -26,7 +26,7 @@ public class Constants {
 
     public static String GOOGLE_GRANT_TYPE = "authorization_code";
 
-    public static String IMAGE_FOLDER = "C:\\Users\\User\\Desktop\\Project_prj301\\web\\Assets\\img";
+    public static String IMAGE_FOLDER = "D:\\Download\\GithubInstaller\\TestingFolder\\web\\Assets\\img";
 
     public static String IMAGE_PERMALINK = "http://localhost:8080/LoginGoogle/files/";
 }
