@@ -30,7 +30,7 @@
         <div class="container">
             <%@include file="./Components/Header.jsp" %>
             <%                 int sizeDone = 0, sizeNot = 0;
-                ExerciseDTO excercise = (ExerciseDTO) request.getAttribute("question");
+                ExerciseDTO exercise = (ExerciseDTO) request.getAttribute("question");
                 List<DoDTO> listDoAnswer = (List<DoDTO>) request.getAttribute("listAnswered");
                 sizeDone = listDoAnswer.size();
                 List<StudentDTO> listNotAnswer = (List<StudentDTO>) request.getAttribute("listDidNotAnswer");
@@ -43,13 +43,13 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="home">Home</a></li>
                                 <li class="breadcrumb-item"><a href="insideClass?class_id=<%=request.getParameter("class_id")%>">Classroom</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><%=excercise.getTitle()%></li>
+                                <li class="breadcrumb-item active" aria-current="page"><%=exercise.getTitle()%></li>
                             </ol>
                         </nav>
                         <div class="py-4 bg-image-full rounded-4" style="background-image: url('./img/background.jpg')">
                             <div class="text-center">
-                                <h1 class="text-white fs-3 fw-bolder"><%=excercise.getTitle()%></h1>
-                                <h5 class="text-white fw-medium mb-0"><%=excercise.getDescription()%></h5>
+                                <h1 class="text-white fs-3 fw-bolder"><%=exercise.getTitle()%></h1>
+                                <h5 class="text-white fw-medium mb-0"><%=exercise.getDescription()%></h5>
                             </div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                                                         <input type="hidden" name="action" value="grade" id="actionDo">
                                                         <input type="hidden" name="class_id" value="<%=request.getParameter("class_id")%>">
                                                         <input type="hidden" name="student_id" value="" id="student_id_field">
-                                                        <input type="hidden" name="excercise_id" value="" id="excercise_id_field">
+                                                        <input type="hidden" name="exercise_id" value="" id="exercise_id_field">
                                                     </div>
                                                 </div>
                                             </div>
@@ -209,7 +209,7 @@
                     $("#solution").html(data.solution);
                     $("#imageGrade").html('<img src="' + data.student.thumbnail + '" alt="' + "logo của sinh viên " + data.student.name + '"  class="img-responsive shadow border border-danger rounded-circle w-60" id="imageGrade">');
                     $("#student_id_field").val(data.student.id);
-                    $("#excercise_id_field").val(data.exercise.excerciseID);
+                    $("#exercise_id_field").val(data.exercise.exerciseID);
                     $("#scoreInput").val(data.score);
                 }, error: function (xhr, status, error) {
                     console.log(error);

@@ -74,14 +74,14 @@ public class showAnswerInTeacher extends HttpServlet {
             return;
         }
         if (session != null) {
-            int excercise_id = Integer.parseInt(request.getParameter("excercise_id"));
+            int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
             int class_id = Integer.parseInt(request.getParameter("class_id"));
-            ExerciseDAO excerciseDAO = new ExerciseDAO();
-            ExerciseDTO excercise = excerciseDAO.loadExercise(excercise_id);
+            ExerciseDAO exerciseDAO = new ExerciseDAO();
+            ExerciseDTO exercise = exerciseDAO.loadExercise(exercise_id);
             DoDAO doDAO = new DoDAO();
-            List<DoDTO> listDo = doDAO.list(excercise_id);
-            List<StudentDTO> listStudent = doDAO.showStudentNotAnswer(excercise_id, class_id);
-            request.setAttribute("question", excercise);
+            List<DoDTO> listDo = doDAO.list(exercise_id);
+            List<StudentDTO> listStudent = doDAO.showStudentNotAnswer(exercise_id, class_id);
+            request.setAttribute("question", exercise);
             request.setAttribute("listDidNotAnswer", listStudent);
             request.setAttribute("listAnswered", listDo);
             request.getRequestDispatcher("teacherViewQuestion.jsp").forward(request, response);

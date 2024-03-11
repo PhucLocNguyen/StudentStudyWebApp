@@ -67,7 +67,7 @@
                                     List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
 
                                     for (ExerciseDTO exc : list) {%>
-                            <a href="<%="excerciseView?excercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                            <a href="<%="exerciseView?exercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
                                     <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>

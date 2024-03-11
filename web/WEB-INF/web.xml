@@ -38,7 +38,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>showAnswerInTeacher</servlet-name>
-        <url-pattern>/excerciseView</url-pattern>
+        <url-pattern>/exerciseView</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateQuestion</servlet-name>
