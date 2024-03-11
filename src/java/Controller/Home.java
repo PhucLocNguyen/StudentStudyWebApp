@@ -51,7 +51,12 @@ public class Home extends HttpServlet {
             EnrollDAO enrollDAO = new EnrollDAO();
             List<Integer> arrayIdClass = new ArrayList<>();
             HttpSession session = request.getSession(false);
-            if (session.getAttribute("role") != null) {
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return;
+            }
+            
+            if (session.getAttribute("user")!=null) {
                 String getRole = (String) session.getAttribute("role");
                 if (getRole.equals("student")) {
                     StudentDTO student = (StudentDTO) session.getAttribute("user");
@@ -73,7 +78,7 @@ public class Home extends HttpServlet {
                 request.getRequestDispatcher("home.jsp").forward(request, response);
 
             } else {
-                response.sendRedirect("login.jsp");
+                request.getRequestDispatcher("logout").forward(request, response);
             }
         }
         /* TODO output your page here. You may use following sample code. */

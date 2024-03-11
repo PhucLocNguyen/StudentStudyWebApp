@@ -40,6 +40,15 @@ public class AnswerQuestion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         String action = request.getParameter("action");
 
         ExerciseDAO exerciseDAO = new ExerciseDAO();
@@ -50,7 +59,7 @@ public class AnswerQuestion extends HttpServlet {
 
         int exercise_id = 0;
         int student_id = 0;
-        HttpSession session = request.getSession();
+       
         String role = (String) session.getAttribute("role");
         if (role.equals("student")) {
             StudentDTO student = (StudentDTO) session.getAttribute("user");

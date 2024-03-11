@@ -121,13 +121,31 @@
 
                                     <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
                                     <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
-                                    <button class="btn btn-primary d-block w-100 mb-2 mt-2">Xem tổng điểm của tôi</button>
+                                    <a href="#myModal" role="button" class="btn btn-primary d-block w-100 mb-2 mt-2" data-bs-toggle="modal">Xem tổng điểm của tôi</a>
                                     <button class="btn btn-danger d-block w-100">Thoát lớp học</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Modal HTML -->
+                    <div id="myModal" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you want to save changes to this document before closing?</p>
+                                    <p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <% } %>
                 </div>
             </div>

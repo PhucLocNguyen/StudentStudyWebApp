@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,12 +40,22 @@ public class DoController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return;
+            }
+            if (session.getAttribute("user") == null) {
+                request.getRequestDispatcher("logout").forward(request, response);
+                return;
+            }
+
             /* TODO output your page here. You may use following sample code. */
             int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
             int student_id = Integer.parseInt(request.getParameter("student_id"));
             DoDAO doDAO = new DoDAO();
             DoDTO studentAnswer = null;
-            studentAnswer = doDAO.loadAnswer(student_id, exercise_id );
+            studentAnswer = doDAO.loadAnswer(student_id, exercise_id);
             Gson gson = new Gson();
             if (studentAnswer != null) {
 
