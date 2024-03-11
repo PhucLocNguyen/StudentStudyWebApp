@@ -57,7 +57,7 @@
                         <% if ((boolean) request.getAttribute("check")) {%>
                         <form class="mb-2" action="answerquestion">
                             <input type="hidden" name="action" value="answer">
-                            <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
+                            <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}">
                             <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer"></textarea>
                             <input type="submit" class="btn btn-primary my-3" value="SEND">
                         </form>
@@ -81,7 +81,7 @@
                             <%
                                 if (item.getStudent().getId() == id) {
                             %>
-                            <a href="answerquestion?action=edit&exercise_id=${requestScope.exercise.excerciseID}" class="col-1 position-relative" style="text-decoration: none;">
+                            <a href="answerquestion?action=edit&exercise_id=${requestScope.exercise.exerciseID}" class="col-1 position-relative" style="text-decoration: none;">
                                 <span class="position-absolute top-0 start-0 translate-middle p-2" style="font-size: 40px; color: black">...</span>
                             </a>
                             <%}%>

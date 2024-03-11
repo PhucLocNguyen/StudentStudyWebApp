@@ -113,7 +113,7 @@ public class CreateQuestion extends HttpServlet {
         ExerciseDAO dao = new ExerciseDAO();
         try {
             int classID = Integer.parseInt(classID_raw);
-            if (dao.addExcercise(title, description, url, status, classID, lecturer_id)) {
+            if (dao.addExercise(title, description, url, status, classID, lecturer_id)) {
                 response.sendRedirect("insideClass?class_id=" + classID);
             } else {
                 request.setAttribute("error", "Fail roi");

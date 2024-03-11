@@ -20,14 +20,14 @@ import utils.DBUtils;
  */
 public class ExerciseDAO {
 
-    public boolean addExcercise(String title, String description, String media, String status, int classID, int lecturerID) {
+    public boolean addExercise(String title, String description, String media, String status, int classID, int lecturerID) {
         Connection con = null;
         PreparedStatement preStm = null;
         boolean check = false;
         String sql;
         try {
             con = DBUtils.getConnection();
-            sql = "INSERT INTO [dbo].[Excercises]\n"
+            sql = "INSERT INTO [dbo].[Exercises]\n"
                     + "           ([title], [media], [description], [status], [class_id], [lecturer_id])\n"
                     + "     VALUES\n"
                     + "           (?,?,?,?,?,?)";
@@ -51,7 +51,7 @@ public class ExerciseDAO {
 
     }
 
-    public List<ExerciseDTO> getAllExcercise(int classID) {
+    public List<ExerciseDTO> getAllExercise(int classID) {
         List<ExerciseDTO> list = new ArrayList<>();
         Connection con = null;
         PreparedStatement preStm = null;
@@ -62,15 +62,15 @@ public class ExerciseDAO {
         LectureDTO lecturer = null;
         LectureDAO lectureDao = new LectureDAO();
         try {
-            sql = "SELECT [excercise_id]\n"
+            sql = "SELECT [exercise_id]\n"
                     + "      ,[title]\n"
                     + "      ,[media]\n"
                     + "      ,[description]\n"
                     + "      ,[status]\n"
                     + "      ,[created_date]\n"
                     + "      ,[class_id]\n"
-                    + "      ,[lecturer_id]\n"
-                    + "  FROM [dbo].[Excercises] WHERE [class_id] = ? ";
+                    + "      ,[lecturer_id]\n" +
+            "  FROM [dbo].[Exercises] WHERE [class_id] = ? ";
             con = DBUtils.getConnection();
             preStm = con.prepareStatement(sql);
             preStm.setInt(1, classID);
@@ -78,7 +78,7 @@ public class ExerciseDAO {
 
             if (rs != null) {
                 while (rs.next()) {
-                    int id = rs.getInt("excercise_id");
+                    int id = rs.getInt("exercise_id");
                     String title = rs.getString("title");
                     String media = rs.getString("media");
                     String description = rs.getString("description");
@@ -100,37 +100,37 @@ public class ExerciseDAO {
         return list;
     }
 
-    public ExerciseDTO loadExcercise(int excerciseId) {
+    public ExerciseDTO loadExercise(int exerciseId) {
         Connection con = null;
         PreparedStatement preStm = null;
         String sql = "";
-        ExerciseDTO excercise = new ExerciseDTO();
+        ExerciseDTO exercise = new ExerciseDTO();
         ClassesDAO classDao = new ClassesDAO();
         LectureDAO lectureDao = new LectureDAO();
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT *  FROM Excercises WHERE excercise_id = ? ";
+            sql = "SELECT *  FROM Exercises WHERE exercise_id = ? ";
             preStm = con.prepareCall(sql);
-            preStm.setInt(1, excerciseId);
+            preStm.setInt(1, exerciseId);
             ResultSet rs = preStm.executeQuery();
             if (rs != null) {
-                while(rs.next()){
-                excercise.setExcerciseID(rs.getInt("excercise_id"));
-                excercise.setTitle(rs.getString("title"));
-                excercise.setMedia(rs.getString("media"));
-                excercise.setDescription(rs.getString("description"));
-                excercise.setStatus(rs.getString("status"));
-                excercise.setCreatedDate(rs.getDate("created_date"));
-                excercise.setClasses(classDao.showClassById(rs.getInt("class_id")));
-                excercise.setLecturer(lectureDao.searchLectureById(rs.getInt("lecturer_id")));
+                while (rs.next()) {
+                    exercise.setExerciseID(rs.getInt("exercise_id"));
+                    exercise.setTitle(rs.getString("title"));
+                    exercise.setMedia(rs.getString("media"));
+                    exercise.setDescription(rs.getString("description"));
+                    exercise.setStatus(rs.getString("status"));
+                    exercise.setCreatedDate(rs.getDate("created_date"));
+                    exercise.setClasses(classDao.showClassById(rs.getInt("class_id")));
+                    exercise.setLecturer(lectureDao.searchLectureById(rs.getInt("lecturer_id")));
                 }
             }
             con.close();
 
         } catch (SQLException e) {
-            System.out.println("LoadExercise SQL wrong: "+e.getMessage());
+            System.out.println("LoadExercise SQL wrong: " + e.getMessage());
             e.printStackTrace();
         }
-        return excercise;
+        return exercise;
     }
 }

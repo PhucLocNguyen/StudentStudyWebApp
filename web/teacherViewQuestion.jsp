@@ -62,7 +62,7 @@
                                 for (DoDTO elem : listDoAnswer) {
                                     if (elem != null) {
                             %>
-                            <a href="#myModal" class="card rounded-4 text-decoration-none my-2 answerSubmitted" id="student<%=elem.getStudent().getId()%>" style="min-height: 5rem;" data-bs-toggle="modal" exercise-id="<%=elem.getExercise().getExcerciseID() %>" student-id="<%= elem.getStudent().getId()%>">
+                            <a href="#myModal" class="card rounded-4 text-decoration-none my-2 answerSubmitted" id="student<%=elem.getStudent().getId()%>" style="min-height: 5rem;" data-bs-toggle="modal" exercise-id="<%=elem.getExercise().getExerciseID()%>" student-id="<%= elem.getStudent().getId()%>">
                                 <div class="card-body row align-content-center justify-content-center">
                                     <div class="col-lg-9">
                                         <h5 class="card-title fs-3"><%=elem.getStudent().getName()%></h5>

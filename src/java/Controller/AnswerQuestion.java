@@ -71,7 +71,7 @@ public class AnswerQuestion extends HttpServlet {
             System.out.println("Number format wrong: " + e.getMessage());
             e.printStackTrace();
         }
-        ExerciseDTO exercise = exerciseDAO.loadExcercise(exercise_id);
+        ExerciseDTO exercise = exerciseDAO.loadExercise(exercise_id);
         request.setAttribute("exercise", exercise);
 
         if (action.equals("") || action.equals("answer")) {

@@ -88,7 +88,7 @@
                                 </div>
                             </div>     
                             <input type="hidden" name="action" value="update">
-                            <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}">
+                            <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}">
                         </form>
 
                     </div>
@@ -120,7 +120,7 @@
                             <button type="submit" class="btn btn-danger" >Xoá</button>
                         </div>
                         <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="exercise_id" value="${requestScope.exercise.excerciseID}"> 
+                        <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}"> 
                     </form>
 
                 </div>

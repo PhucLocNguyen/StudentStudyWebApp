@@ -63,11 +63,11 @@
                         <div class="col-lg-8">
 
                             <%
-                                if (request.getAttribute("listExcercise") != null) {
-                                    List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExcercise");
+                                if (request.getAttribute("listExercise") != null) {
+                                    List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
 
                                     for (ExerciseDTO exc : list) {%>
-                            <a href="<%="excerciseView?excercise_id=" + exc.getExcerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                            <a href="<%="excerciseView?excercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
                                     <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
@@ -98,11 +98,11 @@
 
 
                             <%
-                                if (request.getAttribute("listExcercise") != null) {
-                                    List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExcercise");
+                                if (request.getAttribute("listExercise") != null) {
+                                    List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
 
                                     for (ExerciseDTO exc : list) {%>
-                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExcerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
                                     <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%=exc.getCreatedDate()%></span>
@@ -121,7 +121,7 @@
 
                                     <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
                                     <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
-                                    <a href="#myModal" role="button" class="btn btn-primary d-block w-100 mb-2 mt-2" data-bs-toggle="modal">Xem tổng điểm của tôi</a>
+                                    <a href="#myModal" role="button" class="btn btn-primary d-block w-100 mb-2 mt-2" data-bs-toggle="modal" data-class-id ="${requestScope.classes.id}" data-student-id ="<%= id%>" onclick="showPopup(this)">Xem tổng điểm của tôi</a>
                                     <button class="btn btn-danger d-block w-100">Thoát lớp học</button>
                                 </div>
                             </div>
@@ -131,19 +131,7 @@
                     <!-- Modal HTML -->
                     <div id="myModal" class="modal fade" tabindex="-1">
                         <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Confirmation</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Do you want to save changes to this document before closing?</p>
-                                    <p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <% } %>
@@ -154,7 +142,74 @@
         </div>
         <%@include file="./Components/Footer.jsp" %>
 
+        <script>
+            var selectModal = document.querySelector("div#myModal > .modal-dialog");
+            function showPopup(element) {
+                selectModal.innerHTML = '<div class="spinner"></div>';
+                var classId = element.getAttribute("data-class-id");
+                var studentId = element.getAttribute("data-student-id")
+                $.ajax({
+                    url: "enroll-class",
+                    method: "GET",
+                    data: {class_id: classId},
+                    success: function (data) {
+                        // Xử lý dữ liệu nhận được ở đây
+                        console.log("Data from json: " + data.name);
+                        selectModal.innerHTML = '<div class="modal-content">' +
+                                '<div class="modal-header">' +
+                                '<h5 class="modal-title">Thông tin chi tiết lớp học ' + data.name + '</h5>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
+                                '</div>' +
+                                '<form accept-charset="UTF-8" action="enroll-class" method="POST" id="formEnrollClass">' +
+                                '<div class="modal-body">' +
+                                '<p class="text-primary mb-1">Giảng viên ' + data.lecturer.name + ' </p>' +
+                                '<p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>' +
+                                '<p class="text-secondary mb-1">' + data.description + '</p>' +
+                                '<p class="text-primary mb-1">Password</p>' +
+                                '<input type="password" class="form-control" name="password" id="passwordInput"/>' +
+                                '<input type="hidden" name="class_id" value="' + data.id + '">' +
+                                '<p class="card-text text-danger" id="messageError"></p>' +
+                                '<input type="checkbox" onclick="myFunction(0)"> Show Password' +
+                                '</div>' +
+                                '<div class="modal-footer">' +
+                                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>' +
+                                '<button type="submit" class="btn btn-primary">Enroll</button>' +
+                                '</div>' +
+                                '</form>' +
+                                '</div>';
+                        var getFormSubmit = document.querySelector("#formEnrollClass");
+                        getFormSubmit.addEventListener("submit", (event) => {
+                            console.log(event);
+                            event.preventDefault();
+                            getDataFormEvent = {
+                                password: event.srcElement[0].value,
+                                class_id: event.srcElement[1].value
+                            };
 
+                            $.ajax({
+                                url: "enroll-class",
+                                method: "POST",
+                                data: {
+                                    class_id: getDataFormEvent.class_id,
+                                    password: getDataFormEvent.password
+                                }, success: function (msg) {
+                                    var redirectUrl = msg;
+                                    console.log(msg);
+                                    window.location.href = redirectUrl;
+                                }, error: function (xhr, status, error) {
+                                    $("#messageError").html("Wrong password, please try another password!");
+                                }
+                            })
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Xử lý lỗi nếu có
+                        console.log("Lỗi: " + error);
+                    }
+                });
+
+            }
+        </script>
     </body>
 
 </html>

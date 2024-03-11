@@ -76,12 +76,12 @@ public class InsideClass extends HttpServlet {
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
         ExerciseDAO dao = new ExerciseDAO();
-        List<ExerciseDTO> lisExc = dao.getAllExcercise(class_id);     
+        List<ExerciseDTO> lisExc = dao.getAllExercise(class_id);     
         
         
         if (classesDTO != null) {
             request.setAttribute("classes", classesDTO);
-            request.setAttribute("listExcercise", lisExc);
+            request.setAttribute("listExercise", lisExc);
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);
         } else {
             response.sendError(400, "Get class id Error");
