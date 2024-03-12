@@ -8,6 +8,9 @@ package Controller;
 import Model.ClassesDAO;
 import Model.ClassesDTO;
 import Model.EnrollDAO;
+
+import Model.LectureDTO;
+
 import Model.StudentDTO;
 import java.io.File;
 import java.io.IOException;
@@ -49,28 +52,42 @@ public class Home extends HttpServlet {
 
             EnrollDAO enrollDAO = new EnrollDAO();
             List<Integer> arrayIdClass = new ArrayList<>();
-            HttpSession session = request.getSession();
-            String getRole = (String) session.getAttribute("role");
-            if (getRole.equals("student")) {
-                StudentDTO student = (StudentDTO) session.getAttribute("user");
-                arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-                if (arrayIdClass != null) {
-
-                    for (Integer arrayIdClas : arrayIdClass) {
-                        ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                        classLlistEnrolled.add(classEnrolled);
-                    }
-                }
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return;
             }
+            
+            if (session.getAttribute("user")!=null) {
+                String getRole = (String) session.getAttribute("role");
+                if (getRole.equals("student")) {
+                    StudentDTO student = (StudentDTO) session.getAttribute("user");
+                    arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
+                    if (arrayIdClass != null) {
 
-            request.setAttribute("classListEnrolled", classLlistEnrolled);
-            request.setAttribute("class_list", classList);
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
+                        for (Integer arrayIdClas : arrayIdClass) {
+                            ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
+                            classLlistEnrolled.add(classEnrolled);
+                        }
+                    }
+                }else{
+                    LectureDTO lecture = (LectureDTO) session.getAttribute("user");
+                    classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId());
+                }
 
+                request.setAttribute("classListEnrolled", classLlistEnrolled);
+                request.setAttribute("class_list", classList);
+                request.getRequestDispatcher("home.jsp").forward(request, response);
+
+            } else {
+                request.getRequestDispatcher("logout").forward(request, response);
+            }
         }
+        /* TODO output your page here. You may use following sample code. */
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on  the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

@@ -7,8 +7,13 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
+
+import Model.DoDAO;
+import Model.DoDTO;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
+import Model.StudentDTO;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,6 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -62,17 +69,35 @@ public class InsideClass extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         int class_id = Integer.parseInt(request.getParameter("class_id"));
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
-        
         ExerciseDAO dao = new ExerciseDAO();
-        List<ExerciseDTO> lisExc = dao.getAllExercise(class_id);     
-        
-        
+        List<ExerciseDTO> lisExc = dao.getAllExercise(class_id);
+        int student_id = 0;
+
+        String role = (String) session.getAttribute("role");
+        if (role.equals("student")) {
+            StudentDTO student = (StudentDTO) session.getAttribute("user");
+            student_id = student.getId();
+        }
+
+        List<DoDTO> listScore = new DoDAO().listScore(student_id, class_id);
         if (classesDTO != null) {
-            request.setAttribute("class", classesDTO);
-            request.setAttribute("listExcercise", lisExc);
+            request.setAttribute("listScore", listScore);
+            request.setAttribute("classes", classesDTO);
+            request.setAttribute("listExercise", lisExc);
+
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);
         } else {
             response.sendError(400, "Get class id Error");

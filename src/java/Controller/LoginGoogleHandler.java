@@ -77,21 +77,29 @@ public class LoginGoogleHandler extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String code = request.getParameter("code");
         String msg = "Login Failed please use @FPT gmail";
-        HttpSession session = request.getSession();
+
+        
 
         String accessToken = GoogleUtils.getToken(code);
         StudentDTO user = GoogleUtils.getUserInfo(accessToken);
-        if (user != null) {
+        System.out.println(user.getEmail());
+        if(user.getEmail().contains("@fpt.edu.vn")){
+            if (user != null) {
             StudentDTO userLogin = StudentDAO.login(user);
             if (userLogin != null) {
+                HttpSession session = request.getSession(true);
                 System.out.println("Servlet image: "+userLogin.getThumbnail());
                 session.setAttribute("user", userLogin);
                 session.setAttribute("role", "student");
                 request.setAttribute("msg", msg);
                 response.sendRedirect("home");
             }
-        } else {
-            request.setAttribute("msg", msg);
+
+        }
+        }
+        else {
+            request.setAttribute("error", msg);
+
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 

@@ -89,7 +89,17 @@ public class CreateClass extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String name, imageUrl, password, description;
-        HttpSession session = request.getSession();
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
+
         LectureDTO user = (LectureDTO) session.getAttribute("user");
         int lecturer_id = user.getId();
 
@@ -108,7 +118,9 @@ public class CreateClass extends HttpServlet {
             request.setAttribute("message", "Failed !!!");
         }
 
-        request.getRequestDispatcher("MyCourse.jsp").forward(request, response);
+
+        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
+
     }
 
     /**

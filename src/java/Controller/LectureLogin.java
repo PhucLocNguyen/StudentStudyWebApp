@@ -76,19 +76,24 @@ public class LectureLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email, password;
-        HttpSession session = request.getSession();
-        LectureDTO user = null;
+
         email = request.getParameter("email");
         password = request.getParameter("password");
-        LectureDAO lecture_DAO = new LectureDAO();
-        user = lecture_DAO.login(email, password);
-        if (user != null) {
-            session.setAttribute("user", user);
-            session.setAttribute("role", "lecturer");
-            response.sendRedirect("home");
-        } else {
-            request.setAttribute("error", "Email or Password is incorrect!");
+        if (email == null & password == null) {
             request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            LectureDAO lecture_DAO = new LectureDAO();
+            LectureDTO user = lecture_DAO.login(email, password);
+            if (user != null) {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("user", user);
+                session.setAttribute("role", "lecturer");
+                response.sendRedirect("home");
+            } else {
+                request.setAttribute("error", "Email or Password is incorrect!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+
         }
     }
 

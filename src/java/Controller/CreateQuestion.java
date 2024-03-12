@@ -55,7 +55,9 @@ public class CreateQuestion extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+
             out.println("<title>Servlet CreateQuestion</title>");            
+
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CreateQuestion at " + request.getContextPath() + "</h1>");
@@ -90,13 +92,26 @@ public class CreateQuestion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
         String title = request.getParameter("title");
-        String description = request.getParameter("description");       
-        HttpSession session = request.getSession();
+        String description = request.getParameter("description");
+
         LectureDTO user = (LectureDTO) session.getAttribute("user");
         int lecturer_id = user.getId();
         String classID_raw = request.getParameter("classId");
         String status = request.getParameter("status");
+
         
         String start_time = request.getParameter("start_time");
         String end_time = request.getParameter("end_time");
@@ -166,6 +181,7 @@ public class CreateQuestion extends HttpServlet {
         }
         return true;
     }
+
 
     /**
      * Returns a short description of the servlet.
