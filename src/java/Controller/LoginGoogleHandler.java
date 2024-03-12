@@ -77,6 +77,7 @@ public class LoginGoogleHandler extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String code = request.getParameter("code");
         String msg = "Login Failed please use @FPT gmail";
+
         
 
         String accessToken = GoogleUtils.getToken(code);
@@ -93,10 +94,12 @@ public class LoginGoogleHandler extends HttpServlet {
                 request.setAttribute("msg", msg);
                 response.sendRedirect("home");
             }
+
         }
         }
         else {
             request.setAttribute("error", msg);
+
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 

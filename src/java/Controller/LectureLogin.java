@@ -93,6 +93,7 @@ public class LectureLogin extends HttpServlet {
                 request.setAttribute("error", "Email or Password is incorrect!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
+
         }
     }
 

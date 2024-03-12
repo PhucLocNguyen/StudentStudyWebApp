@@ -1,6 +1,8 @@
+
 :root{
     --primary-color:#0d6efd;
 }
+
 #fr-logo{
     display:none;
 }
@@ -102,10 +104,12 @@ z-index: 999;
     min-width: 80px;
     height: fit-content;
 }
+
 #listStudentDone .activeBox{
     background-color: var(--primary-color);
     color:#fff;
 }
+
 @media (max-width: 768px) {
     .carousel-inner .carousel-item > div {
         display: none;

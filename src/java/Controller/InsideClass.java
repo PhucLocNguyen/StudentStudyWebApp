@@ -7,11 +7,13 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
+
 import Model.DoDAO;
 import Model.DoDTO;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
 import Model.StudentDTO;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -66,6 +69,7 @@ public class InsideClass extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
@@ -93,6 +97,7 @@ public class InsideClass extends HttpServlet {
             request.setAttribute("listScore", listScore);
             request.setAttribute("classes", classesDTO);
             request.setAttribute("listExercise", lisExc);
+
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);
         } else {
             response.sendError(400, "Get class id Error");

@@ -68,6 +68,7 @@ public class ClassesDAO {
             con.close();
         } catch (SQLException e) {
             System.out.println("SQL ERROR Checking CLass Password By ID: " + e.getMessage());
+
             e.getStackTrace();
         }
         return status;
@@ -87,7 +88,6 @@ public class ClassesDAO {
             preStm.setInt(1, class_id);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
-
             if (rs != null) {
                 if (rs.next()) {
                     lecture = lecturer_DAO.searchLectureById(rs.getInt(6));
@@ -96,7 +96,9 @@ public class ClassesDAO {
             }
             con.close();
         } catch (SQLException e) {
+
             System.err.println("SQL ERROR Show CLass By ID: " + e.getMessage());
+
             e.getStackTrace();
         }
         return classes;
@@ -111,7 +113,9 @@ public class ClassesDAO {
         List<ClassesDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
+
             sql = "SELECT c.class_id, c.name, c.thumbnail, c.password, c.description, c.lecturer_id FROM Classes c ORDER BY c.created_date DESC;";
+
             preStm = con.prepareStatement(sql);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
@@ -158,19 +162,25 @@ public class ClassesDAO {
     }
 
 
+
     public List<ClassesDTO> showClassWithKeyWord(String keyWord,String role) {
+
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
         String sql = "";
+
         String condition ="";
+
         LectureDTO lecture = null;
         List<ClassesDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
+
             sql = "SELECT c.class_id,c.name,c.thumbnail,c.password,c.description,c.lecturer_id FROM Classes c JOIN Lecturers l ON c.lecturer_id = l.lecturer_id WHERE c.name like ? ";
             condition = "and c.class_id not in (SELECT class_id FROM Enroll) ";
             if(role.equals("student")) sql +=condition;
+
             preStm = con.prepareStatement(sql);
             preStm.setString(1, "%" + keyWord + "%");
             rs = preStm.executeQuery();

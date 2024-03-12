@@ -5,23 +5,22 @@
  */
 package Controller;
 
-import Model.ClassesDAO;
-import Model.ClassesDTO;
+import Model.ExerciseDAO;
+import Model.ExerciseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
  *
- * @author User
+ * @author HA GIA KHANH
  */
-public class SearchingClass extends HttpServlet {
+public class ShowExcercise extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,23 +33,19 @@ public class SearchingClass extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ClassesDAO classdao = new ClassesDAO();
-        String keyWord = request.getParameter("keyWord");
-
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ShowExcercise</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ShowExcercise at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        if (session.getAttribute("user") == null) {
-            request.getRequestDispatcher("logout").forward(request, response);
-            return;
-        }
-        List<ClassesDTO> listSearching = classdao.showClassWithKeyWord(keyWord,(String)session.getAttribute("role"));
-        request.setAttribute("keyWord", keyWord);
-        request.setAttribute("listSearching", listSearching);
-        request.getRequestDispatcher("searching.jsp").forward(request, response);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -65,7 +60,11 @@ public class SearchingClass extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        List<ExcerciseDTO> lisExc = new ArrayList();
+//        ExcerciseDAO dao = new ExcerciseDAO();
+//        lisExc = dao.getAllExcercise();
+//        request.setAttribute("listExcercise", lisExc);
+//        request.getRequestDispatcher("insideClass").forward(request, response);
     }
 
     /**

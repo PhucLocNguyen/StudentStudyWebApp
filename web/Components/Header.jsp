@@ -19,6 +19,7 @@
             int id = 0;
             HttpSession getSession = request.getSession(false);
             if (getSession == null && session.getAttribute("user") == null) {
+
                 response.sendRedirect("login.jsp");
             } else {
                 getRole = (String) session.getAttribute("role");
@@ -138,6 +139,7 @@
                                     <a class="nav-link fs-5" href="#">Chinh sua thong tin tai khoan</a>
                                 </li>
                             </ul>
+
                             <form action="logout" method="POST">
                                 <div class="d-grid col-12 mt-5">
                                     <button class="btn btn-primary" type="submit">Dang xuat</button>

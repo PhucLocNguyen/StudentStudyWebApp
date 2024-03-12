@@ -17,6 +17,7 @@
         <servlet-class>Controller.showAnswerInTeacher</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>CreateQuestion</servlet-name>
         <servlet-class>Controller.CreateQuestion</servlet-class>
     </servlet>

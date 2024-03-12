@@ -7,6 +7,9 @@ package Model;
 
 import java.sql.Date;
 
+import java.sql.Timestamp;
+
+
 /**
  *
  * @author HA GIA KHANH
@@ -19,10 +22,15 @@ public class ExerciseDTO {
     private ClassesDTO classes;
     private LectureDTO lecturer;
 
+    private Date startDate;
+    private Date endDate;
+
+
     public ExerciseDTO() {
     }
 
-    public ExerciseDTO(int exerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer) {
+
+    public ExerciseDTO(int exerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer, Date startDate, Date endDate) {
         this.exerciseID = exerciseID;
         this.title = title;
         this.media = media;
@@ -31,14 +39,16 @@ public class ExerciseDTO {
         this.createdDate = createdDate;
         this.classes = classes;
         this.lecturer = lecturer;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public int getExerciseID() {
+    public int getExcerciseID() {
         return exerciseID;
     }
 
-    public void setExerciseID(int exerciseID) {
-        this.exerciseID = exerciseID;
+    public void setExcerciseID(int excerciseID) {
+        this.exerciseID = excerciseID;
     }
 
     public String getTitle() {
@@ -95,6 +105,22 @@ public class ExerciseDTO {
 
     public void setLecturer(LectureDTO lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
     
     

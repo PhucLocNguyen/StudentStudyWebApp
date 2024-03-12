@@ -17,6 +17,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
@@ -51,7 +55,9 @@ public class CreateQuestion extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateQuestion</title>");
+
+            out.println("<title>Servlet CreateQuestion</title>");            
+
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CreateQuestion at " + request.getContextPath() + "</h1>");
@@ -86,6 +92,7 @@ public class CreateQuestion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
@@ -99,30 +106,82 @@ public class CreateQuestion extends HttpServlet {
         }
         String title = request.getParameter("title");
         String description = request.getParameter("description");
+
         LectureDTO user = (LectureDTO) session.getAttribute("user");
         int lecturer_id = user.getId();
         String classID_raw = request.getParameter("classId");
         String status = request.getParameter("status");
 
+        
+        String start_time = request.getParameter("start_time");
+        String end_time = request.getParameter("end_time");
+        
+        //java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        
+        java.util.Date start_date= null, end_date = null;
+        try {
+            start_date = sdf.parse(start_time);
+            end_date = sdf.parse(end_time);
+        } catch (ParseException e) {
+            
+        }
+//        String datetime = df.format(date);
+//        try {
+//            date = df.parse(datetime);
+//        } catch (ParseException ex) {
+//            
+//        }
+        
+//        System.out.println(datetime);
+        Timestamp start_timestamp = new Timestamp(start_date.getTime());
+        Timestamp end_timestamp = new Timestamp(end_date.getTime());
+        
+        
+//        System.out.println(timestamp);
         //media
         Part filePart = request.getPart("thumbnail");
         System.out.println(filePart.getSubmittedFileName());
         FileUtils fileUtils = new FileUtils();
         String url = fileUtils.insertImage(filePart);
-//        String url = "loiquai.jpg";
+
         ExerciseDAO dao = new ExerciseDAO();
+        
         try {
             int classID = Integer.parseInt(classID_raw);
-            if (dao.addExercise(title, description, url, status, classID, lecturer_id)) {
-                response.sendRedirect("insideClass?class_id=" + classID);
+            
+            if (!validateDates(start_timestamp, end_timestamp)) {
+                request.setAttribute("timeerror", "End date must be after start date");
+                request.setAttribute("title", title);
+//                request.setAttribute("description", description);
+//                request.setAttribute("status", status);
+                request.setAttribute("thumbnail", filePart);
+                request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                return;
+            }
+            
+            if(dao.addExercise(title, description, url, status, classID, lecturer_id, start_timestamp, end_timestamp)) {
+                response.sendRedirect("insideClass?class_id="+classID);
             } else {
                 request.setAttribute("error", "Fail roi");
-                request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                request.getRequestDispatcher("createQuestion.jsp?class_id="+classID).forward(request, response);
             }
-
+            
         } catch (NumberFormatException e) {
         }
     }
+    
+    private boolean validateDates(Timestamp start, Timestamp end) {
+        if (start == null || end == null) {
+            return false;
+        }
+        if (start.after(end)) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Returns a short description of the servlet.
