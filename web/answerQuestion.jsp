@@ -58,9 +58,11 @@
                         <form class="mb-2" action="answerquestion">
                             <input type="hidden" name="action" value="answer">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}">
-                            <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer" id="froala-editor"></textarea>
+                            <p style="color: red">${requestScope.error}</p>
                             <input type="submit" class="btn btn-primary my-3" value="SEND">
                         </form>
+                            
                         <% } else {%>   
 
                         <!-- Single comment-->

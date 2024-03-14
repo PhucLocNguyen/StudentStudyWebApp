@@ -79,7 +79,7 @@
                                     List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
 
                                     for (ExerciseDTO exc : list) {%>
-                            <a href="<%="exerciseView?exercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                            <a href="exerciseView?exercise_id=<%=exc.getExerciseID()%>&class_id=<%=exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
                                     <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
@@ -87,7 +87,7 @@
                                 </div>
                             </a>
                             <%   }  %>
-                            
+
                             <% } %>
                         </div>
 
@@ -103,10 +103,28 @@
                         </div>
 
                     </div>
+                    <div style="display: flex; justify-content: center">
+                        <nav aria-label="...">
+                            <ul class="pagination pagination-sm">
+                                <%
+                                    int totalPage = (int) request.getAttribute("page");
+                                    for (int i = 1; i <= totalPage; i++) {
+                                %>
+                                <li class="page-item ">
+                                    <a class="page-link" href="insideClass?class_id=<%= getClass.getId()%>&page=<%=i%>" tabindex="-1"><%= i%></a>
+                                </li>
+                                <%
+                                    }
+                                %>
+                            </ul>
+                        </nav>
+                    </div>
+
                     <% } else { %>
                     <div class="row my-3">
                         <!-- Cac cau hoi trong lop -->
                         <div class="col-lg-8">
+                            
                             <%
                                 if (request.getAttribute("listExercise") != null) {
                                     List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
@@ -120,7 +138,8 @@
                                 </div>
                             </a>
                             <%   }
-                                } %>
+                                }%>
+                            
 
                         </div>
                         <!-- Ket thuc cua cau hoi trong lop hoc -->
@@ -136,12 +155,29 @@
                                 </div>
                             </div>
                         </div>
+                                    <div style="display: flex; justify-content: center">
+                                <nav aria-label="...">
+                                    <ul class="pagination pagination-sm">
+                                        <%
+                                            int totalPage = (int) request.getAttribute("page");
+                                            for (int i = 1; i <= totalPage; i++) {
+                                        %>
+                                        <li class="page-item ">
+                                            <a class="page-link" href="insideClass?class_id=<%= getClass.getId()%>&page=<%=i%>" tabindex="-1"><%= i%></a>
+                                        </li>
+                                        <%
+                                            }
+                                        %>
+                                    </ul>
+                                </nav>
+                            </div>
                     </div>
+                                    
 
                     <!-- Modal HTML -->
                     <div id="myModal" class="modal fade" tabindex="-1">
                         <div class="modal-dialog" style="min-width: 90%">
-                            
+
                         </div>
                     </div>
                     <% } %>
@@ -164,30 +200,30 @@
                     data: {class_id: classId, action: action},
                     success: function (data) {
                         // Xử lý dữ liệu nhận được ở đây
-                        console.log(data[0].student.name );
+                        console.log(data[0].student.name);
                         let tableHTML = '<div class="modal-content">' +
                                 '<div class="modal-header">' +
                                 '<h5 class="modal-title">Score: ' + data[0].student.name + '</h5>' +
                                 '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
-                                '</div>'+'<table style="width: 100%"><tr><td>Title</td><td>Answer</td><td>Status</td><td>Score</td></tr>';
-                        var average=0;
-                        data.forEach(function(item){
+                                '</div>' + '<table style="width: 100%"><tr><td>Title</td><td>Answer</td><td>Status</td><td>Score</td></tr>';
+                        var average = 0;
+                        data.forEach(function (item) {
                             let status;
                             if (item.solution === '') {
                                 status = 'Not answer';
                             } else {
                                 status = item.isGrade ? 'Graded' : 'Not graded';
                             }
-                            average+=item.score;
+                            average += item.score;
                             tableHTML
-                                    += '<tr>'+
-                                            '<td>'+item.exercise.title+'</td>'+
-                                            '<td>'+item.solution+'</td>'+
-                                            '<td>'+status+'</td>'+
-                                            '<td>'+item.score+'</td>'+
-                                        '</tr>';
+                                    += '<tr>' +
+                                    '<td>' + item.exercise.title + '</td>' +
+                                    '<td>' + item.solution + '</td>' +
+                                    '<td>' + status + '</td>' +
+                                    '<td>' + item.score + '</td>' +
+                                    '</tr>';
                         });
-                        tableHTML += '<tr style="color: red;font-size: 20px"><td colspan="3" style="text-align: center">Average Score:</td><td>'+average/data.length+'</td></tr></table></div>';
+                        tableHTML += '<tr style="color: red;font-size: 20px"><td colspan="3" style="text-align: center">Average Score:</td><td>' + average / data.length + '</td></tr></table></div>';
                         selectModal.innerHTML = tableHTML;
                     },
                     error: function (xhr, status, error) {

@@ -27,7 +27,9 @@ import javax.servlet.http.HttpSession;
  * @author User
  */
 public class AnswerQuestion extends HttpServlet {
-private Gson gson = new Gson();
+
+    private Gson gson = new Gson();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -61,7 +63,7 @@ private Gson gson = new Gson();
 
         int exercise_id = 0;
         int student_id = 0;
-       
+
         String role = (String) session.getAttribute("role");
         if (role.equals("student")) {
             StudentDTO student = (StudentDTO) session.getAttribute("user");
@@ -80,7 +82,13 @@ private Gson gson = new Gson();
             boolean check = false;
             if (action.equals("answer")) {
                 String answer = request.getParameter("answer");
-                doDAO.addAnswer(exercise_id, student_id, answer);
+                if (answer.trim().isEmpty()) {
+                    request.setAttribute("error", "Answer is not be a blank");
+                    check = true;
+                } else {
+                    doDAO.addAnswer(exercise_id, student_id, answer);
+
+                }
             } else {
                 DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
                 if (Do.getStudent() == null) {
@@ -106,17 +114,17 @@ private Gson gson = new Gson();
             doDAO.delete(exercise_id, student_id);
             request.setAttribute("check", true);
             request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
-        }else if (action.equals("score")) {
+        } else if (action.equals("score")) {
             int class_id = 0;
             try {
-                
+
                 class_id = Integer.parseInt(request.getParameter("class_id"));
             } catch (NumberFormatException e) {
                 System.out.println("Number format wrong: " + e.getMessage());
                 e.printStackTrace();
             }
-            List<DoDTO> listScore = doDAO.listScore(student_id, class_id,role);
-            System.out.println("listScoreSize: "+listScore.size());
+            List<DoDTO> listScore = doDAO.listScore(student_id, class_id, role);
+            System.out.println("listScoreSize: " + listScore.size());
             String listScoreJson = gson.toJson(listScore);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
