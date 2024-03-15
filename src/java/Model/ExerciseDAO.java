@@ -51,54 +51,6 @@ public class ExerciseDAO {
 
     }
 
-    public List<ExerciseDTO> getAllExercise(int classID) {
-        List<ExerciseDTO> list = new ArrayList<>();
-        Connection con = null;
-        PreparedStatement preStm = null;
-        String sql;
-        ExerciseDTO exc = new ExerciseDTO();
-        ClassesDTO classes = null;
-        ClassesDAO classDao = new ClassesDAO();
-        LectureDTO lecturer = null;
-        LectureDAO lectureDao = new LectureDAO();
-        try {
-            sql = "SELECT [exercise_id]\n"
-                    + "      ,[title]\n"
-                    + "      ,[media]\n"
-                    + "      ,[description]\n"
-                    + "      ,[status]\n"
-                    + "      ,[created_date]\n"
-                    + "      ,[class_id]\n"
-                    + "      ,[lecturer_id]\n" +
-            "  FROM [dbo].[Exercises] WHERE [class_id] = ? ";
-            con = DBUtils.getConnection();
-            preStm = con.prepareStatement(sql);
-            preStm.setInt(1, classID);
-            ResultSet rs = preStm.executeQuery();
-
-            if (rs != null) {
-                while (rs.next()) {
-                    int id = rs.getInt("exercise_id");
-                    String title = rs.getString("title");
-                    String media = rs.getString("media");
-                    String description = rs.getString("description");
-                    String status = rs.getString("status");
-                    Date created_date = rs.getDate("created_date");
-                    int lectureID = rs.getInt("lecturer_id");
-                    classes = classDao.showClassById(classID);
-                    lecturer = lectureDao.searchLectureById(lectureID);
-                    exc = new ExerciseDTO(id, title, media, description, status, created_date, classes, lecturer);
-                    list.add(exc);
-                }
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-
-        return list;
-    }
 
     public ExerciseDTO loadExercise(int exerciseId) {
         Connection con = null;
@@ -133,4 +85,75 @@ public class ExerciseDAO {
         }
         return exercise;
     }
+
+    public int totalExercise(int classID, String role) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        int countRow = 0;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT COUNT(*) FROM Exercises WHERE class_id = ? ";
+            if (role.equals("student")) {
+                sql += "AND status = 'Active' ";
+            }
+            preStm = con.prepareCall(sql);
+            preStm.setInt(1, classID);
+            ResultSet rs = preStm.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    countRow = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("countRow SQL wrong: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return countRow;
+    }
+
+    public List<ExerciseDTO> getExerciseOnPaging(int classID, String role, int page) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        List<ExerciseDTO> listExercise = new ArrayList<>();
+        ClassesDAO classDao = new ClassesDAO();
+        LectureDAO lectureDao = new LectureDAO();
+        try {
+            con = DBUtils.getConnection();
+            if(role.equals("student")){
+                sql = "SELECT * From\n"
+                    + "(SELECT ROW_NUMBER() OVER(ORDER BY start_date) AS number,* From Exercises WHERE class_id = ? AND status = 'Active'  ) as paging\n"
+                    + "WHERE number BETWEEN ?*3-2 and ?*3 ";
+            }else {
+                sql = "SELECT * From\n"
+                    + "(SELECT ROW_NUMBER() OVER(ORDER BY start_date) AS number,* From Exercises WHERE class_id = ? ) as paging\n"
+                    + "WHERE number BETWEEN ?*3-2 and ?*3 ";
+            }
+            
+            preStm = con.prepareCall(sql);
+            preStm.setInt(1, classID);
+            preStm.setInt(2, page);
+            preStm.setInt(3, page);
+            ResultSet rs = preStm.executeQuery();
+            if(rs!=null){
+                while(rs.next()){
+                    int id = rs.getInt("exercise_id");
+                    String title = rs.getString("title");
+                    String media = rs.getString("media");
+                    String description = rs.getString("description");
+                    String status = rs.getString("status");
+                    Date created_date = rs.getDate("created_date");
+                    int lectureID = rs.getInt("lecturer_id");
+                    ExerciseDTO exercise = new ExerciseDTO(id, title, media, description, status, created_date, classDao.showClassById(classID), lectureDao.searchLectureById(lectureID));
+                    listExercise.add(exercise);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("getExerciseOnPaging SQL wrong: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return listExercise;
+    }
+
 }

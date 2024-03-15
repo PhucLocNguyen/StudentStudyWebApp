@@ -19,6 +19,10 @@
         <link rel="stylesheet" href="css/froala_editor/froala_editor.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="./css/froala_editor/plugins/table.min.css"/>
+        <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
+        <script src="./js/froala_editor/froala_editor.pkgd.min.js"></script>
+        <script src="./js/froala_editor/plugins/image.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="./Assets/themify-icons/themify-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -58,9 +62,11 @@
                         <form class="mb-2" action="answerquestion">
                             <input type="hidden" name="action" value="answer">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}">
-                            <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Tra loi cau hoi" name="answer" id="froala-editor"></textarea>
+                            <p style="color: red">${requestScope.error}</p>
                             <input type="submit" class="btn btn-primary my-3" value="SEND">
                         </form>
+
                         <% } else {%>   
 
                         <!-- Single comment-->
@@ -93,5 +99,31 @@
             </div>
         </div>
         <%@include file="Components/Footer.jsp" %>
+        <script>
+            let editor = new FroalaEditor('#froala-editor', {
+                // Set the image upload URL.
+                entities: '',
+                imageUploadURL: 'upload-image',
+                imageUploadParams: {
+                    id: 'my_editor'
+                },
+                events: {
+                    'image.removed': function ($img) {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            // Image was removed.
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log('image was deleted');
+                            }
+                        };
+                        xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
+                        console.log($img);
+                        xhttp.send(JSON.stringify({
+                            src: $img[0].currentSrc
+                        }));
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

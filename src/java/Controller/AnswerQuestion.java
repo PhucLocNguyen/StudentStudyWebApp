@@ -11,6 +11,7 @@ import Model.ExerciseDAO;
 import Model.ExerciseDTO;
 import Model.StudentDAO;
 import Model.StudentDTO;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -20,12 +21,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringEscapeUtils;
+import utils.CharacterUtils;
 
 /**
  *
  * @author User
  */
 public class AnswerQuestion extends HttpServlet {
+
+    private Gson gson = new Gson();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,6 +45,7 @@ public class AnswerQuestion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
@@ -59,7 +65,7 @@ public class AnswerQuestion extends HttpServlet {
 
         int exercise_id = 0;
         int student_id = 0;
-       
+
         String role = (String) session.getAttribute("role");
         if (role.equals("student")) {
             StudentDTO student = (StudentDTO) session.getAttribute("user");
@@ -78,7 +84,13 @@ public class AnswerQuestion extends HttpServlet {
             boolean check = false;
             if (action.equals("answer")) {
                 String answer = request.getParameter("answer");
-                doDAO.addAnswer(exercise_id, student_id, answer);
+                if (answer.trim().isEmpty()) {
+                    request.setAttribute("error", "Answer is not be a blank");
+                    check = true;
+                } else {
+                    doDAO.addAnswer(exercise_id, student_id, answer);
+
+                }
             } else {
                 DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
                 if (Do.getStudent() == null) {
@@ -104,6 +116,29 @@ public class AnswerQuestion extends HttpServlet {
             doDAO.delete(exercise_id, student_id);
             request.setAttribute("check", true);
             request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
+        } else if (action.equals("score")) {
+            int class_id = 0;
+            List<DoDTO> listScore = null;
+            try {
+                class_id = Integer.parseInt(request.getParameter("class_id"));
+            } catch (NumberFormatException e) {
+                System.out.println("Number format wrong: " + e.getMessage());
+                e.printStackTrace();
+            }
+            if (role.equals("lecturer")) {
+                int getStudentID = Integer.parseInt(request.getParameter("student_id"));
+                student_id = getStudentID;
+            }
+            listScore = doDAO.listScore(student_id, class_id, role);
+            if (listScore.size() > 0) {
+                String listScoreJson = gson.toJson(listScore);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out.print(listScoreJson);
+                out.flush();
+            } else {
+                response.setStatus(401);
+            }
         }
 
     }

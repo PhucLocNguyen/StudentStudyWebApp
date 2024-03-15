@@ -72,14 +72,33 @@ public class InsideClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-        int class_id = Integer.parseInt(request.getParameter("class_id"));
+        int class_id = 0;
+        try {
+            class_id = Integer.parseInt(request.getParameter("class_id"));
+        } catch (NumberFormatException e) {
+            class_id = -1;
+        }
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (NumberFormatException e) {
+                System.out.println("Number format in InsideClass: " + e.getMessage());
+            }
+        }
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
         ExerciseDAO dao = new ExerciseDAO();
-        List<ExerciseDTO> lisExc = dao.getAllExercise(class_id);     
-        
-        
+        String role = (String) session.getAttribute("role");
+        List<ExerciseDTO> lisExc = dao.getExerciseOnPaging(class_id, role, page);
+        int totalExercise = new ExerciseDAO().totalExercise(class_id, role);
+        int endPage = totalExercise / 3;
+        if (totalExercise % 3 != 0) {
+            endPage++;
+        }
+//        
         if (classesDTO != null) {
+            request.setAttribute("page", endPage);
             request.setAttribute("classes", classesDTO);
             request.setAttribute("listExercise", lisExc);
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);

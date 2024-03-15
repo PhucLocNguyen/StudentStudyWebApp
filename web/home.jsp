@@ -79,11 +79,9 @@
                     <div class="row mt-3 mb-4">
                         <% List<ClassesDTO> list = (List<ClassesDTO>) request.getAttribute("class_list");
                             if (list != null) {
-                                int count = 0;
                                 EnrollDAO enrollDAO = new EnrollDAO();
                                 for (ClassesDTO items : list) {
                                     if (getRole.equals("student") && !enrollDAO.isEnrolledClass(id, items.getId())) {
-                                        count++;
 
                         %>
                         <div class="col-lg-4">
@@ -92,7 +90,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><%=items.getName()%></h5>
                                     <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
-                                    <a href="#myModal" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-class-id = "<%= items.getId()%>" onclick="showPopup(this)">Show more</a>
+                                    <a href="#myModal" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-class-id="<%= items.getId()%>" onclick="showPopup(this)">Show more</a>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +148,7 @@
                                 }
                             }
                         %>
-                      
+
                         <div id="myModal" class="modal fade" tabindex="-1">
                             <div class="modal-dialog">
 
@@ -207,8 +205,8 @@
                                 '</div>';
                         var getFormSubmit = document.querySelector("#formEnrollClass");
                         getFormSubmit.addEventListener("submit", (event) => {
-                            console.log(event);
                             event.preventDefault();
+                            console.log(event);
                             getDataFormEvent = {
                                 password: event.srcElement[0].value,
                                 class_id: event.srcElement[1].value
@@ -219,11 +217,11 @@
                                 method: "POST",
                                 data: {
                                     class_id: getDataFormEvent.class_id,
-                                    password: getDataFormEvent.password
+                                    password: getDataFormEvent.password,
+                                    action: "passwordChecking"
                                 }, success: function (msg) {
                                     var redirectUrl = msg;
                                     console.log(msg);
-                                    window.location.href = redirectUrl;
                                 }, error: function (xhr, status, error) {
                                     $("#messageError").html("Wrong password, please try another password!");
                                 }

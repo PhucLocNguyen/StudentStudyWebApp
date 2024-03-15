@@ -219,4 +219,45 @@ public class DoDAO {
         }
         return output;
     }
+    
+    public List<DoDTO> listScore(int student_id, int class_id,String role) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        List<DoDTO> listScore = new ArrayList<>();
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT e.exercise_id,d.score,d.solution,d.is_grade FROM Exercises e \n"
+                    + "LEFT JOIN (SELECT exercise_id, student_id, score, solution,is_grade FROM Do WHERE student_id = ? )d\n"
+                    + "ON e.exercise_id = d.exercise_id WHERE e.class_id = ? ";
+            if(role.equals("student")){
+                sql += "AND e.status = 'active'";
+            }
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, student_id);
+            preStm.setInt(2, class_id);
+            ResultSet rs = preStm.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    DoDTO Do = new DoDTO();
+                    Do.setExercise(new ExerciseDAO().loadExercise(rs.getInt("exercise_id")));
+                    Do.setStudent(new StudentDAO().showStudentById(student_id));
+                    
+                    if (rs.getString("solution") == null) {
+                        Do.setSolution("");
+                        Do.setScore(0);
+                    } else {
+                        Do.setSolution(rs.getString("solution"));
+                        Do.setScore(rs.getFloat("score"));
+                        Do.setIsGrade(rs.getBoolean("is_grade"));
+                    }
+                    listScore.add(Do);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error in listScore: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return listScore;
+    }
 }
