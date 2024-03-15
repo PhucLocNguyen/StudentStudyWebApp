@@ -158,16 +158,28 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
-            function myFunction() {
-                var x = document.querySelector("#passwordInput");
+                                        function myFunction() {
+                                            var x = document.querySelector("#passwordInput");
 
-                if (x.type === "password") {
-                    x.type = "text";
-                } else {
-                    x.type = "password";
-                }
-            }
+                                            if (x.type === "password") {
+                                                x.type = "text";
+                                            } else {
+                                                x.type = "password";
+                                            }
+                                        }
+                                        function showToast(message) {
+                                            Toastify({
+                                                text: message,
+                                                duration: 3000, // 3 seconds
+                                                close: true,
+                                                gravity: "top", // Position of toast message
+                                                position: "right", // Position of toast message
+                                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
+                                            }).showToast();
+                                        }
+
         </script>
         <script>
             var selectModal = document.querySelector("div#myModal > .modal-dialog");
@@ -220,8 +232,8 @@
                                     password: getDataFormEvent.password,
                                     action: "passwordChecking"
                                 }, success: function (msg) {
-                                    var redirectUrl = msg;
-                                    console.log(msg);
+                                    sessionStorage.setItem("toastMessage", "Enroll successful!!!");
+                                    window.location.href = msg;
                                 }, error: function (xhr, status, error) {
                                     $("#messageError").html("Wrong password, please try another password!");
                                 }

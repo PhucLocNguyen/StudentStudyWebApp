@@ -33,9 +33,19 @@
 
             <%                    List<ClassesDTO> listSearching = (List<ClassesDTO>) request.getAttribute("listSearching");
             %>
-            <div class="row">
-                <h3 class="fw-medium mb-1">Search results: <%= listSearching.size()%>
-                </h3>
+            <div class="row mt-3">
+                <div class="col-lg-6">
+                    <h3 class="fw-medium mb-1">Search results: <%= listSearching.size()%></h3>
+                </div>
+                <div class="col-lg-6">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+
             </div>
 
 

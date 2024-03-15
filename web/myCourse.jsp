@@ -37,11 +37,22 @@
 
                 <%  if (getRole != null && getRole.equals("lecturer")) {%>
                 <!-- Button HTML (to Trigger Modal) -->
-                <div class="row align-items-center">
-                    <div class="col-9">
-                        <h4 class="mb-0">Lớp học đang quản lý</h4>
+                <div class="row align-items-center justify-content-between mt-2">
+                    <div class="col-sm-12 col-lg-4">
+                        <h4 class="fs-2 mb-0">Classroom management</h4>
+
                     </div>
-                    <div class="col-3"><a href="#myModal" role="button" class="btn btn-primary text-center" data-bs-toggle="modal">Tạo lớp học</a></div>
+                    <div class="col-sm-12 col-lg-5">
+                        <select class="form-select" aria-label="Sort from A to Z">
+                            <option selected>Sort from A to Z</option>
+                            <option value="1">Sort from Z to A</option>
+                            <option value="2">Sort from newest to oldest</option>
+                            <option value="3">Sort from oldest to newest</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                        <a href="#myModal" role="button" class="btn btn-primary" data-bs-toggle="modal">Create</a>
+                    </div>
 
                 </div>
                 <div class="row mt-3 mb-4">
@@ -89,7 +100,7 @@
                                         <p class="text-primary mb-1">Password</p>
                                         <input type="password" class="form-control" name="password" id="passwordInput"/>
                                         <input type="checkbox" onclick="myFunction()"> Show Password
-
+                                        <input type="hidden" name="action" value="create">
                                         <script>
                                             function myFunction() {
                                                 var x = document.getElementById("passwordInput");

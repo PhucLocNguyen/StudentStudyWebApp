@@ -250,7 +250,26 @@
         %>
     </div>
     <%@include file="./Components/Footer.jsp" %>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <<script>
+                                        function showToast(message) {
+                                            Toastify({
+                                                text: message,
+                                                duration: 3000, // 3 seconds
+                                                close: true,
+                                                gravity: "top", // Position of toast message
+                                                position: "right", // Position of toast message
+                                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
+                                            }).showToast();
+                                        }
+                                        var toastMessage = sessionStorage.getItem("toastMessage");
 
+// Kiểm tra nếu có thông điệp, thì hiển thị toastify
+                                        if (toastMessage) {
+                                            showToast(toastMessage);
+                                            sessionStorage.removeItem("toastMessage"); // Xóa thông điệp sau khi hiển thị
+                                        }
+    </script>
     <script>
         var selectModal = document.querySelector("div#myModal1 > .modal-dialog");
         function showPopup(element) {
@@ -302,6 +321,9 @@
             });
 
         }
+        var toastMessage = sessionStorage.getItem("toastMessage");
+
+
     </script>
 </body>
 

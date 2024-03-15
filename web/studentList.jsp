@@ -26,9 +26,18 @@
 
     </head>
     <body>
-        <%@include file="./Components/Header.jsp" %>
+        <%@include file="Components/Header.jsp" %>
         <div class="bg-body-tertiary pt-3" >
             <div class="container">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="home">Home</a></li>
+                            <li class="breadcrumb-item"><a href="insideClass?class_id=${requestScope.classDetails.id}">Classroom</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Show list student in class</li>
+                        </ol>
+                    </nav>
+                </div>
                 <h1 class="text-center mb-3">List Student in classroom ${requestScope.classDetails.name}</h1>
                 <table class="table" id="id" summary="Student list">
                     <caption>... then see student list </caption>
@@ -67,56 +76,56 @@
         </div>
         <script>
             var selectModal = document.querySelector("div#myModal > .modal-dialog");
-        function showPopup(element) {
-            selectModal.innerHTML = '<div class="spinner"></div>';
-            var classId = element.getAttribute("data-class-id");
-            var action = element.getAttribute("data-action");
-            var student_id = element.getAttribute("student-id");
-            $.ajax({
-                url: "answerquestion",
-                method: "GET",
-                data: {class_id: classId,student_id: student_id, action: action},
-                success: function (data) {
-                    // Xử lý dữ liệu nhận được ở đây
-                    if (data.length > 0) {
-                        let tableHTML = '<div class="modal-content">' +
+            function showPopup(element) {
+                selectModal.innerHTML = '<div class="spinner"></div>';
+                var classId = element.getAttribute("data-class-id");
+                var action = element.getAttribute("data-action");
+                var student_id = element.getAttribute("student-id");
+                $.ajax({
+                    url: "answerquestion",
+                    method: "GET",
+                    data: {class_id: classId, student_id: student_id, action: action},
+                    success: function (data) {
+                        // Xử lý dữ liệu nhận được ở đây
+                        if (data.length > 0) {
+                            let tableHTML = '<div class="modal-content">' +
+                                    '<div class="modal-header">' +
+                                    '<h5 class="modal-title">Score: ' + data[0].student.name + '</h5>' +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
+                                    '</div>' + '<table style="width: 100%"><tr><td>Title</td><td>Answer</td><td>Status</td><td>Score</td></tr>';
+                            var average = 0;
+                            data.forEach(function (item) {
+                                let status;
+                                if (item.solution === '') {
+                                    status = 'Not answer';
+                                } else {
+                                    status = item.isGrade ? 'Graded' : 'Not graded';
+                                }
+                                average += item.score;
+                                tableHTML
+                                        += '<tr>' +
+                                        '<td>' + item.exercise.title + '</td>' +
+                                        '<td class="answerFormat">' + item.solution + '</td>' +
+                                        '<td>' + status + '</td>' +
+                                        '<td>' + item.score + '</td>' +
+                                        '</tr>';
+                            });
+                            tableHTML += '<tr style="color: red;font-size: 20px"><td colspan="3" style="text-align: center">Average Score:</td><td>' + average / data.length + '</td></tr></table></div>';
+                            selectModal.innerHTML = tableHTML;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Xử lý lỗi nếu có
+                        let tableHTML = '<div class="modal-content" style="min-height: 350px;">' +
                                 '<div class="modal-header">' +
-                                '<h5 class="modal-title">Score: ' + data[0].student.name + '</h5>' +
+                                '<h5 class="modal-title">Score: </h5>' +
                                 '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
-                                '</div>' + '<table style="width: 100%"><tr><td>Title</td><td>Answer</td><td>Status</td><td>Score</td></tr>';
-                        var average = 0;
-                        data.forEach(function (item) {
-                            let status;
-                            if (item.solution === '') {
-                                status = 'Not answer';
-                            } else {
-                                status = item.isGrade ? 'Graded' : 'Not graded';
-                            }
-                            average += item.score;
-                            tableHTML
-                                    += '<tr>' +
-                                    '<td>' + item.exercise.title + '</td>' +
-                                    '<td class="answerFormat">' + item.solution + '</td>' +
-                                    '<td>' + status + '</td>' +
-                                    '<td>' + item.score + '</td>' +
-                                    '</tr>';
-                        });
-                        tableHTML += '<tr style="color: red;font-size: 20px"><td colspan="3" style="text-align: center">Average Score:</td><td>' + average / data.length + '</td></tr></table></div>';
+                                '</div><p class="text-center fs-3 mt-3">There are currently no posts to display</p></div>';
                         selectModal.innerHTML = tableHTML;
                     }
-                },
-                error: function (xhr, status, error) {
-                    // Xử lý lỗi nếu có
-                    let tableHTML = '<div class="modal-content" style="min-height: 350px;">' +
-                            '<div class="modal-header">' +
-                            '<h5 class="modal-title">Score: </h5>' +
-                            '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
-                            '</div><p class="text-center fs-3 mt-3">There are currently no posts to display</p></div>';
-                    selectModal.innerHTML = tableHTML;
-                }
-            });
+                });
 
-        }
+            }
         </script>
-</body>
+    </body>
 </html>
