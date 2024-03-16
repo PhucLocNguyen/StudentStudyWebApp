@@ -60,17 +60,10 @@ public class Home extends HttpServlet {
                 String getRole = (String) session.getAttribute("role");
                 if (getRole.equals("student")) {
                     StudentDTO student = (StudentDTO) session.getAttribute("user");
-                    arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-                    if (arrayIdClass != null) {
-
-                        for (Integer arrayIdClas : arrayIdClass) {
-                            ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                            classLlistEnrolled.add(classEnrolled);
-                        }
-                    }
+                   classLlistEnrolled = classDAO.showClassOwnedByStudentID(student.getId(), "3");
                 }else{
                     LectureDTO lecture = (LectureDTO) session.getAttribute("user");
-                    classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId());
+                    classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId(),"3");
                 }
 
                 request.setAttribute("classListEnrolled", classLlistEnrolled);
