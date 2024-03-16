@@ -20,8 +20,8 @@ import utils.DBUtils;
  * @author HA GIA KHANH
  */
 public class ExerciseDAO {
-
     public boolean addExercise(String title, String description, String media, String status, int classID, int lecturerID, Timestamp start_time, Timestamp end_time) {
+
         Connection con = null;
         PreparedStatement preStm = null;
         boolean check = false;
@@ -132,8 +132,7 @@ public class ExerciseDAO {
             e.printStackTrace();
         }
         return exercise;
-    }
-    
+    }    
     public boolean deleteExercise (int id) {
         String sql = "DELETE FROM Exercises WHERE exercise_id = ? ";
         try {
@@ -147,8 +146,7 @@ public class ExerciseDAO {
             System.out.println(e.getMessage());
         }
         return false;
-    }
-    
+    }  
     public boolean updateExercise (int exerciseID, String title, String media, String description, String status, Timestamp start_date, Timestamp end_date) {
         String sql = "UPDATE Exercises SET title = ?,media = ?,description = ?,status =?,end_date =?,start_date = ?\n"
                 + " WHERE exercise_id = ? ";
@@ -185,12 +183,75 @@ public class ExerciseDAO {
         }
         return false;
     }
-    
-    public static void main(String[] args) {
-        ExerciseDAO dao = new ExerciseDAO();
-        ExerciseDTO ex = dao.loadExercise(1);
-        System.out.println(ex.toString());
+
+    public int totalExercise(int classID, String role) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        int countRow = 0;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT COUNT(*) FROM Exercises WHERE class_id = ? ";
+            if (role.equals("student")) {
+                sql += "AND status = 'Active' ";
+            }
+            preStm = con.prepareCall(sql);
+            preStm.setInt(1, classID);
+            ResultSet rs = preStm.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    countRow = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("countRow SQL wrong: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return countRow;
     }
-    
-    
+
+    public List<ExerciseDTO> getExerciseOnPaging(int classID, String role, int page) {
+        Connection con = null;
+        PreparedStatement preStm = null;
+        String sql = "";
+        List<ExerciseDTO> listExercise = new ArrayList<>();
+        ClassesDAO classDao = new ClassesDAO();
+        LectureDAO lectureDao = new LectureDAO();
+        try {
+            con = DBUtils.getConnection();
+            if(role.equals("student")){
+                sql = "SELECT * From\n"
+                    + "(SELECT ROW_NUMBER() OVER(ORDER BY start_date) AS number,* From Exercises WHERE class_id = ? AND status = 'Active'  ) as paging\n"
+                    + "WHERE number BETWEEN ?*3-2 and ?*3 ";
+            }else {
+                sql = "SELECT * From\n"
+                    + "(SELECT ROW_NUMBER() OVER(ORDER BY start_date) AS number,* From Exercises WHERE class_id = ? ) as paging\n"
+                    + "WHERE number BETWEEN ?*3-2 and ?*3 ";
+            }
+            
+            preStm = con.prepareCall(sql);
+            preStm.setInt(1, classID);
+            preStm.setInt(2, page);
+            preStm.setInt(3, page);
+            ResultSet rs = preStm.executeQuery();
+            if(rs!=null){
+                while(rs.next()){
+                    int id = rs.getInt("exercise_id");
+                    String title = rs.getString("title");
+                    String media = rs.getString("media");
+                    String description = rs.getString("description");
+                    String status = rs.getString("status");
+                    Date created_date = rs.getDate("created_date");
+                    int lectureID = rs.getInt("lecturer_id");
+                    ExerciseDTO exercise = new ExerciseDTO(id, title, media, description, status, created_date, classDao.showClassById(classID), lectureDao.searchLectureById(lectureID));
+                    listExercise.add(exercise);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("getExerciseOnPaging SQL wrong: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return listExercise;
+    }
+
 }

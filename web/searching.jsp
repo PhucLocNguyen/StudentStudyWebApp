@@ -33,9 +33,21 @@
 
             <%                    List<ClassesDTO> listSearching = (List<ClassesDTO>) request.getAttribute("listSearching");
             %>
-            <div class="row">
-                <h3 class="fw-medium mb-1">Search results: <%= listSearching.size()%>
-                </h3>
+            <div class="row mt-3">
+                <div class="col-lg-6">
+                    <h3 class="fw-medium mb-1">Search results: <%= listSearching.size()%></h3>
+                </div>
+                <div class="col-lg-6">
+                    <form action="searchingclass" id="formSelect">
+                        <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
+                            <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                            <option value="2" <% if ("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                            <option value="3" <% if ("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                            <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
+                        </select>
+                            <input type="hidden" name="keyWord" value="${requestScope.keyWord}">
+                    </form>
+                </div>
             </div>
 
 
@@ -176,5 +188,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+        <script>
+            function selectChanged() {
+                var formSelect = document.getElementById("formSelect");
+                formSelect.submit();
+            }
+        </script>
     </body>
 </html>

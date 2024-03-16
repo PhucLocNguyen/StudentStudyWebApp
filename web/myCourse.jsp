@@ -26,27 +26,40 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     </head>
 
     <body>
         <div class="container" style="min-height: 650px">
 
             <%@include file="./Components/Header.jsp" %>
-            <%! ClassesDAO classDAO = new ClassesDAO();%>
             <div class="container">
 
                 <%  if (getRole != null && getRole.equals("lecturer")) {%>
                 <!-- Button HTML (to Trigger Modal) -->
-                <div class="row align-items-center">
-                    <div class="col-9">
-                        <h4 class="mb-0">Lớp học đang quản lý</h4>
+                <div class="row align-items-center justify-content-between mt-2">
+                    <div class="col-sm-12 col-lg-4">
+                        <h4 class="fs-2 mb-0">Classroom management</h4>
+
                     </div>
-                    <div class="col-3"><a href="#myModal" role="button" class="btn btn-primary text-center" data-bs-toggle="modal">Tạo lớp học</a></div>
+                    <div class="col-sm-12 col-lg-5">
+                        <form action="showdashboard" id="formSelect">
+                            <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
+                                <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                                <option value="2" <% if ("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                                <option value="3" <% if ("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                                <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                        <a href="#myModal" role="button" class="btn btn-primary" data-bs-toggle="modal">Create</a>
+                    </div>
 
                 </div>
                 <div class="row mt-3 mb-4">
                     <%
-                        List<ClassesDTO> classOwned = classDAO.showClassOwnedByLectureID(id);
+                        List<ClassesDTO> classOwned = (List<ClassesDTO>) request.getAttribute("listClass");
                         for (ClassesDTO item : classOwned) {
 
                     %>
@@ -64,8 +77,6 @@
                     <%                }
                     %>
                 </div>
-
-
                 <!-- Modal HTML -->
                 <div id="myModal" class="modal fade" tabindex="-1">
                     <div class="modal-dialog">
@@ -89,7 +100,7 @@
                                         <p class="text-primary mb-1">Password</p>
                                         <input type="password" class="form-control" name="password" id="passwordInput"/>
                                         <input type="checkbox" onclick="myFunction()"> Show Password
-
+                                        <input type="hidden" name="action" value="create">
                                         <script>
                                             function myFunction() {
                                                 var x = document.getElementById("passwordInput");
@@ -120,6 +131,16 @@
                 </div>
                 <%} else {
                 %>
+                <div class="col-sm-12 col-lg-5">
+                    <form action="showdashboard" id="formSelect">
+                        <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
+                            <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                            <option value="2" <% if ("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                            <option value="3" <% if ("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                            <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
+                        </select>
+                    </form>
+                </div>
                 <div class="row mt-3 mb-4">
                     <%
                         List<ClassesDTO> listClass = (List<ClassesDTO>) request.getAttribute("listClass");
@@ -154,30 +175,38 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
-                                            let editor = new FroalaEditor('#froala-editor', {
-                                                // Set the image upload URL.
-                                                entities: '',
-                                                imageUploadURL: 'upload-image',
-                                                imageUploadParams: {
-                                                    id: 'my_editor'
-                                                },
-                                                events: {
-                                                    'image.removed': function ($img) {
-                                                        var xhttp = new XMLHttpRequest();
-                                                        xhttp.onreadystatechange = function () {
-                                                            // Image was removed.
-                                                            if (this.readyState == 4 && this.status == 200) {
-                                                                console.log('image was deleted');
-                                                            }
-                                                        };
-                                                        xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
-                                                        console.log($img);
-                                                        xhttp.send(JSON.stringify({
-                                                            src: $img[0].currentSrc
-                                                        }));
-                                                    }
+
+                                let editor = new FroalaEditor('#froala-editor', {
+                                    // Set the image upload URL.
+                                    entities: '',
+                                    imageUploadURL: 'upload-image',
+                                    imageUploadParams: {
+                                        id: 'my_editor'
+                                    },
+                                    events: {
+                                        'image.removed': function ($img) {
+                                            var xhttp = new XMLHttpRequest();
+                                            xhttp.onreadystatechange = function () {
+                                                // Image was removed.
+                                                if (this.readyState == 4 && this.status == 200) {
+                                                    console.log('image was deleted');
                                                 }
-                                            });
+                                            };
+                                            xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
+                                            console.log($img);
+                                            xhttp.send(JSON.stringify({
+                                                src: $img[0].currentSrc
+                                            }));
+                                        }
+                                    }
+                                });
+
+    </script>
+    <script>
+        function selectChanged() {
+            var formSelect = document.getElementById("formSelect");
+            formSelect.submit();
+        }
     </script>
 </body>
 </html> 

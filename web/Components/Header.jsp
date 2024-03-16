@@ -18,9 +18,7 @@
             String getRole = "";
             int id = 0;
             HttpSession getSession = request.getSession(false);
-            if (getSession == null && session.getAttribute("user") == null) {
-                response.sendRedirect("login.jsp");
-            } else {
+            if (getSession != null && session.getAttribute("user") != null) {
                 getRole = (String) session.getAttribute("role");
                 if (getRole.equals("lecturer")) {
                     LectureDTO user = (LectureDTO) session.getAttribute("user");
@@ -34,7 +32,6 @@
                     id = user.getId();
                 }
             }
-
 
         %>
         <div class="row mt-2">
@@ -63,7 +60,9 @@
                                     </li>
                                 </ul>
                                 <div class="d-grid col-12 mt-5">
-                                    <button class="btn btn-primary" type="button">Dang xuat</button>
+                                    <form action="logout">
+                                        <input type="submit" value="Logout" class="btn btn-primary" width="100%">
+                                    </form>
                                 </div>
                             </div>
                         </div>

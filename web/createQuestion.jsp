@@ -19,7 +19,6 @@
         <script src="./js/froala_editor/froala_editor.pkgd.min.js"></script>
         <script src="./js/froala_editor/plugins/image.min.js"></script>
         <link rel="stylesheet" href="./Assets/froala_editor/css/plugins/table.min.css">
-         Include the Tables plugin JS file 
         <script src="./js/froala_editor/plugins/table.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
@@ -54,6 +53,7 @@
             <%                    
                 String classId = request.getParameter("class_id");
                 String action = request.getParameter("action");
+
             %>
             <!-- Ket thuc tao lop hoc -->
 
@@ -66,7 +66,7 @@
                                     <h1 class="card-title fw-bolder fs-2">${not empty requestScope.nextaction?"Update question":"Create Question"}</h1>
 
                                     <label class="form-label fs-5 fw-medium">Tieu de cau hoi</label>
-                                    <input type="text" class="form-control" placeholder="Nhap ten cua lop hoc" name="title" value="${requestScope.title}">
+                                    <input type="text" class="form-control" placeholder="Nhap ten cua lop hoc" name="title">
                                     <div>
                                         <p class="form-label fs-5 fw-medium">Mo ta</p>
                                         <textarea id="froala-editor" class="form-control" rows="3" 
@@ -75,7 +75,7 @@
 
                                     <div>
                                         <p class="form-label fs-5 fw-medium">Tệp đính kèm</p>
-                                        <input type="file" class="form-control" id="inputGroupFile01" name="thumbnail" value="${requestScope.thumbnail}">
+                                        <input type="file" class="form-control" id="inputGroupFile01" name="thumbnail">
                                     </div>
 
                                     <!--                                        <label class="form-label fs-5 fw-medium">Tệp đính kèm</label>

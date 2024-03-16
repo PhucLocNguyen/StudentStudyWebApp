@@ -243,10 +243,8 @@ public class CreateQuestion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
     }
-
-    private boolean validateDates(Timestamp start, Timestamp end) {
+private boolean validateDates(Timestamp start, Timestamp end) {
         if (start == null && end == null) {
             return true;
         }

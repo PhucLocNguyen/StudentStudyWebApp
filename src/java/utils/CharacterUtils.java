@@ -5,6 +5,8 @@
  */
 package utils;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 /**
  *
  * @author ACER
@@ -29,4 +31,22 @@ public class CharacterUtils {
         str = str.replaceAll("Đ", "D");
         return str;
     }
+
+    public static String cleanHTML(String htmlAnswer) {
+        String cleanOutput = htmlAnswer.replaceAll("&gt;", "");
+        cleanOutput = cleanOutput.replaceAll("&lt;p", "");
+        return cleanOutput;
+    }
+
+    public static String filterInput(String input) {
+        // Lọc dữ liệu đầu vào để loại bỏ hoặc mã hóa các thẻ và kịch bản không an toàn
+        // Ở đây là một ví dụ đơn giản, bạn có thể cần một lớp lọc phức tạp hơn
+        return StringEscapeUtils.escapeHtml(input);
+    }
+
+    public static String escapeOutput(String output) {
+        // Escape dữ liệu đầu ra để ngăn chặn việc thực thi các kịch bản không mong muốn
+        return StringEscapeUtils.escapeHtml(output);
+    }
+
 }

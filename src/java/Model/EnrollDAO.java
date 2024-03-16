@@ -44,69 +44,6 @@ public class EnrollDAO {
         return status;
     }
 
-    public List<EnrollDTO> enrolledClasses(int student_id) {
-        List<EnrollDTO> list = new ArrayList<>();
-        PreparedStatement preStm = null;
-        ResultSet rs = null;
-        Connection con = null;
-        String sql = "";
-        StudentDTO student = null;
-        ClassesDTO classes = null;
-        int class_id = -1;
-        Date enroll_date = null;
-        try {
-            con = DBUtils.getConnection();
-            sql = "SELECT class_id, enroll_date FROM Enroll WHERE student_id = ? ";
-            preStm = con.prepareStatement(sql);
-            preStm.setInt(1, student_id);
-            rs = preStm.executeQuery();
-            ClassesDAO class_DAO = new ClassesDAO();
-            StudentDAO student_DAO = new StudentDAO();
-            if (rs != null) {
-                while (rs.next()) {
-                    class_id = rs.getInt(1);
-                    enroll_date = rs.getDate(2);
-                    classes = class_DAO.showClassById(class_id);
-                    student = student_DAO.showStudentById(student_id);
-                    list.add(new EnrollDTO(student, classes, enroll_date));
-                }
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("SQL ERROR enrolled list CLasses: " + e.getMessage());
-            e.getStackTrace();
-        }
-        return list;
-    }
-
-    public List<Integer> idClassEnrolled(int student_id) {
-        List<Integer> arrayIdClass = new ArrayList<>();
-        PreparedStatement preStm = null;
-        ResultSet rs = null;
-        Connection con = null;
-        String sql = "";
-        try {
-            con = DBUtils.getConnection();
-            sql = "SELECT class_id FROM Enroll WHERE student_id = ? ORDER BY enroll_date DESC ";
-            preStm = con.prepareStatement(sql);
-            preStm.setInt(1, student_id);
-            rs = preStm.executeQuery();
-            if (rs != null) {
-                while (rs.next()) {
-                    int idClass = rs.getInt(1);
-                    arrayIdClass.add(idClass);
-                }
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("SQL ERROR CLasses: " + e.getMessage());
-            e.getStackTrace();
-        } catch (NullPointerException e) {
-            System.out.println("Array Of Id Class Null" + e.getMessage());
-            e.getStackTrace();
-        }
-        return arrayIdClass;
-    }
 
     public boolean isEnrolledClass(int student_id, int class_id) {
         PreparedStatement preStm = null;
@@ -158,5 +95,59 @@ public class EnrollDAO {
             e.getStackTrace();
         }
         return output;
+    }
+
+    public boolean unenrollClass(int studentID, int class_id) {
+        PreparedStatement preStm = null;
+        Connection con = null;
+        String sql = "";
+        boolean output = false;
+        try {
+            con = DBUtils.getConnection();
+            sql = "DELETE FROM Enroll WHERE student_id = ? AND class_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, studentID);
+            preStm.setInt(2, class_id);
+            if (preStm.executeUpdate() == 1) {
+                output = true;
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR in unEnrolled Class: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return output;
+
+    }
+
+    public List<EnrollDTO> showEnrollStudent(int class_id) {
+        List<EnrollDTO> enrollList = new ArrayList<>();
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        StudentDTO student = null;
+        ClassesDTO classes = null;
+        StudentDAO studentDAO = new StudentDAO();
+        ClassesDAO classesDAO = new ClassesDAO();
+        String sql = "";
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT student_id, enroll_date FROM Enroll WHERE class_id = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setInt(1, class_id);
+            rs = preStm.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    student = studentDAO.showStudentById(rs.getInt("student_id"));
+                    classes = classesDAO.showClassById(class_id);
+                    enrollList.add(new EnrollDTO(student, classes, rs.getDate("enroll_date")));
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR in show enrolled student in Class: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return enrollList;
     }
 }
