@@ -26,13 +26,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     </head>
 
     <body>
         <div class="container" style="min-height: 650px">
 
             <%@include file="./Components/Header.jsp" %>
-            <%! ClassesDAO classDAO = new ClassesDAO();%>
             <div class="container">
 
                 <%  if (getRole != null && getRole.equals("lecturer")) {%>
@@ -43,12 +43,14 @@
 
                     </div>
                     <div class="col-sm-12 col-lg-5">
-                        <select class="form-select" aria-label="Sort from A to Z">
-                            <option selected>Sort from A to Z</option>
-                            <option value="1">Sort from Z to A</option>
-                            <option value="2">Sort from newest to oldest</option>
-                            <option value="3">Sort from oldest to newest</option>
-                        </select>
+                        <form action="showdashboard" id="formSelect">
+                            <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
+                                <option value="1" <% if("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                                <option value="2" <% if("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                                <option value="3" <% if("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                                <option value="4" <% if("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
+                            </select>
+                        </form>
                     </div>
                     <div class="col-sm-12 col-lg-3">
                         <a href="#myModal" role="button" class="btn btn-primary" data-bs-toggle="modal">Create</a>
@@ -57,7 +59,7 @@
                 </div>
                 <div class="row mt-3 mb-4">
                     <%
-                        List<ClassesDTO> classOwned = classDAO.showClassOwnedByLectureID(id);
+                        List<ClassesDTO> classOwned = (List<ClassesDTO>) request.getAttribute("listClass");
                         for (ClassesDTO item : classOwned) {
 
                     %>
@@ -131,6 +133,16 @@
                 </div>
                 <%} else {
                 %>
+                <div class="col-sm-12 col-lg-5">
+                    
+                        <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue" onchange="selectChanged()">
+                        <option selected>Sort from A to Z</option>
+                        <option value="1">Sort from Z to A</option>
+                            <option value="2">Sort from newest to oldest</option>
+                            <option value="3">Sort from oldest to newest</option>
+                        </select>
+                    
+                </div>
                 <div class="row mt-3 mb-4">
                     <%
                         List<ClassesDTO> listClass = (List<ClassesDTO>) request.getAttribute("listClass");
@@ -150,6 +162,7 @@
                             </div>
                         </a>
                     </div>
+
                     <%
                                 }
                             }
@@ -189,6 +202,13 @@
                                                     }
                                                 }
                                             });
-    </script>
-</body>
-</html> 
+
+</script>
+<script>
+                function selectChanged(){
+                    var formSelect = document.getElementById("formSelect");
+                    formSelect.submit(); 
+                            }
+            </script>
+        </body>
+    </html> 

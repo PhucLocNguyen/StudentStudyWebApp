@@ -122,7 +122,7 @@ public class CreateClass extends HttpServlet {
                     request.setAttribute("message", "Failed !!!");
                 }
 
-                request.getRequestDispatcher("myCourse.jsp").forward(request, response);
+                request.getRequestDispatcher("showdashboard").forward(request, response);
             } else if (action.equals("checkPasswordToDelete")) {
                 String getPassword = request.getParameter("password");
                 int getClassId = Integer.parseInt(request.getParameter("class_id"));
