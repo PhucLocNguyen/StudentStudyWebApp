@@ -8,27 +8,22 @@ package Controller;
 import Model.ClassesDAO;
 import Model.ClassesDTO;
 import Model.EnrollDAO;
-import Model.LectureDTO;
-import Model.StudentDTO;
-import java.io.File;
+import Model.EnrollDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "Home", urlPatterns = {"/home"})
-public class Home extends HttpServlet {
+@WebServlet(name = "ShowListController", urlPatterns = {"/showListController"})
+public class ShowListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,42 +37,17 @@ public class Home extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            ClassesDAO classDAO = new ClassesDAO();
-            List<ClassesDTO> classList = classDAO.showClass();
-            List<ClassesDTO> classLlistEnrolled = new ArrayList<>();
-
-            EnrollDAO enrollDAO = new EnrollDAO();
-            List<Integer> arrayIdClass = new ArrayList<>();
-            HttpSession session = request.getSession(false);
-            if (session == null) {
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
-                return;
-            }
-            
-            if (session.getAttribute("user")!=null) {
-                String getRole = (String) session.getAttribute("role");
-                if (getRole.equals("student")) {
-                    StudentDTO student = (StudentDTO) session.getAttribute("user");
-                   classLlistEnrolled = classDAO.showClassOwnedByStudentID(student.getId(), "3");
-                }else{
-                    LectureDTO lecture = (LectureDTO) session.getAttribute("user");
-                    classLlistEnrolled = classDAO.showClassOwnedByLectureID(lecture.getId(),"3");
-                }
-
-                request.setAttribute("classListEnrolled", classLlistEnrolled);
-                request.setAttribute("class_list", classList);
-                request.getRequestDispatcher("home.jsp").forward(request, response);
-
-            } else {
-                request.getRequestDispatcher("logout").forward(request, response);
-            }
-        }
-        /* TODO output your page here. You may use following sample code. */
+        int classID = Integer.parseInt(request.getParameter("class_id"));
+        EnrollDAO enrollDAO = new EnrollDAO();
+        List<EnrollDTO> enrollList = enrollDAO.showEnrollStudent(classID);
+        ClassesDAO classesDAO = new ClassesDAO();
+        ClassesDTO classDetails = classesDAO.showClassById(classID);
+        request.setAttribute("classDetails", classDetails);
+        request.setAttribute("listStudent", enrollList);
+        request.getRequestDispatcher("studentList.jsp").forward(request, response);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on  the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

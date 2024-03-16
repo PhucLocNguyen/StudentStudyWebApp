@@ -72,7 +72,12 @@ public class InsideClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-        int class_id = Integer.parseInt(request.getParameter("class_id"));
+        int class_id = 0;
+        try {
+            class_id = Integer.parseInt(request.getParameter("class_id"));
+        } catch (NumberFormatException e) {
+            class_id = -1;
+        }
         int page = 1;
         if (request.getParameter("page") != null) {
             try {

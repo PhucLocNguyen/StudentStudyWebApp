@@ -26,22 +26,10 @@
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
-    <style>
-        table {
-            border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
-            width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
-        }
-
-        th, td {
-            border: 1px solid black; /* Đường kẻ 1px đen */
-            padding: 8px; /* Khoảng cách giữa nội dung và đường kẻ */
-            width: auto;
-        }
-    </style>
     <body>
         <div class="container" id="headerContainer">
             <%@include file="./Components/Header.jsp" %>
-            <%            ClassesDTO getClass = (ClassesDTO) request.getAttribute("classes");
+            <% ClassesDTO getClass = (ClassesDTO) request.getAttribute("classes");
                 if (getClass != null) {
             %>
             <div class="bg-body-tertiary pt-3">
@@ -88,19 +76,146 @@
                             </a>
                             <%   }  %>
 
-                            <% } %>
+                            <% }%>
                         </div>
 
                         <div class="col-lg-4">
                             <div class="card mt-2 rounded-4">
                                 <div class="card-body" style="min-height: 20rem;"> 
-                                    <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
-                                    <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
-                                    <button class="btn btn-primary d-block w-100 mb-2 mt-2">Xem tổng điểm của học sinh</button>
-                                    <button class="btn btn-danger d-block w-100">Xoá lớp học</button>
+                                    <h5 class="card-title fs-3 fw-bolder">Classroom Information: </h5>
+                                    <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Participants: 53</a>
+                                    <a href="showListController?class_id=<%=getClass.getId()%>" class="btn btn-primary d-block w-100 mb-2 mt-2">Show Student list and average score</a>
+                                    <a href="#myModal" role="button" class="btn btn-primary btn btn-danger d-block w-100" data-bs-toggle="modal">Delete this class</a>
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                    <div id="myModal" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <form action="enroll-class" id="formDeleteClass" method="POST">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmation</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Do you want to delete this Classroom before closing?</p>
+                                        <p class="text-secondary"><small>Please input the passcode to enroll this class for delete </small></p>
+                                        <input type="password" name="password" class="form-control">
+                                        <input type="hidden" name="class_id" value="<%=getClass.getId()%>">
+                                        <p class="card-text text-danger" id="messageError"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>  
+                    <div style="display: flex; justify-content: center">
+                        <nav aria-label="...">
+                            <ul class="pagination pagination-sm">
+                                <%
+                                    int totalPage = (int) request.getAttribute("page");
+                                    for (int i = 1; i <= totalPage; i++) {
+                                %>
+                                <li class="page-item ">
+                                    <a class="page-link" href="insideClass?class_id=<%= getClass.getId()%>&page=<%=i%>" tabindex="-1"><%= i%></a>
+                                </li>
+                                <%
+                                    }
+                                %>
+                            </ul>
+                        </nav>
+                    </div>
+                    <script>
+                        var getFormSubmit = document.querySelector("#formDeleteClass");
+                        getFormSubmit.addEventListener("submit", (event) => {
+                            event.preventDefault();
+                            getDataFormEvent = {
+                                password: event.srcElement[1].value,
+                                class_id: event.srcElement[2].value
+                            };
+
+                            $.ajax({
+                                url: "create-class",
+                                method: "POST",
+                                data: {
+                                    class_id: getDataFormEvent.class_id,
+                                    password: getDataFormEvent.password,
+                                    action: "checkPasswordToDelete"
+                                }, success: function (msg) {
+                                    var redirectUrl = msg;
+                                    window.location.href = redirectUrl;
+                                    console.log(redirectUrl);
+                                }, error: function (xhr, status, error) {
+                                    $("#messageError").html("Wrong password, please try another password!");
+                                }
+                            })
+                        });
+                    </script>
+                    <% } else { %>
+                    <div class="row my-3">
+                        <!-- Cac cau hoi trong lop -->
+                        <div class="col-lg-8">
+
+                            <%
+                                if (request.getAttribute("listExercise") != null) {
+                                    List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
+
+                                    for (ExerciseDTO exc : list) {%>
+                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
+                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%=exc.getCreatedDate()%></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
+                                </div>
+                            </a>
+                            <%   }
+                                }%>
+
+
+                        </div>
+                        <!-- Ket thuc cua cau hoi trong lop hoc -->
+
+                        <div class="col-lg-4">
+                            <div class="card mt-2 rounded-4">
+                                <div class="card-body" style="min-height: 20rem;"> 
+                                    <h5 class="card-title fs-3 fw-bolder">Classroom Information</h5>
+                                    <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Number of participants: 53 </a>
+                                    <a href="#myModal1" role="button" class="btn btn-primary d-block w-100 mb-2 mt-2" data-bs-toggle="modal" data-class-id="<%=request.getParameter("class_id")%>" data-action="score" onclick="showPopup(this)">Average Score</a>
+                                    <a href="#myModal" role="button" class="btn btn-primary btn btn-danger d-block w-100" data-bs-toggle="modal">Unenroll this class</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal HTML -->
+                    <div id="myModal" class="modal fade" tabindex="-1">
+                        <form method="POST" action="enroll-class">
+
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmation</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Do you want to Unenroll this Classroom before closing?</p>
+                                        <p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>
+                                        <input type="hidden" name="action" value="unenroll">
+                                        <input type="hidden" name="class_id" value="<%=getClass.getId()%>">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Unenroll</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
                     <div style="display: flex; justify-content: center">
@@ -119,88 +234,55 @@
                             </ul>
                         </nav>
                     </div>
-
-                    <% } else { %>
-                    <div class="row my-3">
-                        <!-- Cac cau hoi trong lop -->
-                        <div class="col-lg-8">
-                            
-                            <%
-                                if (request.getAttribute("listExercise") != null) {
-                                    List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
-
-                                    for (ExerciseDTO exc : list) {%>
-                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
-                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%=exc.getCreatedDate()%></span>
-                                    <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                                </div>
-                            </a>
-                            <%   }
-                                }%>
-                            
-
-                        </div>
-                        <!-- Ket thuc cua cau hoi trong lop hoc -->
-
-                        <div class="col-lg-4">
-                            <div class="card mt-2 rounded-4">
-                                <div class="card-body" style="min-height: 20rem;"> 
-
-                                    <h5 class="card-title fs-3 fw-bolder">Thông tin lớp học</h5>
-                                    <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Thành viên lớp học: 53 người</a>
-                                    <a href="#myModal" role="button" class="btn btn-primary d-block w-100 mb-2 mt-2" data-bs-toggle="modal" data-class-id ="<%= getClass.getId()%>" data-action="score" onclick="showPopup(this)">Xem tổng điểm của tôi</a>
-                                    <button class="btn btn-danger d-block w-100">Thoát lớp học</button>
-                                </div>
-                            </div>
-                        </div>
-                                    <div style="display: flex; justify-content: center">
-                                <nav aria-label="...">
-                                    <ul class="pagination pagination-sm">
-                                        <%
-                                            int totalPage = (int) request.getAttribute("page");
-                                            for (int i = 1; i <= totalPage; i++) {
-                                        %>
-                                        <li class="page-item ">
-                                            <a class="page-link" href="insideClass?class_id=<%= getClass.getId()%>&page=<%=i%>" tabindex="-1"><%= i%></a>
-                                        </li>
-                                        <%
-                                            }
-                                        %>
-                                    </ul>
-                                </nav>
-                            </div>
-                    </div>
-                                    
-
-                    <!-- Modal HTML -->
-                    <div id="myModal" class="modal fade" tabindex="-1">
-                        <div class="modal-dialog" style="min-width: 90%">
-
-                        </div>
-                    </div>
-                    <% } %>
                 </div>
-            </div>
-            <%}
-            %>
-        </div>
-        <%@include file="./Components/Footer.jsp" %>
 
-        <script>
-            var selectModal = document.querySelector("div#myModal > .modal-dialog");
-            function showPopup(element) {
-                selectModal.innerHTML = '<div class="spinner"></div>';
-                var classId = element.getAttribute("data-class-id");
-                var action = element.getAttribute("data-action");
-                $.ajax({
-                    url: "answerquestion",
-                    method: "GET",
-                    data: {class_id: classId, action: action},
-                    success: function (data) {
-                        // Xử lý dữ liệu nhận được ở đây
-                        console.log(data[0].student.name);
+
+                <!-- Modal HTML -->
+                <div id="myModal1" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog" style="min-width: 90%">
+
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <%}
+        %>
+    </div>
+    <%@include file="./Components/Footer.jsp" %>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <<script>
+                                        function showToast(message) {
+                                            Toastify({
+                                                text: message,
+                                                duration: 3000, // 3 seconds
+                                                close: true,
+                                                gravity: "top", // Position of toast message
+                                                position: "right", // Position of toast message
+                                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
+                                            }).showToast();
+                                        }
+                                        var toastMessage = sessionStorage.getItem("toastMessage");
+
+// Kiểm tra nếu có thông điệp, thì hiển thị toastify
+                                        if (toastMessage) {
+                                            showToast(toastMessage);
+                                            sessionStorage.removeItem("toastMessage"); // Xóa thông điệp sau khi hiển thị
+                                        }
+    </script>
+    <script>
+        var selectModal = document.querySelector("div#myModal1 > .modal-dialog");
+        function showPopup(element) {
+            selectModal.innerHTML = '<div class="spinner"></div>';
+            var classId = element.getAttribute("data-class-id");
+            var action = element.getAttribute("data-action");
+            $.ajax({
+                url: "answerquestion",
+                method: "GET",
+                data: {class_id: classId, action: action},
+                success: function (data) {
+                    // Xử lý dữ liệu nhận được ở đây
+                    if (data.length > 0) {
                         let tableHTML = '<div class="modal-content">' +
                                 '<div class="modal-header">' +
                                 '<h5 class="modal-title">Score: ' + data[0].student.name + '</h5>' +
@@ -218,22 +300,31 @@
                             tableHTML
                                     += '<tr>' +
                                     '<td>' + item.exercise.title + '</td>' +
-                                    '<td>' + item.solution + '</td>' +
+                                    '<td class="answerFormat">' + item.solution + '</td>' +
                                     '<td>' + status + '</td>' +
                                     '<td>' + item.score + '</td>' +
                                     '</tr>';
                         });
                         tableHTML += '<tr style="color: red;font-size: 20px"><td colspan="3" style="text-align: center">Average Score:</td><td>' + average / data.length + '</td></tr></table></div>';
                         selectModal.innerHTML = tableHTML;
-                    },
-                    error: function (xhr, status, error) {
-                        // Xử lý lỗi nếu có
-                        console.log("Lỗi: " + error);
                     }
-                });
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    let tableHTML = '<div class="modal-content" style="min-height: 350px;">' +
+                            '<div class="modal-header">' +
+                            '<h5 class="modal-title">Score: </h5>' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
+                            '</div><p class="text-center fs-3 mt-3">There are currently no posts to display</p></div>';
+                    selectModal.innerHTML = tableHTML;
+                }
+            });
 
-            }
-        </script>
-    </body>
+        }
+        var toastMessage = sessionStorage.getItem("toastMessage");
+
+
+    </script>
+</body>
 
 </html>

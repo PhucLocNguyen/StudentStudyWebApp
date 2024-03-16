@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringEscapeUtils;
+import utils.CharacterUtils;
 
 /**
  *
@@ -116,20 +118,27 @@ public class AnswerQuestion extends HttpServlet {
             request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
         } else if (action.equals("score")) {
             int class_id = 0;
+            List<DoDTO> listScore = null;
             try {
-
                 class_id = Integer.parseInt(request.getParameter("class_id"));
             } catch (NumberFormatException e) {
                 System.out.println("Number format wrong: " + e.getMessage());
                 e.printStackTrace();
             }
-            List<DoDTO> listScore = doDAO.listScore(student_id, class_id, role);
-            System.out.println("listScoreSize: " + listScore.size());
-            String listScoreJson = gson.toJson(listScore);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            out.print(listScoreJson);
-            out.flush();
+            if (role.equals("lecturer")) {
+                int getStudentID = Integer.parseInt(request.getParameter("student_id"));
+                student_id = getStudentID;
+            }
+            listScore = doDAO.listScore(student_id, class_id, role);
+            if (listScore.size() > 0) {
+                String listScoreJson = gson.toJson(listScore);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                out.print(listScoreJson);
+                out.flush();
+            } else {
+                response.setStatus(401);
+            }
         }
 
     }

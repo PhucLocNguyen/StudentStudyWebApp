@@ -26,12 +26,42 @@
 .fr-color-set.fr-table-colors .fr-svg{
     width:50px;
 }
+.modal-content table {
+    border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+}
+
+.modal-content th, .modal-content td {
+    border: 1px solid black; /* Đường kẻ 1px đen */
+    padding: 8px; /* Khoảng cách giữa nội dung và đường kẻ */
+    width: auto;
+}
+.answerFormat{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;    
+}
 .carousel-inner .carousel-item.active,
 .carousel-inner .carousel-item-next,
 .carousel-inner .carousel-item-prev {
     display: flex;
 }
-
+#originalAnswer .code-toolbar .language-markup  {
+    background: #11192e;
+    color: #f7f8fb;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 2px rgba(17,25,46,.1);
+    display: block;
+    margin: 1em 0;
+    overflow: auto;
+    overflow-wrap: normal;
+    padding: 24px;
+    white-space: normal;
+    word-wrap: normal;
+}
 /* display 3 */
 @media (min-width: 768px) {
 
@@ -149,4 +179,5 @@
     .carousel-inner .carousel-item > div:first-child {
         display: block;
     }
+
 }

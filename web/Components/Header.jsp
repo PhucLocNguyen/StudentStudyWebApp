@@ -18,9 +18,7 @@
             String getRole = "";
             int id = 0;
             HttpSession getSession = request.getSession(false);
-            if (getSession == null && session.getAttribute("user") == null) {
-                response.sendRedirect("login.jsp");
-            } else {
+            if (getSession != null && session.getAttribute("user") != null) {
                 getRole = (String) session.getAttribute("role");
                 if (getRole.equals("lecturer")) {
                     LectureDTO user = (LectureDTO) session.getAttribute("user");
@@ -34,7 +32,6 @@
                     id = user.getId();
                 }
             }
-
 
         %>
         <div class="row mt-2">

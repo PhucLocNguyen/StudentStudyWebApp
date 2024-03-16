@@ -98,11 +98,26 @@
             // Set the image upload URL.
             entities: '',
             imageUploadURL: 'upload-image',
-
             imageUploadParams: {
                 id: 'my_editor'
+            },
+            events: {
+                'image.removed': function ($img) {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        // Image was removed.
+                        if (this.readyState == 4 && this.status == 200) {
+                            console.log('image was deleted');
+                        }
+                    };
+                    xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
+                    console.log($img);
+                    xhttp.send(JSON.stringify({
+                        src: $img[0].currentSrc
+                    }));
+                }
             }
-        })
+        });
     </script>
 </body>
 </html>
