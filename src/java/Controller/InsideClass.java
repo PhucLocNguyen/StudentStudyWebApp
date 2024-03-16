@@ -89,14 +89,14 @@ public class InsideClass extends HttpServlet {
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
         ExerciseDAO dao = new ExerciseDAO();
+
         String role = (String) session.getAttribute("role");
         List<ExerciseDTO> lisExc = dao.getExerciseOnPaging(class_id, role, page);
         int totalExercise = new ExerciseDAO().totalExercise(class_id, role);
         int endPage = totalExercise / 3;
         if (totalExercise % 3 != 0) {
             endPage++;
-        }
-//        
+        }      
         if (classesDTO != null) {
             request.setAttribute("page", endPage);
             request.setAttribute("classes", classesDTO);

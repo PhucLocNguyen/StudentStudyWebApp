@@ -5,6 +5,9 @@
  */
 package Controller;
 
+import Model.ClassDAO;
+import Model.ClassDTO;
+import Model.ClassesDTO;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
 import Model.LectureDTO;
@@ -17,6 +20,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
@@ -46,17 +53,165 @@ public class CreateQuestion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CreateQuestion</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CreateQuestion at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
+
+        String action = request.getParameter("action");
+
+        ExerciseDAO dao = new ExerciseDAO();
+
+        try {
+            if (action != null) {
+                String classID_raw = request.getParameter("classId");
+                int classID = Integer.parseInt(classID_raw);
+                if (action.equals("create")) {
+                    String title = request.getParameter("title");
+                    String description = request.getParameter("description");
+                    LectureDTO user = (LectureDTO) session.getAttribute("user");
+                    int lecturer_id = user.getId();
+
+                    String status = request.getParameter("status");
+
+                    String start_time = request.getParameter("start_time");
+                    String end_time = request.getParameter("end_time");
+
+                    //java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                    Timestamp start_timestamp = null;
+                    Timestamp end_timestamp = null;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    java.util.Date start_date = null, end_date = null;
+                    if (start_time != null && !start_time.isEmpty()) {
+                        try {
+                            start_date = sdf.parse(start_time);
+                            start_timestamp = new Timestamp(start_date.getTime());
+                        } catch (ParseException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    if (end_time != null && !end_time.isEmpty()) {
+                        try {
+                            end_date = sdf.parse(end_time);
+                            end_timestamp = new Timestamp(end_date.getTime());
+                        } catch (ParseException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    Part filePart = request.getPart("thumbnail");
+                    System.out.println(filePart.getSubmittedFileName());
+                    FileUtils fileUtils = new FileUtils();
+                    String url = fileUtils.insertImage(filePart);
+
+                    if (!validateDates(start_timestamp, end_timestamp)) {
+                        request.setAttribute("timeerror", "End date must be after start date");
+                        request.setAttribute("title", title);
+                        request.setAttribute("description", description);
+                        request.setAttribute("status", status);
+                        request.setAttribute("thumbnail", url);
+                        request.setAttribute("start_date", start_timestamp);
+                        request.setAttribute("end_date", end_timestamp);
+                        request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID + "&action=" + action).forward(request, response);
+                        return;
+                    }
+                    if (dao.addExercise(title, description, url, status, classID, lecturer_id, start_timestamp, end_timestamp)) {
+                        response.sendRedirect("insideClass?class_id=" + classID);
+                    } else {
+                        request.setAttribute("error", "Create fail");
+                        request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                    }
+                } else if (action.equals("edit")) {
+                    int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
+                    ExerciseDTO ex = dao.loadExercise(exercise_id);
+                    request.setAttribute("title", ex.getTitle());
+                    request.setAttribute("description", ex.getDescription());
+                    request.setAttribute("status", ex.getStatus());
+                    request.setAttribute("thumbnail", ex.getMedia());
+                    request.setAttribute("start_date", ex.getStartDate());
+                    request.setAttribute("end_date", ex.getEndDate());
+                    request.setAttribute("exercise_id", exercise_id);
+                    request.setAttribute("nextaction", "update");
+                    request.getRequestDispatcher("createQuestion.jsp?action=update&class_id=" + classID).forward(request, response);
+                } else if (action.equals("update")) {
+                    int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
+                    String title = request.getParameter("title");
+                    String description = request.getParameter("description");
+                    String status = request.getParameter("status");
+
+                    String start_time = request.getParameter("start_time");
+                    String end_time = request.getParameter("end_time");
+                    //media
+                    Part filePart = request.getPart("thumbnail");
+                    System.out.println(filePart.getSubmittedFileName());
+                    FileUtils fileUtils = new FileUtils();
+                    String url = fileUtils.insertImage(filePart);
+                    //java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                    Timestamp start_timestamp = null;
+                    Timestamp end_timestamp = null;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    java.util.Date start_date = null, end_date = null;
+                    if (start_time != null && !start_time.isEmpty()) {
+                        try {
+                            start_date = sdf.parse(start_time);
+                            start_timestamp = new Timestamp(start_date.getTime());
+                        } catch (ParseException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    if (end_time != null && !end_time.isEmpty()) {
+                        try {
+                            end_date = sdf.parse(end_time);
+                            end_timestamp = new Timestamp(end_date.getTime());
+                        } catch (ParseException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+
+                    if (!validateDates(start_timestamp, end_timestamp)) {
+                        request.setAttribute("timeerror", "End date must be after start date");
+                        request.setAttribute("title", title);
+                        request.setAttribute("description", description);
+                        request.setAttribute("status", status);
+                        request.setAttribute("thumbnail", url);
+                        request.setAttribute("start_date", start_timestamp);
+                        request.setAttribute("end_date", end_timestamp);
+                        request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID + "&action=" + action).forward(request, response);
+                        return;
+                    }
+                    if (status.equals("active")) {
+                        if (dao.updateExercise(exercise_id, title, url, description, status, start_timestamp, end_timestamp)) {
+                            response.sendRedirect("insideClass?class_id=" + classID);
+                        } else {
+                            request.setAttribute("error", "Update fail");
+                            request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                        }
+                    } else {
+                        if (dao.updateExercise(exercise_id, title, url, description, status, null, null)) {
+                            response.sendRedirect("insideClass?class_id=" + classID);
+                        } else {
+                            request.setAttribute("error", "Update fail");
+                            request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                        }
+                    }
+
+                } else if (action.equals("stop")) {
+                    int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
+                    ExerciseDTO ex = dao.loadExercise(exercise_id);
+                    if (dao.inactiveExercise(exercise_id)) {
+                        request.setAttribute("inactive", ex.getStatus());
+                        response.sendRedirect("insideClass?class_id=" + classID);
+                    }
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -73,6 +228,7 @@ public class CreateQuestion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
     }
 
     /**
@@ -86,42 +242,19 @@ public class CreateQuestion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
+        processRequest(request, response);
+    }
+private boolean validateDates(Timestamp start, Timestamp end) {
+        if (start == null && end == null) {
+            return true;
         }
-        if (session.getAttribute("user") == null) {
-            request.getRequestDispatcher("logout").forward(request, response);
-            return;
+        if (start == null || end == null) {
+            return false;
         }
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        LectureDTO user = (LectureDTO) session.getAttribute("user");
-        int lecturer_id = user.getId();
-        String classID_raw = request.getParameter("classId");
-        String status = request.getParameter("status");
-
-        //media
-        Part filePart = request.getPart("thumbnail");
-        System.out.println(filePart.getSubmittedFileName());
-        FileUtils fileUtils = new FileUtils();
-        String url = fileUtils.insertImage(filePart);
-//        String url = "loiquai.jpg";
-        ExerciseDAO dao = new ExerciseDAO();
-        try {
-            int classID = Integer.parseInt(classID_raw);
-            if (dao.addExercise(title, description, url, status, classID, lecturer_id)) {
-                response.sendRedirect("insideClass?class_id=" + classID);
-            } else {
-                request.setAttribute("error", "Fail roi");
-                request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
-            }
-
-        } catch (NumberFormatException e) {
+        if (start.after(end)) {
+            return false;
         }
+        return true;
     }
 
     /**

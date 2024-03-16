@@ -77,8 +77,6 @@
                     <%                }
                     %>
                 </div>
-
-
                 <!-- Modal HTML -->
                 <div id="myModal" class="modal fade" tabindex="-1">
                     <div class="modal-dialog">
@@ -162,7 +160,6 @@
                             </div>
                         </a>
                     </div>
-
                     <%
                                 }
                             }
@@ -178,6 +175,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
+
                                 let editor = new FroalaEditor('#froala-editor', {
                                     // Set the image upload URL.
                                     entities: '',

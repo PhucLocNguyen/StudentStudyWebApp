@@ -91,6 +91,7 @@ public class CreateClass extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+
         String name, imageUrl, password, description, action;
         HttpSession session = request.getSession(false);
         ClassesDAO classDAO = new ClassesDAO();
@@ -103,6 +104,7 @@ public class CreateClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
+
         action = request.getParameter("action");
         if (action != null) {
             if (action.equals("create")) {
@@ -115,7 +117,6 @@ public class CreateClass extends HttpServlet {
                 description = request.getParameter("description");
                 FileUtils fileUtils = new FileUtils();
                 imageUrl = fileUtils.insertImage(filePart);
-
                 if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
                     request.setAttribute("message", "Create Successfully !!!");
                 } else {

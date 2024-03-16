@@ -5,26 +5,18 @@
  */
 package Controller;
 
-import Model.ClassesDAO;
-import Model.ClassesDTO;
-import Model.EnrollDAO;
-import Model.LectureDTO;
-import Model.StudentDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author User
  */
-public class ShowDashBoard extends HttpServlet {
+public class Searching extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,8 +29,24 @@ public class ShowDashBoard extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Searching</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            
+            String searchingWord = request.getParameter("searching");
+            request.setAttribute("searching", searchingWord);
+            request.getRequestDispatcher("search.jsp").forward(request, response);
+            
+            out.println("<h1>Servlet Searching at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -53,41 +61,7 @@ public class ShowDashBoard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<ClassesDTO> listClass = new ArrayList<>();
-        ClassesDAO classDAO = new ClassesDAO();
-
-        String sortByCondition = "1";
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
-        }
-        if (session.getAttribute("user") == null) {
-            request.getRequestDispatcher("logout").forward(request, response);
-            return;
-        }
-
-        if(request.getParameter("selectValue")!=null){
-                sortByCondition = request.getParameter("selectValue");
-            }
-
-        String getRole = (String) session.getAttribute("role");
-        if (getRole.equals("student")) {
-            EnrollDAO enrollDAO = new EnrollDAO();
-            StudentDTO student = (StudentDTO) session.getAttribute("user");
-            
-            listClass = classDAO.showClassOwnedByStudentID(student.getId(), sortByCondition);
-        } else {
-            LectureDTO lecture = (LectureDTO) session.getAttribute("user");
-            listClass = classDAO.showClassOwnedByLectureID(lecture.getId(),sortByCondition);
-            for (ClassesDTO listClas : listClass) {
-                System.out.println("class name: "+ listClas.getName());
-            }
-        }
-        request.setAttribute("selectValue", sortByCondition);
-        request.setAttribute("listClass", listClass);
-        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
-
+        processRequest(request, response);
     }
 
     /**
