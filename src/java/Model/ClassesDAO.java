@@ -233,7 +233,7 @@ public class ClassesDAO {
         return list;
     }
 
-    public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role) {
+    public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role, String sortByCondition ) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
@@ -247,6 +247,20 @@ public class ClassesDAO {
             condition = "and c.class_id not in (SELECT class_id FROM Enroll) ";
             if (role.equals("student")) {
                 sql += condition;
+            }
+            switch (sortByCondition) {
+                case "1":
+                    sql += "ORDER BY c.name";
+                    break;
+                case "2":
+                    sql += "ORDER BY c.name DESC";
+                    break;
+                case "3":
+                    sql += "ORDER BY c.created_date DESC";
+                    break;
+                case "4":
+                    sql += "ORDER BY c.created_date";
+                    break;
             }
             preStm = con.prepareStatement(sql);
             preStm.setString(1, "%" + keyWord + "%");

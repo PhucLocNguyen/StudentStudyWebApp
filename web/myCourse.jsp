@@ -45,10 +45,10 @@
                     <div class="col-sm-12 col-lg-5">
                         <form action="showdashboard" id="formSelect">
                             <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
-                                <option value="1" <% if("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
-                                <option value="2" <% if("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
-                                <option value="3" <% if("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
-                                <option value="4" <% if("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
+                                <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                                <option value="2" <% if ("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                                <option value="3" <% if ("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                                <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
                             </select>
                         </form>
                     </div>
@@ -134,14 +134,14 @@
                 <%} else {
                 %>
                 <div class="col-sm-12 col-lg-5">
-                    
-                        <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue" onchange="selectChanged()">
-                        <option selected>Sort from A to Z</option>
-                        <option value="1">Sort from Z to A</option>
-                            <option value="2">Sort from newest to oldest</option>
-                            <option value="3">Sort from oldest to newest</option>
+                    <form action="showdashboard" id="formSelect">
+                        <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
+                            <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                            <option value="2" <% if ("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                            <option value="3" <% if ("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                            <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
                         </select>
-                    
+                    </form>
                 </div>
                 <div class="row mt-3 mb-4">
                     <%
@@ -178,37 +178,37 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
-                                            let editor = new FroalaEditor('#froala-editor', {
-                                                // Set the image upload URL.
-                                                entities: '',
-                                                imageUploadURL: 'upload-image',
-                                                imageUploadParams: {
-                                                    id: 'my_editor'
-                                                },
-                                                events: {
-                                                    'image.removed': function ($img) {
-                                                        var xhttp = new XMLHttpRequest();
-                                                        xhttp.onreadystatechange = function () {
-                                                            // Image was removed.
-                                                            if (this.readyState == 4 && this.status == 200) {
-                                                                console.log('image was deleted');
-                                                            }
-                                                        };
-                                                        xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
-                                                        console.log($img);
-                                                        xhttp.send(JSON.stringify({
-                                                            src: $img[0].currentSrc
-                                                        }));
-                                                    }
+                                let editor = new FroalaEditor('#froala-editor', {
+                                    // Set the image upload URL.
+                                    entities: '',
+                                    imageUploadURL: 'upload-image',
+                                    imageUploadParams: {
+                                        id: 'my_editor'
+                                    },
+                                    events: {
+                                        'image.removed': function ($img) {
+                                            var xhttp = new XMLHttpRequest();
+                                            xhttp.onreadystatechange = function () {
+                                                // Image was removed.
+                                                if (this.readyState == 4 && this.status == 200) {
+                                                    console.log('image was deleted');
                                                 }
-                                            });
+                                            };
+                                            xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
+                                            console.log($img);
+                                            xhttp.send(JSON.stringify({
+                                                src: $img[0].currentSrc
+                                            }));
+                                        }
+                                    }
+                                });
 
-</script>
-<script>
-                function selectChanged(){
-                    var formSelect = document.getElementById("formSelect");
-                    formSelect.submit(); 
-                            }
-            </script>
-        </body>
-    </html> 
+    </script>
+    <script>
+        function selectChanged() {
+            var formSelect = document.getElementById("formSelect");
+            formSelect.submit();
+        }
+    </script>
+</body>
+</html> 
