@@ -26,7 +26,9 @@ public class Constants {
 
     public static String GOOGLE_GRANT_TYPE = "authorization_code";
 
+
     public static String IMAGE_FOLDER = "C:\\Users\\hn190\\OneDrive\\Desktop\\Ky 4\\PRJ301\\PROJECT_PRJ_MERGE\\web\\Assets\\img";
+
 
     public static String IMAGE_PERMALINK = "http://localhost:8080/LoginGoogle/files/";
 }

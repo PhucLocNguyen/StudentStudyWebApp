@@ -126,6 +126,7 @@
                         <h3 class="fw-medium mb-3">Lop hoc cua ban</h3>
                     </div>
                     <div class="row">
+
                         <%
                             List<ClassesDTO> listClassEnrolled = (List<ClassesDTO>) request.getAttribute("classListEnrolled");
                             if (listClassEnrolled.size() > 0) {
@@ -154,10 +155,12 @@
 
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
                                         function myFunction() {
@@ -250,4 +253,5 @@
         </script>
         <%@include file="./Components/Footer.jsp" %>
     </body>
+
 </html>

@@ -21,11 +21,13 @@ public class StudentDTO {
     public StudentDTO() {
     }
 
+
     public StudentDTO(int id, String name, String thumbnail) {
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
     }
+
 
     public StudentDTO(int id, String name, String email, String thumbnail) {
         this.id = id;

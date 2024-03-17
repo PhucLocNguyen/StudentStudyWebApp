@@ -38,6 +38,7 @@ public class ShowDashBoard extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
         
     }
 
@@ -56,6 +57,7 @@ public class ShowDashBoard extends HttpServlet {
         List<ClassesDTO> listClass = new ArrayList<>();
         ClassesDAO classDAO = new ClassesDAO();
         String sortByCondition = "1";
+
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
@@ -65,6 +67,7 @@ public class ShowDashBoard extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
+
         if(request.getParameter("selectValue")!=null){
                 sortByCondition = request.getParameter("selectValue");
             }
@@ -82,6 +85,7 @@ public class ShowDashBoard extends HttpServlet {
             }
         }
         request.setAttribute("selectValue", sortByCondition);
+
         request.setAttribute("listClass", listClass);
         request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }

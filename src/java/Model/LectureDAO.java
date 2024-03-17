@@ -76,6 +76,7 @@ public class LectureDAO {
         }
         return user;
     }
+
     
       public void update(LectureDTO lecturer) {
         try {
@@ -94,4 +95,5 @@ public class LectureDAO {
             System.out.println("SQL ERROR Update: " + e.getMessage());
         }
     }
+
 }

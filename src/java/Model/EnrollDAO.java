@@ -44,7 +44,6 @@ public class EnrollDAO {
         return status;
     }
 
-
     public boolean isEnrolledClass(int student_id, int class_id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -150,6 +149,7 @@ public class EnrollDAO {
         }
         return enrollList;
     }
+
     
     
       public List<EnrollDTO> enrolledClasses(int student_id) {
@@ -186,4 +186,5 @@ public class EnrollDAO {
         }
         return list;
     }
+
 }

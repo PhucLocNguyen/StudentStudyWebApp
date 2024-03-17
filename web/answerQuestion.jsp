@@ -77,6 +77,7 @@
                         %>
                         <div class="row">
                             <div class="d-flex my-3 col-11">
+
                                 <div class="flex-shrink-0"><img  style="width: 3rem;" class="rounded-circle"
                                                                  src="./img/gumbal.jpg" alt="..." /></div>
                                 <div class="ms-3">
