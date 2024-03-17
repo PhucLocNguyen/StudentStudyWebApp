@@ -17,6 +17,14 @@ public class LectureDTO {
     public LectureDTO() {
     }
 
+
+    public LectureDTO(int id, String name, String thumbnail) {
+        this.id = id;
+        this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
+
     public LectureDTO(int id, String name, String image, String email, String password) {
         this.id = id;
         this.name = name;

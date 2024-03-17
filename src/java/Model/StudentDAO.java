@@ -94,4 +94,23 @@ public class StudentDAO {
         }
         return student;
     }
+    
+      public void update(StudentDTO student) {
+        try {
+            Connection con = DBUtils.getConnection();
+
+            String sql = " UPDATE Students SET name = ? , thumbnail = ? WHERE student_id = ? ";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, student.getName());
+            stmt.setString(2, student.getThumbnail());
+            stmt.setInt(3, student.getId());
+
+            stmt.executeUpdate();
+
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR Update: " + e.getMessage());
+        }
+    }
+
 }
