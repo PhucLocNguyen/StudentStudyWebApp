@@ -44,8 +44,8 @@
                 </div>
                 <h1 class="fw-bold">${requestScope.exercise.classes.name}</h1>
                 <h3 class="fw-medium">${requestScope.exercise.title}</h3>
-                <span class="badge rounded-pill text-bg-secondary my-1 me-3">${requestScope.exercise.createdDate}</span>
-                <span class="badge rounded-pill text-bg-secondary my-1 me-3">To : 5:30 20/09/2023</span>
+                <span class="badge rounded-pill text-bg-secondary my-1 me-3">${requestScope.exercise.startDate}</span>
+                <span class="badge rounded-pill text-bg-secondary my-1 me-3">To : ${requestScope.exercise.endDate}</span>
                 <span class="badge rounded-pill text-bg-secondary my-1">${requestScope.exercise.status}</span>
 
                 <div class="card rounded-4 mt-3">
@@ -77,7 +77,6 @@
                         %>
                         <div class="row">
                             <div class="d-flex my-3 col-11">
-
                                 <div class="flex-shrink-0"><img  style="width: 3rem;" class="rounded-circle"
                                                                  src="./img/gumbal.jpg" alt="..." /></div>
                                 <div class="ms-3">

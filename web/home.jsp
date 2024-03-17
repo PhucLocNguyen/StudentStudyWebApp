@@ -126,132 +126,154 @@
                         <h3 class="fw-medium mb-3">Lop hoc cua ban</h3>
                     </div>
                     <div class="row">
+                        <div class="multi-carousel" id="carousel" data-mdb-multi-carousel-init="">
+                            <div class="multi-carousel-inner position-relative">
+                                <%
+                                    List<ClassesDTO> listClassEnrolled = (List<ClassesDTO>) request.getAttribute("classListEnrolled");
+                                    if (listClassEnrolled.size() > 0) {
+                                        for (ClassesDTO item : listClassEnrolled) {
 
-                        <%
-                            List<ClassesDTO> listClassEnrolled = (List<ClassesDTO>) request.getAttribute("classListEnrolled");
-                            if (listClassEnrolled.size() > 0) {
-                                for (ClassesDTO item : listClassEnrolled) {
+                                %>
 
-                        %>
-                        <div class="col-lg-3">
-                            <a href="<%="insideClass?class_id=" + item.getId()%>" style="text-decoration: none">
-                                <div class="card">
-                                    <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><%= item.getName()%></h5>
-                                        <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
-                                    </div>
+                                <div class="multi-carousel-item" >
+                                    <a href="<%="insideClass?class_id=" + item.getId()%>" style="text-decoration: none" >
+                                        <div class="card">
+                                            <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><%= item.getName()%></h5>
+                                                <p class="card-text">Lecturer: <%= item.getLecturer().getEmail()%></p>
+                                            </div>
 
+                                        </div>
+                                    </a> 
                                 </div>
-                            </a> 
-                        </div>
-                        <%
-                                }
-                            }
-                        %>
-
-                        <div id="myModal" class="modal fade" tabindex="-1">
-                            <div class="modal-dialog">
-
+                                <%
+                                        }
+                                    }
+                                %>
+                                <button class="slide-control carousel-control-prev" type="button" tabindex="0" data-mdb-slide="prev" onclick="slideCarouselMove(this)">
+                                    <i class="ti-angle-left" aria-hidden="true"></i>
+                                </button>
+                                <button class="slide-control carousel-control-next" type="button" tabindex="0" data-mdb-slide="next" onclick="slideCarouselMove(this)">
+                                    <i class="ti-angle-right" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
+                    </div> 
+                    <div id="myModal" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+                                var getCarousel = document.querySelector(".multi-carousel#carousel .multi-carousel-inner");
+                                function slideCarouselMove(element) {
+                                    var getAction = element.getAttribute("data-mdb-slide");
+                                    var carouselItems = getCarousel.querySelectorAll(".multi-carousel-item");
 
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-        <script>
-                                        function myFunction() {
-                                            var x = document.querySelector("#passwordInput");
-
-                                            if (x.type === "password") {
-                                                x.type = "text";
-                                            } else {
-                                                x.type = "password";
-                                            }
-                                        }
-                                        function showToast(message) {
-                                            Toastify({
-                                                text: message,
-                                                duration: 3000, // 3 seconds
-                                                close: true,
-                                                gravity: "top", // Position of toast message
-                                                position: "right", // Position of toast message
-                                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
-                                            }).showToast();
-                                        }
-
-        </script>
-        <script>
-            var selectModal = document.querySelector("div#myModal > .modal-dialog");
-            function showPopup(element) {
-                selectModal.innerHTML = '<div class="spinner"></div>';
-                var classId = element.getAttribute("data-class-id");
-                $.ajax({
-                    url: "enroll-class",
-                    method: "GET",
-                    data: {class_id: classId},
-                    success: function (data) {
-                        // Xử lý dữ liệu nhận được ở đây
-                        console.log("Data from json: " + data.name);
-                        selectModal.innerHTML = '<div class="modal-content">' +
-                                '<div class="modal-header">' +
-                                '<h5 class="modal-title">Thông tin chi tiết lớp học ' + data.name + '</h5>' +
-                                '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
-                                '</div>' +
-                                '<form accept-charset="UTF-8" action="enroll-class" method="POST" id="formEnrollClass">' +
-                                '<div class="modal-body">' +
-                                '<p class="text-primary mb-1">Giảng viên ' + data.lecturer.name + ' </p>' +
-                                '<p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>' +
-                                '<p class="text-secondary mb-1">' + data.description + '</p>' +
-                                '<p class="text-primary mb-1">Password</p>' +
-                                '<input type="password" class="form-control" name="password" id="passwordInput"/>' +
-                                '<input type="hidden" name="class_id" value="' + data.id + '">' +
-                                '<p class="card-text text-danger" id="messageError"></p>' +
-                                '<input type="checkbox" onclick="myFunction(0)"> Show Password' +
-                                '</div>' +
-                                '<div class="modal-footer">' +
-                                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>' +
-                                '<button type="submit" class="btn btn-primary">Enroll</button>' +
-                                '</div>' +
-                                '</form>' +
-                                '</div>';
-                        var getFormSubmit = document.querySelector("#formEnrollClass");
-                        getFormSubmit.addEventListener("submit", (event) => {
-                            event.preventDefault();
-                            console.log(event);
-                            getDataFormEvent = {
-                                password: event.srcElement[0].value,
-                                class_id: event.srcElement[1].value
-                            };
-
-                            $.ajax({
-                                url: "enroll-class",
-                                method: "POST",
-                                data: {
-                                    class_id: getDataFormEvent.class_id,
-                                    password: getDataFormEvent.password,
-                                    action: "passwordChecking"
-                                }, success: function (msg) {
-                                    sessionStorage.setItem("toastMessage", "Enroll successful!!!");
-                                    window.location.href = msg;
-                                }, error: function (xhr, status, error) {
-                                    $("#messageError").html("Wrong password, please try another password!");
+                                    if (getAction === "next") {
+                                        var firstItem = carouselItems[0];
+                                        getCarousel.appendChild(firstItem);
+                                    } else if (getAction === "prev") {
+                                        var lastItem = carouselItems[carouselItems.length - 1];
+                                        getCarousel.insertBefore(lastItem, carouselItems[0]);
+                                    }
                                 }
-                            })
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        // Xử lý lỗi nếu có
-                        console.log("Lỗi: " + error);
-                    }
-                });
+    </script>
+    <script>
+        function myFunction() {
+            var x = document.querySelector("#passwordInput");
 
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
             }
-        </script>
-        <%@include file="./Components/Footer.jsp" %>
-    </body>
+        }
+        function showToast(message) {
+            Toastify({
+                text: message,
+                duration: 3000, // 3 seconds
+                close: true,
+                gravity: "top", // Position of toast message
+                position: "right", // Position of toast message
+                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
+            }).showToast();
+        }
 
+    </script>
+    <script>
+        var selectModal = document.querySelector("div#myModal > .modal-dialog");
+        function showPopup(element) {
+            selectModal.innerHTML = '<div class="spinner"></div>';
+            var classId = element.getAttribute("data-class-id");
+            $.ajax({
+                url: "enroll-class",
+                method: "GET",
+                data: {class_id: classId},
+                success: function (data) {
+                    // Xử lý dữ liệu nhận được ở đây
+                    console.log("Data from json: " + data.name);
+                    selectModal.innerHTML = '<div class="modal-content">' +
+                            '<div class="modal-header">' +
+                            '<h5 class="modal-title">Thông tin chi tiết lớp học ' + data.name + '</h5>' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
+                            '</div>' +
+                            '<form accept-charset="UTF-8" action="enroll-class" method="POST" id="formEnrollClass">' +
+                            '<div class="modal-body">' +
+                            '<p class="text-primary mb-1">Giảng viên ' + data.lecturer.name + ' </p>' +
+                            '<p class="text-primary mb-1">Thông tin chi tiết lớp học:</p>' +
+                            '<p class="text-secondary mb-1">' + data.description + '</p>' +
+                            '<p class="text-primary mb-1">Password</p>' +
+                            '<input type="password" class="form-control" name="password" id="passwordInput"/>' +
+                            '<input type="hidden" name="class_id" value="' + data.id + '">' +
+                            '<p class="card-text text-danger" id="messageError"></p>' +
+                            '<input type="checkbox" onclick="myFunction(0)"> Show Password' +
+                            '</div>' +
+                            '<div class="modal-footer">' +
+                            '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>' +
+                            '<button type="submit" class="btn btn-primary">Enroll</button>' +
+                            '</div>' +
+                            '</form>' +
+                            '</div>';
+                    var getFormSubmit = document.querySelector("#formEnrollClass");
+                    getFormSubmit.addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        console.log(event);
+                        getDataFormEvent = {
+                            password: event.srcElement[0].value,
+                            class_id: event.srcElement[1].value
+                        };
+
+                        $.ajax({
+                            url: "enroll-class",
+                            method: "POST",
+                            data: {
+                                class_id: getDataFormEvent.class_id,
+                                password: getDataFormEvent.password,
+                                action: "passwordChecking"
+                            }, success: function (msg) {
+                                sessionStorage.setItem("toastMessage", "Enroll successful!!!");
+                                window.location.href = msg;
+                            }, error: function (xhr, status, error) {
+                                $("#messageError").html("Wrong password, please try another password!");
+                            }
+                        })
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.log("Lỗi: " + error);
+                }
+            });
+
+        }
+    </script>
+    <%@include file="./Components/Footer.jsp" %>
+</body>
 </html>

@@ -35,9 +35,7 @@ public class SearchingClass extends HttpServlet {
             throws ServletException, IOException {
         ClassesDAO classdao = new ClassesDAO();
         String keyWord = request.getParameter("keyWord");
-
         String sortByCondition = "1";
-
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
@@ -47,7 +45,6 @@ public class SearchingClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-
         if(request.getParameter("selectValue")!=null){
                 sortByCondition = request.getParameter("selectValue");
             }
@@ -60,7 +57,6 @@ public class SearchingClass extends HttpServlet {
             System.out.println("classDTO name: " +classesDTO.getName());
         }
         request.setAttribute("selectValue", sortByCondition);
-
         request.setAttribute("keyWord", keyWord);
         request.setAttribute("listSearching", listSearching);
         request.getRequestDispatcher("searching.jsp").forward(request, response);

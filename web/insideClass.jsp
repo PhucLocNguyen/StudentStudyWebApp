@@ -15,6 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Inside Class</title>
+<!--        <link rel="stylesheet" href="./Assets/css/style.css"/>-->
         <link rel="stylesheet" href="./Assets/css/style.css"/>
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/froala_editor/froala_editor.css"/>
@@ -55,7 +56,7 @@
 
                     <%  if (getRole != null && getRole.equals("lecturer")) {%>
                     <div class="row mt-3">
-                        <a href="createQuestion.jsp?class_id=<%=getClass.getId()%>" class="btn btn-primary rounded-4 fw-bold px-5">Tao cau hoi</a>
+                        <a href="createQuestion.jsp?class_id=<%=getClass.getId()%>&action=create" class="btn btn-primary rounded-4 fw-bold px-5">Tao cau hoi</a>
                     </div>
 
                     <div class="row my-3">
@@ -67,13 +68,28 @@
                                     List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
 
                                     for (ExerciseDTO exc : list) {%>
-                            <a href="exerciseView?exercise_id=<%=exc.getExerciseID()%>&class_id=<%=exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
-                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : 5:30 19/09/2023</span>
-                                    <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
-                                </div>
-                            </a>
+
+                                        <div class="exercise-container" >
+                                            <a href="<%="exerciseView?exercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
+                                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
+                                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
+
+                                                </div>
+                                            </a>
+
+                                            <div class="more-options" >
+                                                <span class="more-icon">...</span>
+
+                                                <div class="dropdown-menu">
+                                                    <a href="createQuestion?action=edit&classId=<%=getClass.getId()%>&exercise_id=<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-edit">Edit</a> 
+<!--                                                    <a href="./createQuestion?action=delete&exercise_id=" class="dropdown-item dropdown-item-delete">Delete</a>-->
+                                                    <a href="createQuestion?action=stop&classId=<%=getClass.getId()%>&exercise_id=<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-edit">Stop</a> 
+                                                    <a href="javascript:void(0)" data-exercise-id="<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-delete">Delete</a>
+                                                </div>
+                                            </div>    
+                                        </div>
                             <%   }  %>
 
                             <% }%>
@@ -161,21 +177,27 @@
                     <div class="row my-3">
                         <!-- Cac cau hoi trong lop -->
                         <div class="col-lg-8">
-
                             <%
                                 if (request.getAttribute("listExercise") != null) {
                                     List<ExerciseDTO> list = (List<ExerciseDTO>) request.getAttribute("listExercise");
 
                                     for (ExerciseDTO exc : list) {%>
-                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                    <!--        <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
-                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%=exc.getCreatedDate()%></span>
-                                    <span class="badge rounded-pill text-bg-secondary my-1">To : 5:30 20/09/2023</span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
+                                </div>
+                            </a>-->
+                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" data-status="<%=exc.getStatus() %>" class="card rounded-4 text-decoration-none my-2 student_exercise" style="min-height: 5rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
+                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
                                 </div>
                             </a>
-                            <%   }
-                                }%>
+                            <%      }
+                                } %>
 
 
                         </div>
@@ -184,6 +206,7 @@
                         <div class="col-lg-4">
                             <div class="card mt-2 rounded-4">
                                 <div class="card-body" style="min-height: 20rem;"> 
+
                                     <h5 class="card-title fs-3 fw-bolder">Classroom Information</h5>
                                     <a class="text-decoration-none text-dark fs-5 fw-medium" href="#">Number of participants: 53 </a>
                                     <a href="#myModal1" role="button" class="btn btn-primary d-block w-100 mb-2 mt-2" data-bs-toggle="modal" data-class-id="<%=request.getParameter("class_id")%>" data-action="score" onclick="showPopup(this)">Average Score</a>
@@ -322,9 +345,29 @@
 
         }
         var toastMessage = sessionStorage.getItem("toastMessage");
+            
+            const moreIcons = document.querySelectorAll('.more-option .more-icon');
+            moreIcons.forEach(icon => {
+              icon.addEventListener('click', e => {
+                e.target.parentElement.querySelector('.dropdown-menu').style.display = 'block';
+              });
+            });
+            
+            const student_exercise = document.querySelectorAll('.student_exercise');
+            student_exercise.forEach(card => {
+                card.addEventListener('click', e => {
+                if(card.dataset.status === 'inactive' || card.dataset.status === 'pending') {
+                    e.preventDefault();
+                    return;
+                }   
+                // xử lý khi click vào card active
+              });
+            });
+            
+            
+            
+        </script>
+    </body>
 
-
-    </script>
-</body>
 
 </html>

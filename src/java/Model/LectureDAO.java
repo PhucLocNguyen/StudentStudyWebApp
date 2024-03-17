@@ -76,24 +76,4 @@ public class LectureDAO {
         }
         return user;
     }
-
-    
-      public void update(LectureDTO lecturer) {
-        try {
-            Connection con = DBUtils.getConnection();
-
-            String sql = " UPDATE Lecturers SET name = ?, thumbnail = ? WHERE lecturer_id = ? ";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, lecturer.getName());
-            stmt.setString(2, lecturer.getThumbnail());
-            stmt.setInt(3, lecturer.getId());
-
-            stmt.executeUpdate();
-
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("SQL ERROR Update: " + e.getMessage());
-        }
-    }
-
 }

@@ -33,7 +33,6 @@
         <div class="container" style="min-height: 650px">
 
             <%@include file="./Components/Header.jsp" %>
-
             <div class="container">
 
                 <%  if (getRole != null && getRole.equals("lecturer")) {%>
@@ -44,7 +43,6 @@
 
                     </div>
                     <div class="col-sm-12 col-lg-5">
-
                         <form action="showdashboard" id="formSelect">
                             <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
                                 <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
@@ -53,7 +51,6 @@
                                 <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
                             </select>
                         </form>
-
                     </div>
                     <div class="col-sm-12 col-lg-3">
                         <a href="#myModal" role="button" class="btn btn-primary" data-bs-toggle="modal">Create</a>
@@ -62,7 +59,6 @@
                 </div>
                 <div class="row mt-3 mb-4">
                     <%
-
                         List<ClassesDTO> classOwned = (List<ClassesDTO>) request.getAttribute("listClass");
                         for (ClassesDTO item : classOwned) {
 
@@ -81,8 +77,6 @@
                     <%                }
                     %>
                 </div>
-
-
                 <!-- Modal HTML -->
                 <div id="myModal" class="modal fade" tabindex="-1">
                     <div class="modal-dialog">
@@ -137,7 +131,6 @@
                 </div>
                 <%} else {
                 %>
-
                 <div class="col-sm-12 col-lg-5">
                     <form action="showdashboard" id="formSelect">
                         <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
@@ -182,30 +175,31 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
-                                let editor = new FroalaEditor('#froala-editor', {
-                                    // Set the image upload URL.
-                                    entities: '',
-                                    imageUploadURL: 'upload-image',
-                                    imageUploadParams: {
-                                        id: 'my_editor'
-                                    },
-                                    events: {
-                                        'image.removed': function ($img) {
-                                            var xhttp = new XMLHttpRequest();
-                                            xhttp.onreadystatechange = function () {
-                                                // Image was removed.
-                                                if (this.readyState == 4 && this.status == 200) {
-                                                    console.log('image was deleted');
-                                                }
-                                            };
-                                            xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
-                                            console.log($img);
-                                            xhttp.send(JSON.stringify({
-                                                src: $img[0].currentSrc
-                                            }));
-                                        }
+
+                            let editor = new FroalaEditor('#froala-editor', {
+                                // Set the image upload URL.
+                                entities: '',
+                                imageUploadURL: 'upload-image',
+                                imageUploadParams: {
+                                    id: 'my_editor'
+                                },
+                                events: {
+                                    'image.removed': function ($img) {
+                                        var xhttp = new XMLHttpRequest();
+                                        xhttp.onreadystatechange = function () {
+                                            // Image was removed.
+                                            if (this.readyState == 4 && this.status == 200) {
+                                                console.log('image was deleted');
+                                            }
+                                        };
+                                        xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
+                                        console.log($img);
+                                        xhttp.send(JSON.stringify({
+                                            src: $img[0].currentSrc
+                                        }));
                                     }
-                                });
+                                }
+                            });
 
     </script>
     <script>
@@ -213,7 +207,6 @@
             var formSelect = document.getElementById("formSelect");
             formSelect.submit();
         }
-
     </script>
 </body>
 </html> 

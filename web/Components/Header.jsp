@@ -131,12 +131,10 @@
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li class="nav-item">
-
-                                    <a class="nav-link active fs-5" aria-current="page" href="viewprofile?action=showmyprofile&id=${sessionScope.user.getId()}&role=${sessionScope.role}"">Thong tin tai khoan</a>
+                                    <a class="nav-link active fs-5" aria-current="page" href="#">Thong tin tai khoan</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link fs-5" href="viewprofile?action=edit&id=${sessionScope.user.getId()}&role=${sessionScope.role}">Chinh sua thong tin tai khoan</a>
-
+                                    <a class="nav-link fs-5" href="#">Chinh sua thong tin tai khoan</a>
                                 </li>
                             </ul>
                             <form action="logout" method="POST">

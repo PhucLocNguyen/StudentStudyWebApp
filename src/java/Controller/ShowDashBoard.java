@@ -38,8 +38,6 @@ public class ShowDashBoard extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,8 +54,8 @@ public class ShowDashBoard extends HttpServlet {
             throws ServletException, IOException {
         List<ClassesDTO> listClass = new ArrayList<>();
         ClassesDAO classDAO = new ClassesDAO();
-        String sortByCondition = "1";
 
+        String sortByCondition = "1";
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
@@ -68,25 +66,26 @@ public class ShowDashBoard extends HttpServlet {
             return;
         }
 
-        if(request.getParameter("selectValue")!=null){
-                sortByCondition = request.getParameter("selectValue");
-            }
+        if (request.getParameter("selectValue") != null) {
+            sortByCondition = request.getParameter("selectValue");
+        }
+
         String getRole = (String) session.getAttribute("role");
         if (getRole.equals("student")) {
             EnrollDAO enrollDAO = new EnrollDAO();
             StudentDTO student = (StudentDTO) session.getAttribute("user");
-            
+
             listClass = classDAO.showClassOwnedByStudentID(student.getId(), sortByCondition);
         } else {
             LectureDTO lecture = (LectureDTO) session.getAttribute("user");
-            listClass = classDAO.showClassOwnedByLectureID(lecture.getId(),sortByCondition);
+            listClass = classDAO.showClassOwnedByLectureID(lecture.getId(), sortByCondition);
             for (ClassesDTO listClas : listClass) {
-                System.out.println("class name: "+ listClas.getName());
+                System.out.println("class name: " + listClas.getName());
             }
         }
         request.setAttribute("selectValue", sortByCondition);
-
         request.setAttribute("listClass", listClass);
+
         request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 

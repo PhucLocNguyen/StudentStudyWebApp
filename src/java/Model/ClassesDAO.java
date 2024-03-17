@@ -150,7 +150,6 @@ public class ClassesDAO {
         return list;
     }
 
-
     public List<ClassesDTO> showClassOwnedByStudentID(int stduent_id, String sortByCondition) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -193,7 +192,6 @@ public class ClassesDAO {
     }
 
     public List<ClassesDTO> showClassOwnedByLectureID(int lecutre_id, String sortByCondition) {
-
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
@@ -217,7 +215,6 @@ public class ClassesDAO {
                     sql += "ORDER BY created_date";
                     break;
             }
-
             preStm = con.prepareStatement(sql);
             preStm.setInt(1, lecutre_id);
             rs = preStm.executeQuery();
@@ -235,7 +232,6 @@ public class ClassesDAO {
         }
         return list;
     }
-
 
     public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role, String sortByCondition ) {
         PreparedStatement preStm = null;
@@ -266,7 +262,6 @@ public class ClassesDAO {
                     sql += "ORDER BY c.created_date";
                     break;
             }
-
             preStm = con.prepareStatement(sql);
             preStm.setString(1, "%" + keyWord + "%");
             rs = preStm.executeQuery();

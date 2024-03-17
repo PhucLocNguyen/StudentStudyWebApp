@@ -60,7 +60,6 @@ public class Home extends HttpServlet {
                 String getRole = (String) session.getAttribute("role");
                 if (getRole.equals("student")) {
                     StudentDTO student = (StudentDTO) session.getAttribute("user");
-
                    classLlistEnrolled = classDAO.showClassOwnedByStudentID(student.getId(), "3");
                 }else{
                     LectureDTO lecture = (LectureDTO) session.getAttribute("user");
