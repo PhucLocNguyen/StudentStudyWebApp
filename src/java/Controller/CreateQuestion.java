@@ -5,8 +5,6 @@
  */
 package Controller;
 
-import Model.ClassDAO;
-import Model.ClassDTO;
 import Model.ClassesDTO;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
