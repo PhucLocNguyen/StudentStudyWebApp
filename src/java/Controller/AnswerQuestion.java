@@ -71,52 +71,7 @@ public class AnswerQuestion extends HttpServlet {
             StudentDTO student = (StudentDTO) session.getAttribute("user");
             student_id = student.getId();
         }
-        try {
-            exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
-        } catch (NumberFormatException e) {
-            System.out.println("Number format wrong: " + e.getMessage());
-            e.printStackTrace();
-        }
-        ExerciseDTO exercise = exerciseDAO.loadExercise(exercise_id);
-        request.setAttribute("exercise", exercise);
-
-        if (action.equals("") || action.equals("answer")) {
-            boolean check = false;
-            if (action.equals("answer")) {
-                String answer = request.getParameter("answer");
-                if (answer.trim().isEmpty()) {
-                    request.setAttribute("error", "Answer is not be a blank");
-                    check = true;
-                } else {
-                    doDAO.addAnswer(exercise_id, student_id, answer);
-
-                }
-            } else {
-                DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
-                if (Do.getStudent() == null) {
-                    check = true;
-                }
-            }
-            listDo = doDAO.list(exercise_id);
-            request.setAttribute("check", check);
-            request.setAttribute("listDo", listDo);
-            request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
-        } else if (action.equals("edit")) {
-            DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
-            request.setAttribute("Do", Do);
-            request.getRequestDispatcher("editAnswer.jsp").forward(request, response);
-        } else if (action.equals("update")) {
-            String updateSolution = request.getParameter("updateSolution");
-            doDAO.update(exercise_id, student_id, updateSolution);
-            listDo = doDAO.list(exercise_id);
-            request.setAttribute("check", false);
-            request.setAttribute("listDo", listDo);
-            request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
-        } else if (action.equals("delete")) {
-            doDAO.delete(exercise_id, student_id);
-            request.setAttribute("check", true);
-            request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
-        } else if (action.equals("score")) {
+        if (action.equals("score")) {
             int class_id = 0;
             List<DoDTO> listScore = null;
             try {
@@ -138,6 +93,53 @@ public class AnswerQuestion extends HttpServlet {
                 out.flush();
             } else {
                 response.setStatus(401);
+            }
+        } else {
+            try {
+                exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
+            } catch (NumberFormatException e) {
+                System.out.println("Number format wrong: " + e.getMessage());
+                e.printStackTrace();
+            }
+            ExerciseDTO exercise = exerciseDAO.loadExercise(exercise_id);
+            request.setAttribute("exercise", exercise);
+
+            if (action.equals("") || action.equals("answer")) {
+                boolean check = false;
+                if (action.equals("answer")) {
+                    String answer = request.getParameter("answer");
+                    if (answer.trim().isEmpty()) {
+                        request.setAttribute("error", "Answer is not be a blank");
+                        check = true;
+                    } else {
+                        doDAO.addAnswer(exercise_id, student_id, answer);
+
+                    }
+                } else {
+                    DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
+                    if (Do.getStudent() == null) {
+                        check = true;
+                    }
+                }
+                listDo = doDAO.list(exercise_id);
+                request.setAttribute("check", check);
+                request.setAttribute("listDo", listDo);
+                request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
+            } else if (action.equals("edit")) {
+                DoDTO Do = doDAO.loadAnswer(student_id, exercise_id);
+                request.setAttribute("Do", Do);
+                request.getRequestDispatcher("editAnswer.jsp").forward(request, response);
+            } else if (action.equals("update")) {
+                String updateSolution = request.getParameter("updateSolution");
+                doDAO.update(exercise_id, student_id, updateSolution);
+                listDo = doDAO.list(exercise_id);
+                request.setAttribute("check", false);
+                request.setAttribute("listDo", listDo);
+                request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
+            } else if (action.equals("delete")) {
+                doDAO.delete(exercise_id, student_id);
+                request.setAttribute("check", true);
+                request.getRequestDispatcher("answerQuestion.jsp").forward(request, response);
             }
         }
 
