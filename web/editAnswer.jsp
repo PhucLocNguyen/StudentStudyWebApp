@@ -41,7 +41,7 @@
                     </nav>
                 </div>
                 <div class="row">
-                    <div class="py-4 bg-image-full rounded-4" style="background-image: url('./img/background.jpg')">
+                    <div class="py-4 bg-image-full rounded-4" style="background-image: url('.Assets/img/webImg/background.jpg')">
                         <div class="text-center">
                             <h1 class="text-white fs-3 fw-bolder">${requestScope.exercise.title}</h1>
                             <h5 class="text-white fw-medium mb-0">${requestScope.exercise.description}</h5>
@@ -91,7 +91,7 @@
                                     <textarea class="form-control" name="updateSolution" id="froala-editor" cols="30" rows="10">${requestScope.Do.solution}</textarea>
                                 </div>
                             </div>     
-                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="action" value="${reqeustScope.action}">
                             <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}">
                         </form>
 

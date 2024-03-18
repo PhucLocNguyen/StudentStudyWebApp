@@ -36,7 +36,7 @@
                     </form>
                     <div>
                         <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/LoginGoogle/LoginGoogleHandler&response_type=code
-                           &client_id=984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com&approval_prompt=force" class="btn btn-light w-100"> <img style="width: 30px;" src="./Assets/img/GoogleIcon.svg" alt="">Login with Google</a> 
+                           &client_id=984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com&approval_prompt=force" class="btn btn-light w-100"> <img style="width: 30px;" src="./Assets/img/webImg/GoogleIcon.svg" alt="GoogleIcon">Login with Google</a> 
                     </div>
                 </div>
             </div>

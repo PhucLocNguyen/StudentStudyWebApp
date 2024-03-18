@@ -46,13 +46,13 @@
                             </div>
                             <div class="carousel-inner " style="height: 270px;">
                                 <div class="carousel-item active rounded-4" data-bs-interval="10000">
-                                    <img src="./Assets/img/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
+                                    <img src="./Assets/img/webImg/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
                                 </div>
                                 <div class="carousel-item" data-bs-interval="10000">
-                                    <img src="./Assets/img/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
+                                    <img src="./Assets/img/webImg/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
                                 </div>
                                 <div class="carousel-item" data-bs-interval="10000">
-                                    <img src="./Assets/img/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
+                                    <img src="./Assets/img/webImg/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
@@ -123,7 +123,7 @@
 
 
                     <div class="row">
-                        <h3 class="fw-medium mb-3">Lop hoc cua ban</h3>
+                        <h3 class="fw-medium mb-3">Your classroom</h3>
                     </div>
                     <div class="row">
                         <div class="multi-carousel" id="carousel" data-mdb-multi-carousel-init="">
@@ -135,7 +135,7 @@
 
                                 %>
 
-                                <div class="multi-carousel-item" >
+                                <div class="col-sm-12 col-md-4 col-lg-3 multi-carousel-item" >
                                     <a href="<%="insideClass?class_id=" + item.getId()%>" style="text-decoration: none" >
                                         <div class="card">
                                             <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
@@ -171,24 +171,34 @@
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-                                var getCarousel = document.querySelector(".multi-carousel#carousel .multi-carousel-inner");
-                                function slideCarouselMove(element) {
-                                    var getAction = element.getAttribute("data-mdb-slide");
-                                    var carouselItems = getCarousel.querySelectorAll(".multi-carousel-item");
-
-                                    if (getAction === "next") {
+                                    var getCarousel = document.querySelector(".multi-carousel#carousel .multi-carousel-inner");
+                                    function slideCarouselMove(element) {
+                                        var getAction = element.getAttribute("data-mdb-slide");
+                                        var carouselItems = getCarousel.querySelectorAll(".multi-carousel-item");
                                         var firstItem = carouselItems[0];
-                                        getCarousel.appendChild(firstItem);
-                                    } else if (getAction === "prev") {
                                         var lastItem = carouselItems[carouselItems.length - 1];
-                                        getCarousel.insertBefore(lastItem, carouselItems[0]);
+                                        var getWidth = firstItem.offsetWidth;
+                                        if (getAction === "next") {
+                                            getCarousel.appendChild(firstItem);
+                                            firstItem.style.marginLeft = 0;
+                                            setTimeout(function () {
+                                                firstItem.style.marginLeft = -getWidth + "px";
+                                                setTimeout(function () {
+                                                    firstItem.style.marginLeft = 0;
+                                                }, 200);
+                                            }, 100);
+                                        } else if (getAction === "prev") {
+                                            getCarousel.insertBefore(lastItem, firstItem);
+                                            lastItem.style.marginLeft = -getWidth + "px";
+                                            setTimeout(function () {
+                                                lastItem.style.marginLeft = 0;
+                                            }, 100);
+                                        }
                                     }
-                                }
     </script>
     <script>
         function myFunction() {
             var x = document.querySelector("#passwordInput");
-
             if (x.type === "password") {
                 x.type = "text";
             } else {
@@ -205,7 +215,10 @@
                 backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
             }).showToast();
         }
-
+        if (toastMessage) {
+            showToast(toastMessage);
+            sessionStorage.removeItem("toastMessage"); // Xóa thông điệp sau khi hiển thị
+        }
     </script>
     <script>
         var selectModal = document.querySelector("div#myModal > .modal-dialog");
@@ -249,7 +262,6 @@
                             password: event.srcElement[0].value,
                             class_id: event.srcElement[1].value
                         };
-
                         $.ajax({
                             url: "enroll-class",
                             method: "POST",
@@ -271,7 +283,6 @@
                     console.log("Lỗi: " + error);
                 }
             });
-
         }
     </script>
     <%@include file="./Components/Footer.jsp" %>

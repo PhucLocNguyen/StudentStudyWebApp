@@ -117,6 +117,7 @@ public class CreateQuestion extends HttpServlet {
                         request.setAttribute("thumbnail", url);
                         request.setAttribute("start_date", start_timestamp);
                         request.setAttribute("end_date", end_timestamp);
+                        request.setAttribute("nextaction", "create");
                         request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID + "&action=" + action).forward(request, response);
                         return;
                     }
@@ -181,25 +182,26 @@ public class CreateQuestion extends HttpServlet {
                         request.setAttribute("thumbnail", url);
                         request.setAttribute("start_date", start_timestamp);
                         request.setAttribute("end_date", end_timestamp);
+                        request.setAttribute("nextaction", "update");
                         request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID + "&action=" + action).forward(request, response);
-                        return;
-                    }
-                    if (status.equals("active")) {
-                        if (dao.updateExercise(exercise_id, title, url, description, status, start_timestamp, end_timestamp)) {
-                            response.sendRedirect("insideClass?class_id=" + classID);
-                        } else {
-                            request.setAttribute("error", "Update fail");
-                            request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
-                        }
                     } else {
-                        if (dao.updateExercise(exercise_id, title, url, description, status, null, null)) {
-                            response.sendRedirect("insideClass?class_id=" + classID);
+                        if (status.equals("active")) {
+                            if (dao.updateExercise(exercise_id, title, url, description, status, start_timestamp, end_timestamp)) {
+                                response.sendRedirect("insideClass?class_id=" + classID);
+                            } else {
+                                request.setAttribute("error", "Update fail");
+                                request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                            }
                         } else {
-                            request.setAttribute("error", "Update fail");
-                            request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                            if (dao.updateExercise(exercise_id, title, url, description, status, null, null)) {
+                                response.sendRedirect("insideClass?class_id=" + classID);
+                            } else {
+                                request.setAttribute("error", "Update fail");
+                                request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
+                            }
                         }
-                    }
 
+                    }
                 } else if (action.equals("stop")) {
                     int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
                     ExerciseDTO ex = dao.loadExercise(exercise_id);
@@ -244,7 +246,8 @@ public class CreateQuestion extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-private boolean validateDates(Timestamp start, Timestamp end) {
+
+    private boolean validateDates(Timestamp start, Timestamp end) {
         if (start == null && end == null) {
             return true;
         }

@@ -79,9 +79,6 @@ public class ShowDashBoard extends HttpServlet {
         } else {
             LectureDTO lecture = (LectureDTO) session.getAttribute("user");
             listClass = classDAO.showClassOwnedByLectureID(lecture.getId(), sortByCondition);
-            for (ClassesDTO listClas : listClass) {
-                System.out.println("class name: " + listClas.getName());
-            }
         }
         request.setAttribute("selectValue", sortByCondition);
         request.setAttribute("listClass", listClass);

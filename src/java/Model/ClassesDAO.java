@@ -19,7 +19,7 @@ import Model.ClassesDTO;
  * @author ACER
  */
 public class ClassesDAO {
-
+    
     public boolean addClass(String name, String image, String password, String description, int lecturer_id) {
         Connection con = null;
         PreparedStatement preStm = null;
@@ -41,11 +41,11 @@ public class ClassesDAO {
             System.out.println("SQL ERROR Insert CLasses: " + e.getMessage());
             e.getStackTrace();
         }
-
+        
         return status;
-
+        
     }
-
+    
     public boolean deleteClassByID(int class_id) {
         Connection con = null;
         PreparedStatement preStm = null;
@@ -63,10 +63,10 @@ public class ClassesDAO {
             System.out.println("SQL ERROR Delete CLasse by ID: " + e.getMessage());
             e.getStackTrace();
         }
-
+        
         return status;
     }
-
+    
     public boolean checkingClassesPassword(String password, int class_id) {
         boolean status = false;
         PreparedStatement preStm = null;
@@ -93,7 +93,7 @@ public class ClassesDAO {
         }
         return status;
     }
-
+    
     public ClassesDTO showClassById(int class_id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -108,7 +108,7 @@ public class ClassesDAO {
             preStm.setInt(1, class_id);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
-
+            
             if (rs != null) {
                 if (rs.next()) {
                     lecture = lecturer_DAO.searchLectureById(rs.getInt(6));
@@ -122,7 +122,7 @@ public class ClassesDAO {
         }
         return classes;
     }
-
+    
     public List<ClassesDTO> showClass() {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -149,7 +149,7 @@ public class ClassesDAO {
         }
         return list;
     }
-
+    
     public List<ClassesDTO> showClassOwnedByStudentID(int stduent_id, String sortByCondition) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -159,7 +159,7 @@ public class ClassesDAO {
         List<ClassesDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT c.class_id,c.name,c.thumbnail,c.password,c.description,c.lecturer_id FROM Classes c\n"
+            sql = "SELECT c.class_id,c.name,c.thumbnail,c.password,c.description,c.lecturer_id FROM Classes c \n"
                     + "JOIN Enroll e on c.class_id = e.class_id WHERE e.student_id = ? ";
             switch (sortByCondition) {
                 case "1":
@@ -180,7 +180,7 @@ public class ClassesDAO {
             rs = preStm.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
-                    list.add(new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), new LectureDAO().searchLectureById(6)));
+                    list.add(new ClassesDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), new LectureDAO().searchLectureById(rs.getInt(6))));
                 }
             }
             con.close();
@@ -190,7 +190,7 @@ public class ClassesDAO {
         }
         return list;
     }
-
+    
     public List<ClassesDTO> showClassOwnedByLectureID(int lecutre_id, String sortByCondition) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -232,8 +232,8 @@ public class ClassesDAO {
         }
         return list;
     }
-
-    public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role, String sortByCondition ) {
+    
+    public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role, String sortByCondition) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
@@ -279,7 +279,7 @@ public class ClassesDAO {
         }
         return list;
     }
-
+    
     public boolean isLectureInClass(int lecturer_id, int class_id) {
         boolean output = false;
         Connection con = null;

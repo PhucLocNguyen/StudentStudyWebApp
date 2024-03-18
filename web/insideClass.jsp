@@ -15,7 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Inside Class</title>
-<!--        <link rel="stylesheet" href="./Assets/css/style.css"/>-->
+        <!--        <link rel="stylesheet" href="./Assets/css/style.css"/>-->
         <link rel="stylesheet" href="./Assets/css/style.css"/>
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/froala_editor/froala_editor.css"/>
@@ -69,27 +69,27 @@
 
                                     for (ExerciseDTO exc : list) {%>
 
-                                        <div class="exercise-container" >
-                                            <a href="<%="exerciseView?exercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
-                                                <div class="card-body">
-                                                    <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
-                                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
-                                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
+                            <div class="exercise-container" >
+                                <a href="<%="exerciseView?exercise_id=" + exc.getExerciseID() + "&class_id=" + exc.getClasses().getId()%>" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
+                                        <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate()%></span>
+                                        <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate()%></span>
 
-                                                </div>
-                                            </a>
+                                    </div>
+                                </a>
 
-                                            <div class="more-options" >
-                                                <span class="more-icon">...</span>
+                                <div class="more-options" >
+                                    <span class="more-icon">...</span>
 
-                                                <div class="dropdown-menu">
-                                                    <a href="createQuestion?action=edit&classId=<%=getClass.getId()%>&exercise_id=<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-edit">Edit</a> 
-<!--                                                    <a href="./createQuestion?action=delete&exercise_id=" class="dropdown-item dropdown-item-delete">Delete</a>-->
-                                                    <a href="createQuestion?action=stop&classId=<%=getClass.getId()%>&exercise_id=<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-edit">Stop</a> 
-                                                    <a href="javascript:void(0)" data-exercise-id="<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-delete">Delete</a>
-                                                </div>
-                                            </div>    
-                                        </div>
+                                    <div class="dropdown-menu">
+                                        <a href="createQuestion?action=edit&classId=<%=getClass.getId()%>&exercise_id=<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-edit">Edit</a> 
+                                        <!--                                                    <a href="./createQuestion?action=delete&exercise_id=" class="dropdown-item dropdown-item-delete">Delete</a>-->
+                                        <a href="createQuestion?action=stop&classId=<%=getClass.getId()%>&exercise_id=<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-edit">Stop</a> 
+                                        <a href="javascript:void(0)" data-exercise-id="<%=exc.getExerciseID()%>" class="dropdown-item dropdown-item-delete">Delete</a>
+                                    </div>
+                                </div>    
+                            </div>
                             <%   }  %>
 
                             <% }%>
@@ -165,12 +165,13 @@
                                     action: "checkPasswordToDelete"
                                 }, success: function (msg) {
                                     var redirectUrl = msg;
+                                    getFormSubmit.submit();
+                                    sessionStorage.setItem("toastMessage", "Delete successful!!!");
                                     window.location.href = redirectUrl;
-                                    console.log(redirectUrl);
                                 }, error: function (xhr, status, error) {
                                     $("#messageError").html("Wrong password, please try another password!");
                                 }
-                            })
+                            });
                         });
                     </script>
                     <% } else { %>
@@ -185,19 +186,19 @@
                     <!--        <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" class="card rounded-4 text-decoration-none my-2" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
-                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
-                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate()%></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate()%></span>
                                 </div>
                             </a>-->
-                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" data-status="<%=exc.getStatus() %>" class="card rounded-4 text-decoration-none my-2 student_exercise" style="min-height: 5rem;">
+                            <a href="answerquestion?class_id=<%= getClass.getId()%>&exercise_id=<%= exc.getExerciseID()%>&action=" data-status="<%=exc.getStatus()%>" class="card rounded-4 text-decoration-none my-2 student_exercise" style="min-height: 5rem;">
                                 <div class="card-body">
                                     <h5 class="card-title fs-3"> <%= exc.getTitle()%> </h5>
-                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate() %></span>
-                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate() %></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1 me-3">From : <%= exc.getStartDate()%></span>
+                                    <span class="badge rounded-pill text-bg-secondary my-1">To : <%= exc.getEndDate()%></span>
                                 </div>
                             </a>
                             <%      }
-                                } %>
+                                }%>
 
 
                         </div>
@@ -345,29 +346,29 @@
 
         }
         var toastMessage = sessionStorage.getItem("toastMessage");
-            
-            const moreIcons = document.querySelectorAll('.more-option .more-icon');
-            moreIcons.forEach(icon => {
-              icon.addEventListener('click', e => {
+
+        const moreIcons = document.querySelectorAll('.more-option .more-icon');
+        moreIcons.forEach(icon => {
+            icon.addEventListener('click', e => {
                 e.target.parentElement.querySelector('.dropdown-menu').style.display = 'block';
-              });
             });
-            
-            const student_exercise = document.querySelectorAll('.student_exercise');
-            student_exercise.forEach(card => {
-                card.addEventListener('click', e => {
-                if(card.dataset.status === 'inactive' || card.dataset.status === 'pending') {
+        });
+
+        const student_exercise = document.querySelectorAll('.student_exercise');
+        student_exercise.forEach(card => {
+            card.addEventListener('click', e => {
+                if (card.dataset.status === 'inactive' || card.dataset.status === 'pending') {
                     e.preventDefault();
                     return;
-                }   
+                }
                 // xử lý khi click vào card active
-              });
             });
-            
-            
-            
-        </script>
-    </body>
+        });
+
+
+
+    </script>
+</body>
 
 
 </html>

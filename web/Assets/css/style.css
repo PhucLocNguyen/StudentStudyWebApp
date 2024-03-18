@@ -158,20 +158,19 @@
     white-space: nowrap;
     font-size: 0;
 }
+
 .multi-carousel-inner .multi-carousel-item{
 
     display: inline-block;
-    width: 100%;
     font-size: 16px;
     -webkit-transition: all .3s ease-out;
     transition: all .3s ease-out;
+    transition: margin 0.3s ease; 
     padding: 0 3px;
 }
 /* display 3 */
 @media (min-width: 768px) {
-    .multi-carousel-inner .multi-carousel-item{
-        width: calc(100%/3);
-    }
+
     .multi-carousel .slide-control{
 
         width: 8%;
@@ -234,7 +233,7 @@
     content: "";
     width: 65px;
     height: 65px;
-    background-image: url("../img/arrowTransform.png");
+    background-image: url("../img/webImg/arrowTransform.png");
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
@@ -276,7 +275,6 @@
         content: "";
         width: 80px;
         height: 80px;
-        background-image: url("./Assets/img/arrowTransform.png");
         background-size: contain;
         background-repeat: no-repeat;
         position: absolute;

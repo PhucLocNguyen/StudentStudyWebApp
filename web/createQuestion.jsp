@@ -66,7 +66,7 @@
                                     <h1 class="card-title fw-bolder fs-2">${not empty requestScope.nextaction?"Update question":"Create Question"}</h1>
 
                                     <label class="form-label fs-5 fw-medium">Tieu de cau hoi</label>
-                                    <input type="text" class="form-control" placeholder="Nhap ten cua lop hoc" name="title">
+                                    <input type="text" class="form-control" placeholder="Nhap ten cua lop hoc" name="title" value="${requestScope.title}">
                                     <div>
                                         <p class="form-label fs-5 fw-medium">Mo ta</p>
                                         <textarea id="froala-editor" class="form-control" rows="3" 

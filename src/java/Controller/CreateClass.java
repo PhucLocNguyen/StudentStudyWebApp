@@ -86,7 +86,7 @@ public class CreateClass extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private Gson gson = new Gson();
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -94,7 +94,7 @@ public class CreateClass extends HttpServlet {
         String name, imageUrl, password, description, action;
         HttpSession session = request.getSession(false);
         ClassesDAO classDAO = new ClassesDAO();
-
+        
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
@@ -108,20 +108,19 @@ public class CreateClass extends HttpServlet {
             if (action.equals("create")) {
                 LectureDTO user = (LectureDTO) session.getAttribute("user");
                 int lecturer_id = user.getId();
-
+                
                 name = request.getParameter("className");
                 Part filePart = request.getPart("thumbnail");
                 password = request.getParameter("password");
                 description = request.getParameter("description");
                 FileUtils fileUtils = new FileUtils();
                 imageUrl = fileUtils.insertImage(filePart);
-
+                
                 if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
                     request.setAttribute("message", "Create Successfully !!!");
                 } else {
                     request.setAttribute("message", "Failed !!!");
                 }
-
                 response.sendRedirect("showdashboard");
             } else if (action.equals("checkPasswordToDelete")) {
                 String getPassword = request.getParameter("password");
@@ -134,6 +133,7 @@ public class CreateClass extends HttpServlet {
                     response.setCharacterEncoding("UTF-8");
                     String redirectUrl = gson.toJson("showdashboard");
                     response.getWriter().print(redirectUrl);
+                    
                 } else {
                     response.setStatus(400);
                 }
@@ -141,6 +141,7 @@ public class CreateClass extends HttpServlet {
         } else {
             response.setStatus(404);
         }
+        
     }
 
     /**

@@ -82,23 +82,22 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Tạo lớp học</h5>
+                                <h5 class="modal-title">Create classroom</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data">
-
+                            <form accept-charset="UTF-8" action="create-class" method="POST" enctype="multipart/form-data" onsubmit="validateForm(event)">
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <p class="text-primary mb-1">Tên lớp học</p>
-                                        <input type="text" class="form-control" placeholder="ex: Mathematics" name="className"/>
+                                        <p class="text-primary mb-1">Class name</p>
+                                        <input type="text" class="inputFormat form-control" placeholder="ex: Mathematics" name="className"/>
                                     </div>
                                     <div class="mb-3">
                                         <p class="text-primary mb-1">Thumbnail</p>
-                                        <input type="file" class="form-control" id="inputGroupFile01" name="thumbnail" accept="image/*">
+                                        <input type="file" class="inputFormat form-control" id="inputGroupFile01" name="thumbnail" accept="image/*">
                                     </div>
                                     <div class="mb-3">
                                         <p class="text-primary mb-1">Password</p>
-                                        <input type="password" class="form-control" name="password" id="passwordInput"/>
+                                        <input type="password" class="inputFormat form-control" name="password" id="passwordInput"/>
                                         <input type="checkbox" onclick="myFunction()"> Show Password
                                         <input type="hidden" name="action" value="create">
                                         <script>
@@ -116,13 +115,14 @@
                                         <p class="text-primary mb-1">Description</p>
                                         <textarea id="froala-editor" name="description">
                                         </textarea>
+                                        <p class="text-danger mt-2" id="errorMsg">${requestScope.errorMsg}</p>
                                     </div>
 
                                     <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary" >Create</button>
+                                    <button type="submit" class="btn btn-primary" onclick="">Create</button>
                                 </div>
                             </form>
 
@@ -155,7 +155,7 @@
                                 <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
                                 <div class="card-body">
                                     <h5 class="card-title"><%=item.getName()%></h5>
-                                    <p class="card-text">Giảng viên: <%= item.getLecturer().getEmail()%></p>
+                                    <p class="card-text">Lecturer: <%= item.getLecturer().getEmail()%></p>
                                 </div>
                             </div>
                         </a>
@@ -169,44 +169,78 @@
 
             <%@include file="./Components/Footer.jsp" %>
         </div>
-    </div>
 
-
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <script>
-
-                            let editor = new FroalaEditor('#froala-editor', {
-                                // Set the image upload URL.
-                                entities: '',
-                                imageUploadURL: 'upload-image',
-                                imageUploadParams: {
-                                    id: 'my_editor'
-                                },
-                                events: {
-                                    'image.removed': function ($img) {
-                                        var xhttp = new XMLHttpRequest();
-                                        xhttp.onreadystatechange = function () {
-                                            // Image was removed.
-                                            if (this.readyState == 4 && this.status == 200) {
-                                                console.log('image was deleted');
-                                            }
-                                        };
-                                        xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
-                                        console.log($img);
-                                        xhttp.send(JSON.stringify({
-                                            src: $img[0].currentSrc
-                                        }));
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+                            function validateForm(event) {
+                                event.preventDefault();
+                                var getFormInput = event.srcElement;
+                                var getAllInput = document.getElementsByClassName("inputFormat");
+                                var check = false, i;
+                                for (i = 0; i < getAllInput.length; i++) {
+                                    let inputSelected = getFormInput[i];
+                                    let inputValue = inputSelected.value.trim();
+                                    if (inputValue.length === 0) {
+                                        check = true;
+                                    }
+                                    if (check && i === getAllInput.length - 1) {
+                                        document.getElementById("errorMsg").innerText = "if you leave atleast one input is empty the form is not allow to save !";
+                                        return;
                                     }
                                 }
-                            });
+                                sessionStorage.setItem("toastMessage", "Create class successful!!!");
+                                event.target.submit();
+                            }
+        </script>
+        <script>
 
-    </script>
-    <script>
-        function selectChanged() {
-            var formSelect = document.getElementById("formSelect");
-            formSelect.submit();
-        }
-    </script>
-</body>
+            let editor = new FroalaEditor('#froala-editor', {
+                // Set the image upload URL.
+                entities: '',
+                imageUploadURL: 'upload-image',
+                imageUploadParams: {
+                    id: 'my_editor'
+                },
+                events: {
+                    'image.removed': function ($img) {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            // Image was removed.
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log('image was deleted');
+                            }
+                        };
+                        xhttp.open("POST", "http://localhost:8080/LoginGoogle/imageUploadRemove", true);
+                        console.log($img);
+                        xhttp.send(JSON.stringify({
+                            src: $img[0].currentSrc
+                        }));
+                    }
+                }
+            });
+
+        </script>
+        <script>
+            function selectChanged() {
+                var formSelect = document.getElementById("formSelect");
+                formSelect.submit();
+            }
+
+            function showToast(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000, // 3 seconds
+                    close: true,
+                    gravity: "top", // Position of toast message
+                    position: "right", // Position of toast message
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)" // Background color of toast message
+                }).showToast();
+            }
+            var toastMessage = sessionStorage.getItem("toastMessage");
+            if (toastMessage) {
+                showToast(toastMessage);
+                sessionStorage.removeItem("toastMessage"); // Xóa thông điệp sau khi hiển thị
+            }
+        </script>
+    </body>
 </html> 
