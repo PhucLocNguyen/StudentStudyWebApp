@@ -19,24 +19,53 @@
                 </div>
             </div>
         </footer>
-        <% if (request.getAttribute(
-                    "message") != null) { // đang bị lỗi này có giải pháp là bắt sự kiện submit form rồi gửi về bằng Ajax rồi trả dữ liệu json cho toastify %> 
         <script>
-            Toastify({
-                text: "<%= request.getAttribute("message")%>",
-                duration: 3000,
-                destination: "https://github.com/apvarun/toastify-js",
-                newWindow: true,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "left", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                },
-                onClick: function () {} // Callback after click
-            }).showToast();
+            var getNotification = document.querySelector("#myModalNotification #notificationContainer");
+            var numberNotification = document.querySelector("#numberNotification");
+            setInterval(function () {
+                $.ajax({
+                    url: "notificationController",
+                    method: "GET",
+                    data: {
+                        action: "loadByID"
+                    }, success: function (data) {
+                        var structureNotification = "";
+                        var lengthData = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].isRead) {
+                                structureNotification += '<a href="#" class="card-body text-left notificationReceive" notification-id="' + data[i].notification.id + '" style="text-decoration: none;" onclick="viewToPage(this)"><p><div><img src="./Assets/img/webImg/messageRead.png" class="imgNotification"></div><div><p>' + data[i].notification.message + '</p> <p> <i class="ti-calendar"></i> at ' + data[i].notification.create_date + '</p></div></a>';
+                            } else {
+                                lengthData++;
+                                structureNotification += '<a href="#" class="card-body text-left notificationReceive" notification-id="' + data[i].notification.id + '" style="text-decoration: none;" onclick="viewToPage(this)"><div><img src="./Assets/img/webImg/waitingIconReceive.png" class="imgNotification"></div><div><p>' + data[i].notification.message + '</p> <p> <i class="ti-calendar"></i> at ' + data[i].notification.create_date + '</p></div></a>';
+                            }
+                            numberNotification.innerText = lengthData;
+                            getNotification.innerHTML = structureNotification;
+                        }
+                    }
+                    , error: function (xhr, status, error) {
+                        $("#messageError").html("Wrong password, please try another password!");
+                    }
+                })
+            }, 500);
+
         </script>
-        <%}%>
+        <script>
+            function viewToPage(element) {
+                var getNotificationID = element.getAttribute("notification-id");
+                console.log(getNotificationID);
+
+                $.ajax({
+                    url: "notificationController",
+                    method: "POST",
+                    data: {
+                        notificationID: getNotificationID,
+                        action: "seenReceive"
+                    }, success: function (data) {
+                    }, error: function (xhr, status, error) {
+                        $("#messageError").html("Wrong password, please try another password!");
+                    }
+                })
+            }
+        </script>
     </body>
 </html>

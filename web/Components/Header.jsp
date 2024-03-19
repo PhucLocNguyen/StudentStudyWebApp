@@ -43,6 +43,7 @@
                              aria-label="Toggle navigation">
                         <span
                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">99+</span>
+
                         <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileCanvas"
                              aria-labelledby="mobileCanvas">
                             <div class="offcanvas-header">
@@ -54,6 +55,10 @@
                                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                     <li class="nav-item">
                                         <a class="nav-link active fs-5" aria-current="page" href="#">Thong tin tai khoan</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active fs-5 position-relative" aria-current="page" href="#">Notifications <span
+                                                class="position-absolute top-50 start-50 translate-middle badge rounded-pill bg-danger">99+</span></a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link fs-5" href="#">Chinh sua thong tin tai khoan</a>
@@ -98,13 +103,30 @@
                 </form>
             </div>
             <div class="col-sm-4 d-none d-md-block col-lg-2 py-2">
-                <nav class="navbar " style="display: inline-block;">
-                    <div class=" position-relative" style="display: inline-block;">
+                <nav class="navbar row justify-content-start">
+                    <div class=" col-lg-6" style="display: inline-block;">
                         <img style="width: 40px;" class="rounded-circle " src="<%=image%>" alt="..."
                              data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
                              aria-label="Toggle navigation">
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">99+</span>
+
+                    </div>
+                    <div class="position-relative col-lg-3 text-center">
+                        <a href="#myModalNotification" role="button"  data-bs-toggle="modal" class=" w-100" style="text-decoration: none;"><i class="ti-bell link-underline-opacity-0 " ></i><span
+                                class="position-absolute start-100 translate-middle badge rounded-pill bg-danger" id="numberNotification"></span></a>
+
+                        <!-- Modal HTML -->
+                        <div id="myModalNotification" class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Notifications</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body" id="notificationContainer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                          aria-labelledby="offcanvasNavbarLabel">
@@ -118,6 +140,10 @@
                                 <li class="nav-item">
                                     <a class="nav-link active fs-5" aria-current="page" href="#">Thong tin tai khoan</a>
                                 </li>
+                                <!--                                <li class="nav-item">
+                                                                    <a class="nav-link active fs-5 position-relative" aria-current="page" href="#">Notifications <span
+                                                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">99+</span></a>
+                                                                </li>-->
                                 <li class="nav-item">
                                     <a class="nav-link fs-5" href="#">Chinh sua thong tin tai khoan</a>
                                 </li>

@@ -113,9 +113,12 @@ public class CreateClass extends HttpServlet {
                 Part filePart = request.getPart("thumbnail");
                 password = request.getParameter("password");
                 description = request.getParameter("description");
-                FileUtils fileUtils = new FileUtils();
-                imageUrl = fileUtils.insertImage(filePart);
-
+                if (filePart != null && filePart.getSize() > 0) {
+                    FileUtils fileUtils = new FileUtils();
+                    imageUrl = fileUtils.insertImage(filePart);
+                } else {
+                    imageUrl = "";
+                }
                 if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
                     request.setAttribute("message", "Create Successfully !!!");
                 } else {

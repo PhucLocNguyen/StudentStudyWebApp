@@ -22,10 +22,6 @@ public class FileUtils {
 
     private String uploadPath = Constants.IMAGE_FOLDER;
 
-    public void deleteImage() {
-
-    }
-
     public String uniqueFileName(Part filePart, String originName) {
         String name = "";
         // Generate random name.

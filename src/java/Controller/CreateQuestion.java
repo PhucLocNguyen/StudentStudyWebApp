@@ -8,6 +8,8 @@ package Controller;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
 import Model.LectureDTO;
+import Model.NotificationDAO;
+import Model.ReceiveDAO;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
@@ -59,9 +61,8 @@ public class CreateQuestion extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-
+        NotificationDAO notificationDAO = new NotificationDAO();
         String action = request.getParameter("action");
-
         ExerciseDAO dao = new ExerciseDAO();
 
         try {
@@ -78,7 +79,6 @@ public class CreateQuestion extends HttpServlet {
 
                     String start_time = request.getParameter("start_time");
                     String end_time = request.getParameter("end_time");
-
                     //java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                     Timestamp start_timestamp = null;
                     Timestamp end_timestamp = null;
@@ -101,22 +101,25 @@ public class CreateQuestion extends HttpServlet {
                         }
                     }
                     Part filePart = request.getPart("thumbnail");
-                    System.out.println(filePart.getSubmittedFileName());
-                    FileUtils fileUtils = new FileUtils();
-                    String url = fileUtils.insertImage(filePart);
-
+                    String imageUrl;
+                    if (filePart != null && filePart.getSize() > 0) {
+                        FileUtils fileUtils = new FileUtils();
+                        imageUrl = fileUtils.insertImage(filePart);
+                    } else {
+                        imageUrl = "";
+                    }
                     if (!validateDates(start_timestamp, end_timestamp)) {
                         request.setAttribute("timeerror", "End date must be after start date");
                         request.setAttribute("title", title);
                         request.setAttribute("description", description);
                         request.setAttribute("status", status);
-                        request.setAttribute("thumbnail", url);
+                        request.setAttribute("thumbnail", imageUrl);
                         request.setAttribute("start_date", start_timestamp);
                         request.setAttribute("end_date", end_timestamp);
                         request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID + "&action=" + action).forward(request, response);
                         return;
                     }
-                    if (dao.addExercise(title, description, url, status, classID, lecturer_id, start_timestamp, end_timestamp)) {
+                    if (dao.addExercise(title, description, imageUrl, status, classID, lecturer_id, start_timestamp, end_timestamp)) {
                         response.sendRedirect("insideClass?class_id=" + classID);
                     } else {
                         request.setAttribute("error", "Create fail");
@@ -168,7 +171,6 @@ public class CreateQuestion extends HttpServlet {
                             System.out.println(e.getMessage());
                         }
                     }
-                    boolean check = validateDates(start_timestamp, end_timestamp);
                     if (!validateDates(start_timestamp, end_timestamp)) {
                         request.setAttribute("timeerror", "End date must be after start date");
                         request.setAttribute("title", title);
@@ -181,8 +183,10 @@ public class CreateQuestion extends HttpServlet {
                         request.setAttribute("exercise_id", exercise_id);
                         request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
                     } else {
+                        ExerciseDTO exercise = dao.loadExercise(exercise_id);
                         if (status.equals("active")) {
                             if (dao.updateExercise(exercise_id, title, url, description, status, start_timestamp, end_timestamp)) {
+                                notificationDAO.createNotificationInClassActivity("New Update for exercise " + exercise.getTitle() + " in class " + exercise.getClasses().getName(), exercise_id);
                                 response.sendRedirect("insideClass?class_id=" + classID);
                             } else {
                                 request.setAttribute("error", "Update fail");
@@ -197,6 +201,7 @@ public class CreateQuestion extends HttpServlet {
                             }
                         } else {
                             if (dao.updateExercise(exercise_id, title, url, description, status, null, null)) {
+                                notificationDAO.createNotificationInClassActivity("New Update for exercise " + exercise.getTitle() + " in class " + exercise.getClasses().getName(), exercise_id);
                                 response.sendRedirect("insideClass?class_id=" + classID);
                             } else {
                                 request.setAttribute("error", "Update fail");
@@ -214,6 +219,7 @@ public class CreateQuestion extends HttpServlet {
                     }
                 } else if (action.equals("delete")) {
                     int exercise_id = Integer.parseInt(request.getParameter("exercise_id"));
+
                     if (dao.deleteExercise(exercise_id)) {
                         response.sendRedirect("insideClass?class_id=" + classID);
                     }

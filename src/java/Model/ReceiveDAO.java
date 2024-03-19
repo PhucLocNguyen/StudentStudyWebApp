@@ -49,7 +49,7 @@ public class ReceiveDAO {
         return listReceive;
     }
 
-    public boolean createReceiveForStudentInClass(int notificationID, int studentID) {
+    public boolean seenTheNotification(int notificationID, int studentID) {
         boolean output = false;
         Connection con = null;
         PreparedStatement preStm = null;
@@ -59,10 +59,10 @@ public class ReceiveDAO {
         try {
             con = DBUtils.getConnection();
 
-            sql = "INSERT INTO [dbo].[Receive] ([notification_id],[student_id]) VALUES (?,?)";
+            sql = "UPDATE [dbo].[Receive] SET is_read = 1 WHERE student_id = ? AND notification_id = ?";
             preStm = con.prepareStatement(sql);
-            preStm.setInt(1, notificationID);
-            preStm.setInt(2, studentID);
+            preStm.setInt(1, studentID);
+            preStm.setInt(2, notificationID);
             if (preStm.executeUpdate() > 0) {
                 output = true;
             }

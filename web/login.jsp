@@ -41,7 +41,6 @@
                 </div>
             </div>
         </div>
-        <%@include file="./Components/Footer.jsp" %>
     </body>
 
 </html>
