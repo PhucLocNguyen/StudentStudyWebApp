@@ -33,10 +33,10 @@
                         var lengthData = 0;
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].isRead) {
-                                structureNotification += '<a href="#" class="card-body text-left notificationReceive" notification-id="' + data[i].notification.id + '" style="text-decoration: none;" onclick="viewToPage(this)"><p><div><img src="./Assets/img/webImg/messageRead.png" class="imgNotification"></div><div><p>' + data[i].notification.message + '</p> <p> <i class="ti-calendar"></i> at ' + data[i].notification.create_date + '</p></div></a>';
+                                structureNotification += '<a href="' + data[i].link + '" class="card-body text-left notificationReceive" notification-id="' + data[i].notification.id + '" style="text-decoration: none;" onclick="viewToPage(this)"><p><div><img src="./Assets/img/webImg/messageRead.png" class="imgNotification"></div><div><p>' + data[i].notification.message + '</p> <p> <i class="ti-calendar"></i> at ' + data[i].notification.create_date + '</p></div></a>';
                             } else {
                                 lengthData++;
-                                structureNotification += '<a href="#" class="card-body text-left notificationReceive" notification-id="' + data[i].notification.id + '" style="text-decoration: none;" onclick="viewToPage(this)"><div><img src="./Assets/img/webImg/waitingIconReceive.png" class="imgNotification"></div><div><p>' + data[i].notification.message + '</p> <p> <i class="ti-calendar"></i> at ' + data[i].notification.create_date + '</p></div></a>';
+                                structureNotification += '<a href="' + data[i].link + '" class="card-body text-left notificationReceive" notification-id="' + data[i].notification.id + '" style="text-decoration: none;" onclick="viewToPage(this)"><div><img src="./Assets/img/webImg/waitingIconReceive.png" class="imgNotification"></div><div><p>' + data[i].notification.message + '</p> <p> <i class="ti-calendar"></i> at ' + data[i].notification.create_date + '</p></div></a>';
                             }
                             numberNotification.innerText = lengthData;
                             getNotification.innerHTML = structureNotification;

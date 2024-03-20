@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import Model.ClassesDAO;
+import Model.ClassesDTO;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
 import Model.LectureDTO;
@@ -64,15 +66,16 @@ public class CreateQuestion extends HttpServlet {
         NotificationDAO notificationDAO = new NotificationDAO();
         String action = request.getParameter("action");
         ExerciseDAO dao = new ExerciseDAO();
-
+        ClassesDAO classDAO = new ClassesDAO();
         try {
             if (action != null) {
                 String classID_raw = request.getParameter("classId");
                 int classID = Integer.parseInt(classID_raw);
+                LectureDTO user = (LectureDTO) session.getAttribute("user");
+
                 if (action.equals("create")) {
                     String title = request.getParameter("title");
                     String description = request.getParameter("description");
-                    LectureDTO user = (LectureDTO) session.getAttribute("user");
                     int lecturer_id = user.getId();
 
                     String status = request.getParameter("status");
@@ -184,9 +187,10 @@ public class CreateQuestion extends HttpServlet {
                         request.getRequestDispatcher("createQuestion.jsp?class_id=" + classID).forward(request, response);
                     } else {
                         ExerciseDTO exercise = dao.loadExercise(exercise_id);
+                        ClassesDTO classessDTO = classDAO.showClassById(Integer.parseInt(classID_raw));
                         if (status.equals("active")) {
                             if (dao.updateExercise(exercise_id, title, url, description, status, start_timestamp, end_timestamp)) {
-                                notificationDAO.createNotificationInClassActivity("New Update for exercise " + exercise.getTitle() + " in class " + exercise.getClasses().getName(), exercise_id);
+                                notificationDAO.createNotificationInClassActivity("Lecturer" + user.getName() + " Updated the Active exercise in class " + classessDTO.getName(), exercise.getExerciseID());
                                 response.sendRedirect("insideClass?class_id=" + classID);
                             } else {
                                 request.setAttribute("error", "Update fail");
@@ -201,7 +205,7 @@ public class CreateQuestion extends HttpServlet {
                             }
                         } else {
                             if (dao.updateExercise(exercise_id, title, url, description, status, null, null)) {
-                                notificationDAO.createNotificationInClassActivity("New Update for exercise " + exercise.getTitle() + " in class " + exercise.getClasses().getName(), exercise_id);
+                                notificationDAO.createNotificationInClassActivity("Lecturer" + user.getName() + " Updated the Active exercise in class " + classessDTO.getName(), exercise.getExerciseID());
                                 response.sendRedirect("insideClass?class_id=" + classID);
                             } else {
                                 request.setAttribute("error", "Update fail");

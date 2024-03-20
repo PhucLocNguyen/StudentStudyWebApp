@@ -57,7 +57,9 @@ public class NotificationController extends HttpServlet {
                 if (action.equals("loadByID")) {
 
                     List<ReceiveDTO> notificationList = receiveDAO.loadReceiveByStudentId(student.getId());
-
+                    for (ReceiveDTO notification : notificationList) {
+                        notification.setLink("insideClass?class_id=" + notification.getNotification().getExercise().getClasses().getId());
+                    }
                     String jsonPacket = gson.toJson(notificationList);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");

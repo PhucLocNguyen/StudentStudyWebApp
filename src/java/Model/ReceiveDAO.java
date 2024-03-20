@@ -31,7 +31,7 @@ public class ReceiveDAO {
 
         try {
             con = DBUtils.getConnection();
-            sql = "SELECT notification_id,student_id,is_read FROM [QuanLySinhVien].[dbo].[Receive] WHERE student_id = ? ";
+            sql = "SELECT notification_id,student_id,is_read FROM [QuanLySinhVien].[dbo].[Receive] WHERE student_id = ? ORDER BY is_read ASC , notification_id DESC ";
             preStm = con.prepareCall(sql);
             preStm.setInt(1, studentID);
             ResultSet rs = preStm.executeQuery();
