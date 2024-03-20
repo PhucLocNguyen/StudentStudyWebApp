@@ -47,7 +47,7 @@
                                 <li class="breadcrumb-item active" aria-current="page"><%=exercise.getTitle()%></li>
                             </ol>
                         </nav>
-                        <div class="py-4 bg-image-full rounded-4" style="background-image: url('Assets/img/webImg/slide.jpg')">
+                        <div class="py-4 bg-image-full rounded-4" style="background-image: url('Assets/img/webImg/bang.png')">
                             <div class="text-center">
                                 <h1 class="text-dark fs-3 fw-bolder"><%=exercise.getTitle()%></h1>
                                 <h5 class="text-dark fw-medium mb-0"><%=exercise.getDescription()%></h5>

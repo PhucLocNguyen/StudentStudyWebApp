@@ -196,7 +196,7 @@ public class CreateQuestion extends HttpServlet {
                     } else {
                         if (status.equals("active")) {
                             if (dao.updateExercise(exercise_id, title, imageUrl, description, status, start_timestamp, end_timestamp)) {
-                                notificationDAO.createNotificationInClassActivity("Lecturer" + user.getName() + " Updated the Active exercise in class " + classessDTO.getName(), exercise.getExerciseID());
+                                notificationDAO.createNotificationInClassActivity("Lecturer " + user.getName() + " Updated the Active exercise in class " + classessDTO.getName(), exercise.getExerciseID());
                                 response.sendRedirect("insideClass?class_id=" + classID);
                             } else {
                                 request.setAttribute("error", "Update fail");
@@ -224,7 +224,7 @@ public class CreateQuestion extends HttpServlet {
                     ExerciseDTO ex = dao.loadExercise(exercise_id);
                     if (dao.inactiveExercise(exercise_id)) {
                         request.setAttribute("inactive", ex.getStatus());
-                        notificationDAO.createNotificationInClassActivity("Lecturer" + user.getName() + " Stop the exercise in class " + classessDTO.getName(), exercise_id);
+                        notificationDAO.createNotificationInClassActivity("Lecturer " + user.getName() + " Stop the exercise in class " + classessDTO.getName(), exercise_id);
                         response.sendRedirect("insideClass?class_id=" + classID);
                     }
                 }

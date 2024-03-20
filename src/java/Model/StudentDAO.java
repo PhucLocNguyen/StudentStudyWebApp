@@ -23,6 +23,7 @@ public class StudentDAO {
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
+        StudentDAO studentDAO = new StudentDAO();
         try {
             if (user != null) {
                 con = DBUtils.getConnection();
@@ -46,6 +47,8 @@ public class StudentDAO {
                     preStm.setString(3, userData.getEmail());
                     preStm.setString(4, userData.getPassword());
                     preStm.executeUpdate();
+                    int id = studentDAO.showIdStudentByEmail(userData.getEmail());
+                    userData.setId(id);
                 } else {
                     sql = "SELECT student_id, name, email, thumbnail FROM STUDENTs where email = ? ";
                     preStm = con.prepareStatement(sql);
@@ -70,6 +73,31 @@ public class StudentDAO {
 
     }
 
+    public int showIdStudentByEmail(String email) {
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        Connection con = null;
+        String sql = "";
+        int id = -1;
+        try {
+            con = DBUtils.getConnection();
+            sql = "SELECT student_id FROM Students Where email = ? ";
+            preStm = con.prepareStatement(sql);
+            preStm.setString(1, email);
+            rs = preStm.executeQuery();
+            if (rs != null) {
+                if (rs.next()) {
+                    id = rs.getInt("student_id");
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR Show Student By Email: " + e.getMessage());
+            e.getStackTrace();
+        }
+        return id;
+    }
+
     public StudentDTO showStudentById(int student_id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -84,7 +112,7 @@ public class StudentDAO {
             rs = preStm.executeQuery();
             if (rs != null) {
                 if (rs.next()) {
-                    student= new StudentDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                    student = new StudentDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
                 }
             }
             con.close();
@@ -94,7 +122,7 @@ public class StudentDAO {
         }
         return student;
     }
-    
+
     public void update(StudentDTO student) {
         try {
             Connection con = DBUtils.getConnection();

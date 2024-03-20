@@ -78,7 +78,7 @@
                     <div class="col-lg-4">
                         <div class="card rounded-4">
                             <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
-                            <div class="card-body">
+                            <div class="card-body" style="min-height: 151.6px">
                                 <h5 class="card-title"><%=items.getName()%></h5>
                                 <p class="card-text">Lecturers : <%= items.getLecturer().getEmail()%></p>
                                 <%

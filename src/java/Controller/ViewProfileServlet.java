@@ -173,6 +173,8 @@ public class ViewProfileServlet extends HttpServlet {
                     System.out.println("ViewProfileServlet action showList ERROR: " + e.getMessage());
                 }
                 List<StudentDTO> listStudent = enrollDAO.getStudentInClass(class_id);
+                ClassesDTO classDetails = classesDAO.showClassById(class_id);
+                request.setAttribute("classDetails", classDetails);
                 request.setAttribute("listStudent", listStudent);
                 request.getRequestDispatcher("studentListForProfile.jsp").forward(request, response);
 

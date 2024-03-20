@@ -46,13 +46,13 @@
                             </div>
                             <div class="carousel-inner " style="height: 270px;">
                                 <div class="carousel-item active rounded-4" data-bs-interval="10000">
-                                    <img src="./Assets/img/webImg/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
+                                    <img style="object-position: 0 -200px" src="./Assets/img/webImg/slide1.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
                                 </div>
                                 <div class="carousel-item" data-bs-interval="10000">
-                                    <img src="./Assets/img/webImg/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
+                                    <img style="object-position: 0 -200px" src="./Assets/img/webImg/slide2.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
                                 </div>
                                 <div class="carousel-item" data-bs-interval="10000">
-                                    <img src="./Assets/img/webImg/slide.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
+                                    <img style="object-position: 0 -500px" src="./Assets/img/webImg/slide3.jpg" class="d-block w-100 rounded-4 img-fluid" alt="...">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
@@ -99,7 +99,7 @@
                         <div class="col-lg-4 mt-3">
                             <div class="card rounded-4">
                                 <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
-                                <div class="card-body">
+                                <div class="card-body" style="min-height: 154.6px">
                                     <h5 class="card-title"><%=items.getName()%></h5>
                                     <p class="card-text">Lecturer : <%= items.getLecturer().getEmail()%></p>
                                     <%

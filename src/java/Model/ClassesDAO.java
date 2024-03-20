@@ -299,7 +299,7 @@ public class ClassesDAO {
         return total;
     }
 
-    public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role, String sortByCondition, int page) {
+    public List<ClassesDTO> showClassWithKeyWord(String keyWord, String role, String sortByCondition, int page, int id) {
         PreparedStatement preStm = null;
         ResultSet rs = null;
         Connection con = null;
@@ -326,18 +326,25 @@ public class ClassesDAO {
             con = DBUtils.getConnection();
             if (role.equals("student")) {
                 sql = "SELECT * FROM (SELECT ROW_NUMBER() Over( ORDER BY " + condition + " ) as number, c.class_id,c.name,c.thumbnail,c.password,c.description,c.lecturer_id \n"
-                        + "FROM Classes c JOIN Lecturers l ON c.lecturer_id = l.lecturer_id WHERE c.name LIKE ? AND c.class_id NOT IN (SELECT class_id FROM Enroll)) as paging\n"
+                        + "FROM Classes c JOIN Lecturers l ON c.lecturer_id = l.lecturer_id WHERE c.name LIKE ? AND c.class_id NOT IN (SELECT class_id FROM Enroll e WHERE e.student_id = ? )) as paging\n"
                         + "WHERE number BETWEEN ? and ?";
+
+                preStm = con.prepareStatement(sql);
+                preStm.setString(1, "%" + keyWord + "%");
+                preStm.setInt(2, id);
+                preStm.setInt(3, page * 6 - 5);
+                preStm.setInt(4, page * 6);
             } else {
                 sql = "SELECT * FROM (SELECT ROW_NUMBER() Over( ORDER BY " + condition + " ) as number, c.class_id,c.name,c.thumbnail,c.password,c.description,c.lecturer_id \n"
                         + "FROM Classes c JOIN Lecturers l ON c.lecturer_id = l.lecturer_id WHERE c.name LIKE ? ) as paging\n"
                         + "WHERE number BETWEEN ? and ? ";
+
+                preStm = con.prepareStatement(sql);
+                preStm.setString(1, "%" + keyWord + "%");
+                preStm.setInt(2, page * 6 - 5);
+                preStm.setInt(3, page * 6);
             }
 
-            preStm = con.prepareStatement(sql);
-            preStm.setString(1, "%" + keyWord + "%");
-            preStm.setInt(2, page * 6 - 5);
-            preStm.setInt(3, page * 6);
             rs = preStm.executeQuery();
             LectureDAO lecturer_DAO = new LectureDAO();
             if (rs != null) {

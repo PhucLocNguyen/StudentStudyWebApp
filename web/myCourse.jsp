@@ -65,10 +65,10 @@
 
                         %>
 
-                        <div class="col-lg-4 mt-3">
+                        <div class="col-lg-4 mt-3" >
                             <div class="card rounded-4">
                                 <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= item.getName()%>" style="max-height: 10rem;">
-                                <div class="card-body">
+                                <div class="card-body" style="min-height: 151.6px">
                                     <h5 class="card-title"><%=item.getName()%></h5>
                                     <p class="card-text">Lecturer : <%= item.getLecturer().getEmail()%></p>
                                     <a href="<%="insideClass?class_id=" + item.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
@@ -152,7 +152,7 @@
                         %>
                         <div class="col-lg-4 mt-3">
                             <a href="<%="insideClass?class_id=" + item.getId()%>" style="text-decoration: none">
-                                <div class="card rounded-4">
+                                <div class="card rounded-4" >
                                     <img src="<%=item.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="..." style="max-height: 10rem;">
                                     <div class="card-body">
                                         <h5 class="card-title"><%=item.getName()%></h5>

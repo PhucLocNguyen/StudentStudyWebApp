@@ -36,12 +36,12 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="home">Home</a></li>
                             <li class="breadcrumb-item"><a href="insideClass?class_id=${requestScope.exercise.classes.id}">Classroom</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Day la cau hoi</li>
+                            <li class="breadcrumb-item active" aria-current="page">Here is the question</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="row">
-                    <div class="py-4 bg-image-full rounded-4" style="background-image: url('Assets/img/webImg/slide.jpg')">
+                    <div class="py-4 bg-image-full rounded-4" style="background-image: url('Assets/img/webImg/bang.png')">
                         <div class="text-center">
                             <h1 class="text-dark fs-3 fw-bolder">${requestScope.exercise.title}</h1>
                             <h5 class="text-dark fw-medium mb-0">${requestScope.exercise.description}</h5>
@@ -54,15 +54,15 @@
                     <div class="col-sm-12 card mt-2 rounded-2 transitionEaseInOutFlex" id="originalAnswer">
                         <div class="row d-flex align-content-center justify-content-center">
                             <div class="col-lg-8">
-                                <h5 class="card-title fs-3 fw-bolder pt-3">Câu trả lời đã nộp</h5>
+                                <h5 class="card-title fs-3 fw-bolder pt-3">Answer submitted</h5>
                                 <div class="d-flex px-2">
-                                    <span class="badge rounded-pill bg-success text-bg-secondary my-1 me-3 fs-6">đã nộp vào lúc 5:30 19/09/2023</span>
+                                    <span class="badge rounded-pill bg-success text-bg-secondary my-1 me-3 fs-6">Submitted at ${requestScope.Do.createDate}</span>
                                 </div>
 
                             </div>
                             <div class="col-lg-4 d-flex align-content-center flex-wrap justify-content-center gap-2">
-                                <button class="btn btn-outline-primary formatBtn" onclick="showInputForm()">Chỉnh sửa</button>
-                                <a href="#myModal" role="button" class="btn btn-danger text-center formatBtn" data-bs-toggle="modal">Xoá</a>
+                                <button class="btn btn-outline-primary formatBtn" onclick="showInputForm()">Edit</button>
+                                <a href="#myModal" role="button" class="btn btn-danger text-center formatBtn" data-bs-toggle="modal">Delete</a>
                             </div>
                         </div>
 
@@ -107,21 +107,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Xác nhận</h5>
+                        <h5 class="modal-title">Confirm</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <form accept-charset="UTF-8" action="answerquestion" method="POST" >
 
                         <div class="modal-body">
                             <div class="mb-3">
-                                <p class="mb-1 text-danger fs-5">Hành động này sẽ tiến hành xoá vĩnh viễn câu trả lời của bạn ở câu hỏi này</p>
+                                <p class="mb-1 text-danger fs-5">This action will permanently delete your answer to this question</p>
                             </div>
 
                             <!--<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>-->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger" >Xoá</button>
+                            <button type="submit" class="btn btn-danger" >Delete</button>
                         </div>
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="exercise_id" value="${requestScope.exercise.exerciseID}"> 
