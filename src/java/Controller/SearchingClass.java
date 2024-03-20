@@ -7,6 +7,9 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
+import Model.ExerciseDAO;
+import Model.LectureDTO;
+import Model.StudentDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -35,6 +38,7 @@ public class SearchingClass extends HttpServlet {
             throws ServletException, IOException {
         ClassesDAO classdao = new ClassesDAO();
         String keyWord = request.getParameter("keyWord");
+        String sortByCondition = "1";
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
@@ -44,7 +48,45 @@ public class SearchingClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-        List<ClassesDTO> listSearching = classdao.showClassWithKeyWord(keyWord,(String)session.getAttribute("role"));
+        if (request.getParameter("selectValue") != null) {
+            sortByCondition = request.getParameter("selectValue");
+        }
+        if (keyWord.isEmpty()) {
+            keyWord = "";
+        }
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (NumberFormatException e) {
+                System.out.println("Number format in InsideClass: " + e.getMessage());
+            }
+        }
+        int totalClass = new ClassesDAO().totalClassFound(keyWord, 0, 3, (String) session.getAttribute("role"));
+        int endPage = totalClass / 6;
+        if (totalClass % 6 != 0) {
+            endPage++;
+        }
+        
+        // Moi sua khuc nay
+        String getRole = "";
+        int id = 0;
+        HttpSession getSession = request.getSession(false);
+        if (getSession != null && session.getAttribute("user") != null) {
+            getRole = (String) session.getAttribute("role");
+            if (getRole.equals("lecturer")) {
+                LectureDTO user = (LectureDTO) session.getAttribute("user");           
+                id = user.getId();
+            } else {
+                StudentDTO user = (StudentDTO) session.getAttribute("user");               
+                id = user.getId();
+            }
+        }
+        //Toi day
+        
+        List<ClassesDTO> listSearching = classdao.showClassWithKeyWord(keyWord, (String) session.getAttribute("role"), sortByCondition, page,id);
+        request.setAttribute("page", endPage);
+        request.setAttribute("selectValue", sortByCondition);
         request.setAttribute("keyWord", keyWord);
         request.setAttribute("listSearching", listSearching);
         request.getRequestDispatcher("searching.jsp").forward(request, response);

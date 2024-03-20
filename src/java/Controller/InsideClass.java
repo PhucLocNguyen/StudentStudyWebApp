@@ -7,8 +7,10 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.ClassesDTO;
+import Model.EnrollDAO;
 import Model.ExerciseDAO;
 import Model.ExerciseDTO;
+import Model.StudentDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -72,16 +74,42 @@ public class InsideClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-        int class_id = Integer.parseInt(request.getParameter("class_id"));
+        int class_id = 0;
+        try {
+            class_id = Integer.parseInt(request.getParameter("class_id"));
+        } catch (NumberFormatException e) {
+            class_id = -1;
+        }
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (NumberFormatException e) {
+                System.out.println("Number format in InsideClass: " + e.getMessage());
+            }
+        }
         ClassesDAO classesDAO = new ClassesDAO();
         ClassesDTO classesDTO = classesDAO.showClassById(class_id);
         ExerciseDAO dao = new ExerciseDAO();
-        List<ExerciseDTO> lisExc = dao.getAllExcercise(class_id);     
-        
-        
+        String role = (String) session.getAttribute("role");
+        List<ExerciseDTO> lisExc = dao.getExerciseOnPaging(class_id, role, page);
+        for (ExerciseDTO exerciseDTO : lisExc) {
+            System.out.println("start date: "+exerciseDTO.getStartDate());
+            System.out.println("End date: "+exerciseDTO.getEndDate());
+        }
+        int totalExercise = new ExerciseDAO().totalExercise(class_id, role);
+        int endPage = totalExercise / 3;
+        if (totalExercise % 3 != 0) {
+            endPage++;
+        }
+        EnrollDAO enrollDAO = new EnrollDAO();
+        List<StudentDTO> listStudent = enrollDAO.getStudentInClass(class_id);
+//        
         if (classesDTO != null) {
+            request.setAttribute("page", endPage);
             request.setAttribute("classes", classesDTO);
-            request.setAttribute("listExcercise", lisExc);
+            request.setAttribute("listExercise", lisExc);
+            request.setAttribute("listStudent", listStudent);
             request.getRequestDispatcher("insideClass.jsp").forward(request, response);
         } else {
             response.sendError(400, "Get class id Error");

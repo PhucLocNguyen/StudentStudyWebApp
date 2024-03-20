@@ -7,6 +7,7 @@ package Controller;
 
 import Model.ClassesDAO;
 import Model.LectureDTO;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,12 +85,16 @@ public class CreateClass extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private Gson gson = new Gson();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String name, imageUrl, password, description;
+        String name, imageUrl, password, description, action;
         HttpSession session = request.getSession(false);
+        ClassesDAO classDAO = new ClassesDAO();
+
         if (session == null) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
@@ -98,25 +103,49 @@ public class CreateClass extends HttpServlet {
             request.getRequestDispatcher("logout").forward(request, response);
             return;
         }
-        LectureDTO user = (LectureDTO) session.getAttribute("user");
-        int lecturer_id = user.getId();
+        action = request.getParameter("action");
+        if (action != null) {
+            if (action.equals("create")) {
+                LectureDTO user = (LectureDTO) session.getAttribute("user");
+                int lecturer_id = user.getId();
 
-        name = request.getParameter("className");
-        Part filePart = request.getPart("thumbnail");
-        password = request.getParameter("password");
-        description = request.getParameter("description");
-        FileUtils fileUtils = new FileUtils();
-        imageUrl = fileUtils.insertImage(filePart);
+                password = request.getParameter("password");
+                description = request.getParameter("description");
+                name = request.getParameter("className");
+                Part filePart = request.getPart("thumbnail");
+               
+                if (filePart != null && filePart.getSize() > 0) {
+                    FileUtils fileUtils = new FileUtils();
+                    imageUrl = fileUtils.insertImage(filePart);
+                } else {
+                    imageUrl = "";
+                }
 
-        ClassesDAO classDAO = new ClassesDAO();
-
-        if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
-            request.setAttribute("message", "Create Successfully !!!");
+                if (classDAO.addClass(name, imageUrl, password, description, lecturer_id)) {
+                    request.setAttribute("message", "Create Successfully !!!");
+                } else {
+                    request.setAttribute("message", "Failed !!!");
+                }
+                response.sendRedirect("showdashboard");
+//                request.getRequestDispatcher("showdashboard").forward(request, response);
+            } else if (action.equals("checkPasswordToDelete")) {
+                String getPassword = request.getParameter("password");
+                int getClassId = Integer.parseInt(request.getParameter("class_id"));
+                String getRole = (String) session.getAttribute("role");
+                System.out.println("Check checking delete!");
+                if (classDAO.checkingClassesPassword(getPassword, getClassId) && getRole.equals("lecturer")) {
+                    classDAO.deleteClassByID(getClassId);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    String redirectUrl = gson.toJson("showdashboard");
+                    response.getWriter().print(redirectUrl);
+                } else {
+                    response.setStatus(400);
+                }
+            }
         } else {
-            request.setAttribute("message", "Failed !!!");
+            response.setStatus(404);
         }
-
-        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 
     /**

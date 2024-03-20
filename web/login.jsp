@@ -27,22 +27,20 @@
                             <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Email address" name="email">
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Password" name="password">
+                            <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Password" name="password">
                         </div>
-                        <% if (request.getAttribute("error") != null) {%>
-                        <p class="card-text text-danger"><%=request.getAttribute("error")%></p> <%}%>
+                        <p class="card-text text-danger">${requestScope.error}</p> 
                         <div class="d-grid gap-2 col-12 mx-auto">
                             <button type="submit" class="btn btn-primary" type="button">Sign in</button>
                         </div>
                     </form>
                     <div>
                         <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/LoginGoogle/LoginGoogleHandler&response_type=code
-                           &client_id=984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com&approval_prompt=force" class="btn btn-light w-100"> <img style="width: 30px;" src="./Assets/img/GoogleIcon.svg" alt="">Login with Google</a> 
+                           &client_id=984983964678-k4gqt074vh0j025du4752bdurjngalqk.apps.googleusercontent.com&approval_prompt=force" class="btn btn-light w-100"> <img style="width: 30px;" src="./Assets/img/webImg/GoogleIcon.svg" alt="">Login with Google</a> 
                     </div>
                 </div>
             </div>
         </div>
-        <%@include file="./Components/Footer.jsp" %>
     </body>
 
 </html>

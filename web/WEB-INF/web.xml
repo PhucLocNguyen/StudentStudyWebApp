@@ -24,6 +24,10 @@
         <servlet-name>AnswerQuestion</servlet-name>
         <servlet-class>Controller.AnswerQuestion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewProfileServlet</servlet-name>
+        <servlet-class>Controller.ViewProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SearchingClass</servlet-name>
         <url-pattern>/searchingclass</url-pattern>
@@ -38,7 +42,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>showAnswerInTeacher</servlet-name>
-        <url-pattern>/excerciseView</url-pattern>
+        <url-pattern>/exerciseView</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateQuestion</servlet-name>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>AnswerQuestion</servlet-name>
         <url-pattern>/answerquestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProfileServlet</servlet-name>
+        <url-pattern>/viewprofile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

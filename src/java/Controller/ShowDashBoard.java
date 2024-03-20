@@ -38,36 +38,6 @@ public class ShowDashBoard extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<ClassesDTO> listClass = new ArrayList<>();
-        ClassesDAO classDAO = new ClassesDAO();
-
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
-        }
-        if (session.getAttribute("user") == null) {
-            request.getRequestDispatcher("logout").forward(request, response);
-            return;
-        }
-        String getRole = (String) session.getAttribute("role");
-        if (getRole.equals("student")) {
-            EnrollDAO enrollDAO = new EnrollDAO();
-            List<Integer> arrayIdClass = new ArrayList<>();
-            StudentDTO student = (StudentDTO) session.getAttribute("user");
-            arrayIdClass = enrollDAO.idClassEnrolled(student.getId());
-            if (arrayIdClass != null) {
-                for (Integer arrayIdClas : arrayIdClass) {
-                    ClassesDTO classEnrolled = classDAO.showClassById(arrayIdClas);
-                    listClass.add(classEnrolled);
-                }
-            }
-        } else {
-            LectureDTO lecture = (LectureDTO) session.getAttribute("user");
-        }
-
-        request.setAttribute("listClass", listClass);
-        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -82,7 +52,56 @@ public class ShowDashBoard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        List<ClassesDTO> listClass = new ArrayList<>();
+        ClassesDAO classDAO = new ClassesDAO();
+        String sortByCondition = "1";
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+        if (session.getAttribute("user") == null) {
+            request.getRequestDispatcher("logout").forward(request, response);
+            return;
+        }
+        if (request.getParameter("selectValue") != null) {
+            sortByCondition = request.getParameter("selectValue");
+        }
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (NumberFormatException e) {
+                System.out.println("Number format in InsideClass: " + e.getMessage());
+            }
+        }
+
+        String getRole = (String) session.getAttribute("role");
+        if (getRole.equals("student")) {
+            EnrollDAO enrollDAO = new EnrollDAO();
+            StudentDTO student = (StudentDTO) session.getAttribute("user");
+            int totalClass = new ClassesDAO().totalClassFound("", student.getId(),1,getRole);
+            int endPage = totalClass / 6;
+            if (totalClass % 6 != 0) {
+                endPage++;
+            }
+            request.setAttribute("page", endPage);
+            listClass = classDAO.showClassOwnedByStudentIDPaging(student.getId(), sortByCondition, page);
+        } else {
+            LectureDTO lecture = (LectureDTO) session.getAttribute("user");
+            int totalClass = new ClassesDAO().totalClassFound("", lecture.getId(),2,getRole);
+            int endPage = totalClass / 6;
+            if (totalClass % 6 != 0) {
+                endPage++;
+            }
+            request.setAttribute("page", endPage);
+            listClass = classDAO.showClassOwnedByLectureIDPaging(lecture.getId(), sortByCondition,page);
+            
+        }
+        
+        request.setAttribute("selectValue", sortByCondition);
+        request.setAttribute("listClass", listClass);
+        request.getRequestDispatcher("myCourse.jsp").forward(request, response);
     }
 
     /**

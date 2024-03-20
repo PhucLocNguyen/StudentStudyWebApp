@@ -27,70 +27,100 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
-        <div class="container">
-
-            <%@include file="./Components/Header.jsp" %>
-
-            <%                    List<ClassesDTO> listSearching = (List<ClassesDTO>) request.getAttribute("listSearching");
-            %>
-            <div class="row">
-                <h3 class="fw-medium mb-1">Search results: <%= listSearching.size()%>
-                </h3>
-            </div>
 
 
-
-            <div class="row mt-3 mb-4">
-                <%
-                    if (listSearching != null) {
-                        int count = 0;
-                        EnrollDAO enrollDAO = new EnrollDAO();
-                        for (ClassesDTO items : listSearching) {
-                            if (getRole.equals("student") && !enrollDAO.isEnrolledClass(id, items.getId())) {
-                                count++;
-
+        <%@include file="./Components/Header.jsp" %>
+        <div  class="bg-body-tertiary pt-3">
+            <div class="container">
+                <%                    List<ClassesDTO> listSearching = (List<ClassesDTO>) request.getAttribute("listSearching");
                 %>
-                <div class="col-lg-4">
-                    <div class="card rounded-4">
-                        <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"><%=items.getName()%></h5>
-                            <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
-                            <a href="#myModal" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-class-id = "<%= items.getId()%>" onclick="showPopup(this)">Show more</a>
-                        </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <h3 class="fw-medium mb-1">Search results: <%= listSearching.size()%></h3>
+                    </div>
+                    <div class="col-lg-6">
+                        <form action="searchingclass" id="formSelect">
+                            <select class="form-select" aria-label="Sort from A to Z" id="sort-select" name="selectValue"  onchange="selectChanged()">
+                                <option value="1" <% if ("1".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from A to Z</option>
+                                <option value="2" <% if ("2".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from Z to A</option>
+                                <option value="3" <% if ("3".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from newest to oldest</option>
+                                <option value="4" <% if ("4".equals(request.getAttribute("selectValue"))) { %> selected <% } %>>Sort from oldest to newest</option>
+                            </select>
+                            <input type="hidden" name="keyWord" value="${requestScope.keyWord}">
+                        </form>
                     </div>
                 </div>
 
-                <%} else {%>
-                <div class="col-lg-4">
-                    <div class="card rounded-4">
-                        <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"><%=items.getName()%></h5>
-                            <p class="card-text">Giảng viên: <%= items.getLecturer().getEmail()%></p>
-                            <%
-                                ClassesDAO classesDAO = new ClassesDAO();
-                                if ((getRole.equals("lecturer") && classesDAO.isLectureInClass(id, items.getId())) || getRole.equals("student")) {
-                            %>
-                            <a href="<%="insideClass?class_id=" + items.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
-                            <%
-                                }
-                            %>
 
+
+                <div class="row mt-3">
+                    <%
+                        if (listSearching != null) {
+                            int count = 0;
+                            EnrollDAO enrollDAO = new EnrollDAO();
+                            for (ClassesDTO items : listSearching) {
+                                if (getRole.equals("student") && !enrollDAO.isEnrolledClass(id, items.getId())) {
+                                    count++;
+
+                    %>
+                    <div class="col-lg-4">
+                        <div class="card rounded-4">
+                            <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
+                            <div class="card-body">
+                                <h5 class="card-title"><%=items.getName()%></h5>
+                                <p class="card-text">Lecturers : <%= items.getLecturer().getEmail()%></p>
+                                <a href="#myModal" role="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-class-id = "<%= items.getId()%>" onclick="showPopup(this)">Show more</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <% }
+
+                    <%} else {%>
+                    <div class="col-lg-4">
+                        <div class="card rounded-4">
+                            <img src="<%=items.getThumbnail()%>" class="card-img-top object-fit-cover rounded-top-4" alt="<%= items.getName()%>" style="max-height: 10rem;">
+                            <div class="card-body" style="min-height: 151.6px">
+                                <h5 class="card-title"><%=items.getName()%></h5>
+                                <p class="card-text">Lecturers : <%= items.getLecturer().getEmail()%></p>
+                                <%
+                                    ClassesDAO classesDAO = new ClassesDAO();
+                                    if ((getRole.equals("lecturer") && classesDAO.isLectureInClass(id, items.getId())) || getRole.equals("student")) {
+                                %>
+                                <a href="<%="insideClass?class_id=" + items.getId()%>" class="btn btn-lg btn-primary" >Go to class</a>
+                                <%
+                                    }
+                                %>
+
+                            </div>
+                        </div>
+                    </div>
+                    <% }
+                            }
                         }
-                    }
-                %>       
+                    %>       
 
-                <!-- Ket thuc row thu 2 -->
-            </div>
-            <div id="myModal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog">
-
+                    <!-- Ket thuc row thu 2 -->
                 </div>
+                <div id="myModal" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog">
+
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center">
+                <nav aria-label="...">
+                    <ul class="pagination pagination-sm">
+                        <%
+                            int totalPage = (int) request.getAttribute("page");
+                            for (int i = 1; i <= totalPage; i++) {
+                        %>
+                        <li class="page-item ">
+                            <a class="page-link" href="searchingclass?keyWord=${requestScope.keyWord}&page=<%=i%>&selectValue=${requestScope.selectValue}" tabindex="-1"><%= i%></a>
+                        </li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                </nav>
             </div>
         </div>
 
@@ -154,7 +184,8 @@
                                 method: "POST",
                                 data: {
                                     class_id: getDataFormEvent.class_id,
-                                    password: getDataFormEvent.password
+                                    password: getDataFormEvent.password,
+                                    action: "passwordChecking"
                                 }, success: function (msg) {
                                     var redirectUrl = msg;
                                     console.log(msg);
@@ -176,5 +207,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+        <script>
+            function selectChanged() {
+                var formSelect = document.getElementById("formSelect");
+                formSelect.submit();
+            }
+        </script>
     </body>
 </html>

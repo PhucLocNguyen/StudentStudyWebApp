@@ -6,6 +6,7 @@
 package Model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -13,17 +14,19 @@ import java.sql.Date;
  */
 public class ExerciseDTO {
 
-    private int excerciseID;
+    private int exerciseID;
     private String title, media, description, status;
     private Date createdDate;
     private ClassesDTO classes;
     private LectureDTO lecturer;
+    private Timestamp startDate;
+    private Timestamp endDate;
 
     public ExerciseDTO() {
     }
 
-    public ExerciseDTO(int excerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer) {
-        this.excerciseID = excerciseID;
+    public ExerciseDTO(int exerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer) {
+        this.exerciseID = exerciseID;
         this.title = title;
         this.media = media;
         this.description = description;
@@ -33,12 +36,25 @@ public class ExerciseDTO {
         this.lecturer = lecturer;
     }
 
-    public int getExcerciseID() {
-        return excerciseID;
+    public ExerciseDTO(int exerciseID, String title, String media, String description, String status, Date createdDate, ClassesDTO classes, LectureDTO lecturer, Timestamp startDate, Timestamp endDate) {
+        this.exerciseID = exerciseID;
+        this.title = title;
+        this.media = media;
+        this.description = description;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.classes = classes;
+        this.lecturer = lecturer;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+    
+    public int getExerciseID() {
+        return exerciseID;
     }
 
-    public void setExcerciseID(int excerciseID) {
-        this.excerciseID = excerciseID;
+    public void setExerciseID(int exerciseID) {
+        this.exerciseID = exerciseID;
     }
 
     public String getTitle() {
@@ -96,6 +112,21 @@ public class ExerciseDTO {
     public void setLecturer(LectureDTO lecturer) {
         this.lecturer = lecturer;
     }
-    
-    
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
+    }
+     
 }

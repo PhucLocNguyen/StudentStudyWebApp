@@ -62,6 +62,9 @@ public class FileUtils {
 
     public boolean deleteImage(String fileName) {
         boolean output = false;
+        if (fileName.contains(Constants.IMAGE_PERMALINK)) {
+            fileName = fileName.split(Constants.IMAGE_PERMALINK)[1];
+        }
         try {
             // Tạo thư mục nếu nó chưa tồn tại
             File myImg = new File(uploadPath, fileName);
